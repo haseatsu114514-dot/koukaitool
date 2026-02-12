@@ -44,11 +44,11 @@
     }
 
     .hero {
-      background: linear-gradient(130deg, #6f9e86, #88b7a0);
+      background: linear-gradient(130deg, #5f9078, #79ab92);
       color: #f4f9ff;
       border-radius: 16px;
       padding: 18px;
-      box-shadow: 0 14px 30px rgba(60, 101, 78, 0.18);
+      box-shadow: 0 14px 30px rgba(53, 91, 71, 0.2);
     }
 
     .hero h1 {
@@ -138,6 +138,95 @@
     .person-result.error {
       background: #ffecef;
       color: var(--danger);
+    }
+
+    .person-toggle-wrap {
+      margin-top: 10px;
+    }
+
+    .toggle-person-btn {
+      border: 1px solid #caddcf;
+      background: #f1f6f3;
+      color: var(--text);
+      font-size: 0.86rem;
+      padding: 7px 10px;
+    }
+
+    .person-actions {
+      margin-top: 6px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .copy-person-btn {
+      border: 1px solid #d5e0da;
+      background: #f1f5f2;
+      color: var(--text);
+      font-size: 0.82rem;
+      padding: 6px 10px;
+    }
+
+    .copy-person-btn:disabled {
+      opacity: 0.52;
+      cursor: default;
+    }
+
+    .result-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .result-name {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .result-date {
+      font-weight: 700;
+      font-size: 1.08rem;
+      color: #2f7257;
+      letter-spacing: 0.01em;
+    }
+
+    .result-note {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .result-note-inline {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .result-candidates {
+      margin-top: 7px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .candidate-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      border: 1px solid #c9ddce;
+      background: #f4faf6;
+      padding: 5px 9px;
+      font-size: 0.78rem;
+      color: #335b47;
+    }
+
+    .candidate-date {
+      font-weight: 700;
+      color: #2f7257;
+    }
+
+    .is-hidden {
+      display: none;
     }
 
     .actions {
@@ -283,7 +372,7 @@
       <p id="todayText"></p>
 
       <div class="people-grid">
-        <article class="person-card">
+        <article id="personCard1" class="person-card">
           <h3>1人目（必須）</h3>
           <label for="name1">名前（任意）</label>
           <input id="name1" type="text" placeholder="例: 相談相手A">
@@ -298,9 +387,18 @@
           </div>
 
           <div id="personResult1" class="person-result">未計算</div>
+          <div class="person-actions">
+            <button id="copyPerson1Btn" class="copy-person-btn" type="button" disabled>1人目をコピー</button>
+          </div>
         </article>
+      </div>
 
-        <article class="person-card">
+      <div class="person-toggle-wrap">
+        <button id="togglePerson2Btn" class="toggle-person-btn" type="button" aria-expanded="false">+ 2人目を追加</button>
+      </div>
+
+      <div class="people-grid">
+        <article id="personCard2" class="person-card is-hidden">
           <h3>2人目</h3>
           <label for="name2">名前（任意）</label>
           <input id="name2" type="text" placeholder="例: 相談相手B">
@@ -314,7 +412,10 @@
             <input id="day2" type="number" min="1" max="31" placeholder="日">
           </div>
 
-          <div id="personResult2" class="person-result">未計算</div>
+          <div id="personResult2" class="person-result">未入力</div>
+          <div class="person-actions">
+            <button id="copyPerson2Btn" class="copy-person-btn" type="button" disabled>2人目をコピー</button>
+          </div>
         </article>
       </div>
 
@@ -347,20 +448,42 @@
   </main>
 
   <script>
-    const MAX_PEOPLE = 2;
-
     const todayText = document.getElementById("todayText");
     const summaryResult = document.getElementById("summaryResult");
     const statusText = document.getElementById("statusText");
+    const personCard2 = document.getElementById("personCard2");
+    const togglePerson2Btn = document.getElementById("togglePerson2Btn");
+
+    const personResultMap = {
+      1: document.getElementById("personResult1"),
+      2: document.getElementById("personResult2")
+    };
+
+    const copyPersonBtnMap = {
+      1: document.getElementById("copyPerson1Btn"),
+      2: document.getElementById("copyPerson2Btn")
+    };
+
+    const latestPersonResultText = {
+      1: "",
+      2: ""
+    };
 
     let latestResultText = "";
     let currentDateKey = "";
+    let isPerson2Visible = false;
 
+    setPerson2Visibility(false);
+    setPersonCopyState(1, "");
+    setPersonCopyState(2, "");
     refreshCurrentDate(true);
 
     document.getElementById("calcBtn").addEventListener("click", calculateBirthDate);
     document.getElementById("copyBtn").addEventListener("click", copyResult);
     document.getElementById("clearBtn").addEventListener("click", clearInputs);
+    document.getElementById("togglePerson2Btn").addEventListener("click", togglePerson2Card);
+    copyPersonBtnMap[1].addEventListener("click", () => copyPersonResult(1));
+    copyPersonBtnMap[2].addEventListener("click", () => copyPersonResult(2));
 
     window.addEventListener("focus", () => {
       refreshCurrentDate(false);
@@ -372,33 +495,39 @@
     function calculateBirthDate() {
       const today = refreshCurrentDate(false);
       const summaryLines = [];
+      const peopleToCheck = isPerson2Visible ? [1, 2] : [1];
+
       let successCount = 0;
       let firstPersonValid = false;
 
-      for (let i = 1; i <= MAX_PEOPLE; i += 1) {
+      for (let idx = 0; idx < peopleToCheck.length; idx += 1) {
+        const i = peopleToCheck[idx];
         const isFirstPerson = i === 1;
         const name = getValue("name" + i);
         const ageRaw = getValue("age" + i);
         const monthRaw = getValue("month" + i);
         const dayRaw = getValue("day" + i);
-        const cardResult = document.getElementById("personResult" + i);
+        const cardResult = personResultMap[i];
 
         if (!name && !ageRaw && !monthRaw && !dayRaw) {
           if (isFirstPerson) {
             setCardError(cardResult, "1人目は必須です。年齢と誕生日（月/日）を入力してください。");
+            setPersonCopyState(i, "");
             continue;
           }
-          cardResult.textContent = "未入力";
-          cardResult.classList.remove("error");
+          setCardMessage(cardResult, "未入力");
+          setPersonCopyState(i, "");
           continue;
         }
 
         if (!ageRaw || !monthRaw || !dayRaw) {
           if (isFirstPerson) {
             setCardError(cardResult, "1人目は必須です。年齢と誕生日（月/日）をすべて入力してください。");
+            setPersonCopyState(i, "");
             continue;
           }
           setCardError(cardResult, "年齢と誕生日（月/日）をすべて入力してください。");
+          setPersonCopyState(i, "");
           continue;
         }
 
@@ -408,29 +537,40 @@
 
         if (!Number.isInteger(age) || age < 0 || age > 130) {
           setCardError(cardResult, "年齢を0〜130で入力してください。");
+          setPersonCopyState(i, "");
           continue;
         }
 
         if (!isValidMonthDayInput(month, day)) {
           setCardError(cardResult, "誕生日（月/日）が正しくありません。");
+          setPersonCopyState(i, "");
           continue;
         }
 
         const resolved = resolveBirthDate(age, month, day, today);
         if (!resolved.success) {
           setCardError(cardResult, "入力条件から生年月日を確定できません。");
+          setPersonCopyState(i, "");
           continue;
         }
 
         const label = name || i + "人目";
-        const personText = label + ": " + resolved.text;
-        cardResult.textContent = personText;
-        cardResult.classList.remove("error");
+        const resolvedText = formatResolvedPlainText(resolved);
+        const personText = label + ": " + resolvedText;
+
+        renderPersonResult(cardResult, label, resolved);
         summaryLines.push(personText);
+        setPersonCopyState(i, personText);
+
         successCount += 1;
         if (isFirstPerson) {
           firstPersonValid = true;
         }
+      }
+
+      if (!isPerson2Visible) {
+        setCardMessage(personResultMap[2], "未入力");
+        setPersonCopyState(2, "");
       }
 
       if (!firstPersonValid) {
@@ -456,7 +596,12 @@
         if (year == null) {
           return { success: false };
         }
-        return { success: true, text: formatDate(year, birthMonth, birthDay) };
+        return {
+          success: true,
+          kind: "single",
+          date: formatDate(year, birthMonth, birthDay),
+          note: ""
+        };
       }
 
       const yearFeb = findBirthYear(age, 2, 29, today, "feb28");
@@ -468,24 +613,112 @@
 
       if (yearFeb != null && yearMar != null) {
         if (yearFeb === yearMar) {
-          return { success: true, text: formatDate(yearFeb, 2, 29) + "（2/29生まれ対応）" };
+          return {
+            success: true,
+            kind: "single",
+            date: formatDate(yearFeb, 2, 29),
+            note: "2/29生まれ対応"
+          };
         }
         return {
           success: true,
-          text:
-            "候補: " +
-            formatDate(yearFeb, 2, 29) +
-            "（2/28基準） / " +
-            formatDate(yearMar, 2, 29) +
-            "（3/1基準）"
+          kind: "candidates",
+          options: [
+            { date: formatDate(yearFeb, 2, 29), note: "2/28基準" },
+            { date: formatDate(yearMar, 2, 29), note: "3/1基準" }
+          ]
         };
       }
 
       if (yearFeb != null) {
-        return { success: true, text: formatDate(yearFeb, 2, 29) + "（2/28基準）" };
+        return {
+          success: true,
+          kind: "single",
+          date: formatDate(yearFeb, 2, 29),
+          note: "2/28基準"
+        };
       }
 
-      return { success: true, text: formatDate(yearMar, 2, 29) + "（3/1基準）" };
+      return {
+        success: true,
+        kind: "single",
+        date: formatDate(yearMar, 2, 29),
+        note: "3/1基準"
+      };
+    }
+
+    function formatResolvedPlainText(resolved) {
+      if (resolved.kind === "single") {
+        if (!resolved.note) {
+          return resolved.date;
+        }
+        return resolved.date + "（" + resolved.note + "）";
+      }
+      const candidateText = [];
+      for (let i = 0; i < resolved.options.length; i += 1) {
+        const option = resolved.options[i];
+        candidateText.push(option.date + "（" + option.note + "）");
+      }
+      return "候補: " + candidateText.join(" / ");
+    }
+
+    function renderPersonResult(element, label, resolved) {
+      const safeLabel = escapeHtml(label);
+
+      if (resolved.kind === "single") {
+        const noteHtml = resolved.note
+          ? '<div class="result-note">（' + escapeHtml(resolved.note) + "）</div>"
+          : "";
+        element.innerHTML =
+          '<div class="result-row">' +
+          '<span class="result-name">' + safeLabel + "</span>" +
+          '<span class="result-date">' + escapeHtml(resolved.date) + "</span>" +
+          "</div>" +
+          noteHtml;
+      } else {
+        let badgesHtml = "";
+        for (let i = 0; i < resolved.options.length; i += 1) {
+          const option = resolved.options[i];
+          badgesHtml +=
+            '<span class="candidate-badge">' +
+            '<span class="candidate-date">' + escapeHtml(option.date) + "</span>" +
+            '<span class="candidate-note">' + escapeHtml(option.note) + "</span>" +
+            "</span>";
+        }
+        element.innerHTML =
+          '<div class="result-row">' +
+          '<span class="result-name">' + safeLabel + "</span>" +
+          '<span class="result-note-inline">2/29の平年判定で候補が分かれます</span>' +
+          "</div>" +
+          '<div class="result-candidates">' + badgesHtml + "</div>";
+      }
+
+      element.classList.remove("error");
+    }
+
+    function togglePerson2Card() {
+      if (isPerson2Visible) {
+        clearPersonInputs(2);
+        setCardMessage(personResultMap[2], "未入力");
+        setPersonCopyState(2, "");
+        setPerson2Visibility(false);
+        resetSummaryResult();
+        setStatus("", false);
+        return;
+      }
+
+      setPerson2Visibility(true);
+      setCardMessage(personResultMap[2], "未計算");
+      setPersonCopyState(2, "");
+      resetSummaryResult();
+      setStatus("", false);
+    }
+
+    function setPerson2Visibility(visible) {
+      isPerson2Visible = visible;
+      personCard2.classList.toggle("is-hidden", !visible);
+      togglePerson2Btn.textContent = visible ? "− 2人目を閉じる" : "+ 2人目を追加";
+      togglePerson2Btn.setAttribute("aria-expanded", visible ? "true" : "false");
     }
 
     function findBirthYear(age, birthMonth, birthDay, today, leapMode) {
@@ -582,25 +815,45 @@
     }
 
     function clearInputs() {
-      for (let i = 1; i <= MAX_PEOPLE; i += 1) {
-        document.getElementById("name" + i).value = "";
-        document.getElementById("age" + i).value = "";
-        document.getElementById("month" + i).value = "";
-        document.getElementById("day" + i).value = "";
-        const cardResult = document.getElementById("personResult" + i);
-        cardResult.textContent = "未計算";
-        cardResult.classList.remove("error");
-      }
+      clearPersonInputs(1);
+      clearPersonInputs(2);
 
-      summaryResult.textContent = "未計算";
-      summaryResult.classList.remove("error");
-      latestResultText = "";
+      setCardMessage(personResultMap[1], "未計算");
+      setCardMessage(personResultMap[2], "未入力");
+      setPersonCopyState(1, "");
+      setPersonCopyState(2, "");
+      setPerson2Visibility(false);
+
+      resetSummaryResult();
       setStatus("", false);
+    }
+
+    function clearPersonInputs(index) {
+      document.getElementById("name" + index).value = "";
+      document.getElementById("age" + index).value = "";
+      document.getElementById("month" + index).value = "";
+      document.getElementById("day" + index).value = "";
+    }
+
+    function setPersonCopyState(index, text) {
+      latestPersonResultText[index] = text;
+      copyPersonBtnMap[index].disabled = text === "";
+    }
+
+    function setCardMessage(element, message) {
+      element.textContent = message;
+      element.classList.remove("error");
     }
 
     function setCardError(element, message) {
       element.textContent = message;
       element.classList.add("error");
+    }
+
+    function resetSummaryResult() {
+      summaryResult.textContent = "未計算";
+      summaryResult.classList.remove("error");
+      latestResultText = "";
     }
 
     function setSummaryError(message) {
@@ -628,8 +881,31 @@
       }
     }
 
+    async function copyPersonResult(index) {
+      const text = latestPersonResultText[index];
+      if (!text) {
+        setStatus(index + "人目のコピーできる結果がありません。", false);
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus(index + "人目の結果をコピーしました。", true);
+      } catch (error) {
+        setStatus("コピーに失敗しました。", false);
+      }
+    }
+
     function getValue(id) {
       return document.getElementById(id).value.trim();
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
     }
 
     function formatDate(year, month, day) {
