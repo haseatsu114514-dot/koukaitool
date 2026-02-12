@@ -4,19 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>生年月日逆算くん | 年齢×誕生日で逆算</title>
-  <meta name="description" content="年齢と誕生日（月日）だけで生年月日を逆算。占い相談向けの公開ツール（2人対応）。">
+  <meta name="description" content="占い師さんや占い好きの人向け。年齢と誕生日（月日）だけで生年月日を逆算できる公開ツール（2人対応）。">
   <style>
     :root {
-      --bg1: #f3f8ff;
-      --bg2: #f8fbf6;
+      --bg1: #f3f8f4;
+      --bg2: #f9fbf8;
       --card: #ffffff;
-      --line: #d7e2ee;
-      --text: #132235;
-      --muted: #58718a;
-      --brand: #0a62c8;
-      --brand-deep: #084a95;
-      --accent: #e8f2ff;
-      --ok: #0f7a46;
+      --line: #d0ddd3;
+      --text: #18281f;
+      --muted: #557062;
+      --brand: #2d6a52;
+      --brand-deep: #21503e;
+      --accent: #e7f2eb;
+      --ok: #1f6f45;
       --danger: #ad1f35;
     }
 
@@ -30,8 +30,8 @@
       color: var(--text);
       font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
       background:
-        radial-gradient(circle at 6% 8%, #dff1ff 0%, transparent 38%),
-        radial-gradient(circle at 88% 12%, #e8ffe8 0%, transparent 34%),
+        radial-gradient(circle at 6% 8%, #e1f0e6 0%, transparent 38%),
+        radial-gradient(circle at 88% 12%, #edf9f0 0%, transparent 34%),
         linear-gradient(140deg, var(--bg1), var(--bg2));
     }
 
@@ -44,11 +44,11 @@
     }
 
     .hero {
-      background: linear-gradient(130deg, #0f3b72, #1457a3);
+      background: linear-gradient(130deg, #234936, #2f6a53);
       color: #f4f9ff;
       border-radius: 16px;
       padding: 18px;
-      box-shadow: 0 14px 30px rgba(16, 50, 90, 0.18);
+      box-shadow: 0 14px 30px rgba(20, 55, 36, 0.2);
     }
 
     .hero h1 {
@@ -68,7 +68,7 @@
       border: 1px solid var(--line);
       border-radius: 14px;
       padding: 16px;
-      box-shadow: 0 8px 22px rgba(22, 50, 83, 0.06);
+      box-shadow: 0 8px 22px rgba(24, 52, 34, 0.06);
     }
 
     .panel h2 {
@@ -91,7 +91,7 @@
 
     input {
       width: 100%;
-      border: 1px solid #c4d4e4;
+      border: 1px solid #c4d5ca;
       border-radius: 9px;
       padding: 8px 10px;
       font-size: 1rem;
@@ -166,8 +166,8 @@
 
     #clearBtn,
     #copyBtn {
-      border: 1px solid #cad8e5;
-      background: #eef4fa;
+      border: 1px solid #ccd9d1;
+      background: #eef3f0;
       color: var(--text);
     }
 
@@ -209,8 +209,8 @@
       text-decoration: none;
       border-radius: 14px;
       overflow: hidden;
-      border: 1px solid #0f2a49;
-      box-shadow: 0 12px 24px rgba(12, 38, 68, 0.25);
+      border: 1px solid #193425;
+      box-shadow: 0 12px 24px rgba(13, 35, 24, 0.25);
     }
 
     .provider-banner img {
@@ -231,10 +231,10 @@
       inset: 0;
       background: linear-gradient(
         92deg,
-        rgba(7, 16, 31, 0.72) 0%,
-        rgba(7, 16, 31, 0.58) 46%,
-        rgba(7, 16, 31, 0.34) 72%,
-        rgba(7, 16, 31, 0.22) 100%
+        rgba(8, 22, 14, 0.72) 0%,
+        rgba(8, 22, 14, 0.58) 46%,
+        rgba(8, 22, 14, 0.34) 72%,
+        rgba(8, 22, 14, 0.22) 100%
       );
     }
 
@@ -273,26 +273,9 @@
 </head>
 <body>
   <main>
-    <section class="panel provider-panel">
-      <a
-        class="provider-banner"
-        href="https://uranai-rokkon.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img src="assets/rokkon-provider.jpg" alt="占い処 六根清浄">
-        <span class="provider-overlay"></span>
-        <span class="provider-content">
-          <span class="provider-label">提供元</span>
-          <span class="provider-title">占い処 六根清浄</span>
-          <span class="provider-sub">https://uranai-rokkon.com/</span>
-        </span>
-      </a>
-    </section>
-
     <section class="hero">
       <h1>生年月日逆算くん</h1>
-      <p>占い相談で「年齢」と「誕生日（月日）」だけ分かる相手の生年月日を、2人分まとめて逆算できます。</p>
+      <p>占い師さんや占い好きの人向けに、「年齢」と「誕生日（月日）」だけ分かる相手の生年月日をすぐ逆算できる公開版ツールです。</p>
     </section>
 
     <section class="panel">
@@ -301,7 +284,7 @@
 
       <div class="people-grid">
         <article class="person-card">
-          <h3>1人目</h3>
+          <h3>1人目（必須）</h3>
           <label for="name1">名前（任意）</label>
           <input id="name1" type="text" placeholder="例: 相談相手A">
 
@@ -344,6 +327,23 @@
       <div id="summaryResult" class="summary-result">未計算</div>
       <p id="statusText" class="status"></p>
     </section>
+
+    <section class="panel provider-panel">
+      <a
+        class="provider-banner"
+        href="https://uranai-rokkon.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img src="assets/rokkon-provider.jpg" alt="占い処 六根清浄">
+        <span class="provider-overlay"></span>
+        <span class="provider-content">
+          <span class="provider-label">提供元</span>
+          <span class="provider-title">占い処 六根清浄</span>
+          <span class="provider-sub">https://uranai-rokkon.com/</span>
+        </span>
+      </a>
+    </section>
   </main>
 
   <script>
@@ -372,10 +372,11 @@
     function calculateBirthDate() {
       const today = refreshCurrentDate(false);
       const summaryLines = [];
-      let hasAnyInput = false;
       let successCount = 0;
+      let firstPersonValid = false;
 
       for (let i = 1; i <= MAX_PEOPLE; i += 1) {
+        const isFirstPerson = i === 1;
         const name = getValue("name" + i);
         const ageRaw = getValue("age" + i);
         const monthRaw = getValue("month" + i);
@@ -383,14 +384,20 @@
         const cardResult = document.getElementById("personResult" + i);
 
         if (!name && !ageRaw && !monthRaw && !dayRaw) {
+          if (isFirstPerson) {
+            setCardError(cardResult, "1人目は必須です。年齢と誕生日（月/日）を入力してください。");
+            continue;
+          }
           cardResult.textContent = "未入力";
           cardResult.classList.remove("error");
           continue;
         }
 
-        hasAnyInput = true;
-
         if (!ageRaw || !monthRaw || !dayRaw) {
+          if (isFirstPerson) {
+            setCardError(cardResult, "1人目は必須です。年齢と誕生日（月/日）をすべて入力してください。");
+            continue;
+          }
           setCardError(cardResult, "年齢と誕生日（月/日）をすべて入力してください。");
           continue;
         }
@@ -421,10 +428,13 @@
         cardResult.classList.remove("error");
         summaryLines.push(personText);
         successCount += 1;
+        if (isFirstPerson) {
+          firstPersonValid = true;
+        }
       }
 
-      if (!hasAnyInput) {
-        setSummaryError("1人以上入力してください。");
+      if (!firstPersonValid) {
+        setSummaryError("1人目の入力を確認してください。");
         return;
       }
 
