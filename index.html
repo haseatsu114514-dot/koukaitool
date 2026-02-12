@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Age2Birth | 年齢×誕生日 逆算ツール</title>
-  <meta name="description" content="年齢と誕生日（月日）だけで生年月日を素早く逆算する、公開向けシンプルツール。">
+  <title>生年月日逆算くん | 年齢×誕生日で逆算</title>
+  <meta name="description" content="年齢と誕生日（月日）だけで生年月日を逆算。占い相談向けの公開ツール（2人対応）。">
   <style>
     :root {
       --bg1: #f3f8ff;
@@ -36,7 +36,7 @@
     }
 
     main {
-      max-width: 920px;
+      max-width: 980px;
       margin: 0 auto;
       padding: 24px 16px 40px;
       display: grid;
@@ -82,14 +82,6 @@
       font-size: 0.93rem;
     }
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px;
-      margin-top: 10px;
-      align-items: end;
-    }
-
     label {
       display: block;
       color: var(--muted);
@@ -97,7 +89,7 @@
       margin-bottom: 4px;
     }
 
-    input, select {
+    input {
       width: 100%;
       border: 1px solid #c4d4e4;
       border-radius: 9px;
@@ -107,10 +99,45 @@
       color: var(--text);
     }
 
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .person-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      background: #fbfdff;
+    }
+
+    .person-card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
     .birthday-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
+    }
+
+    .person-result {
+      margin-top: 6px;
+      border-radius: 8px;
+      background: var(--accent);
+      min-height: 38px;
+      padding: 8px 10px;
+      line-height: 1.45;
+      font-size: 0.9rem;
+      white-space: pre-line;
+    }
+
+    .person-result.error {
+      background: #ffecef;
+      color: var(--danger);
     }
 
     .actions {
@@ -144,16 +171,17 @@
       color: var(--text);
     }
 
-    .result {
+    .summary-result {
       margin-top: 12px;
       border-radius: 10px;
       background: var(--accent);
       padding: 12px;
       min-height: 48px;
       line-height: 1.55;
+      white-space: pre-line;
     }
 
-    .result.error {
+    .summary-result.error {
       background: #ffecef;
       color: var(--danger);
     }
@@ -245,48 +273,6 @@
 </head>
 <body>
   <main>
-    <section class="hero">
-      <h1>Age2Birth</h1>
-      <p>占い相談で「年齢」と「誕生日（月日）」だけ分かる相手の生年月日を、すぐ逆算できる公開版ツールです。</p>
-    </section>
-
-    <section class="panel">
-      <h2>年齢×誕生日 逆算</h2>
-      <p id="todayText"></p>
-
-      <div class="form-grid">
-        <div>
-          <label for="ageInput">今の年齢</label>
-          <input id="ageInput" type="number" min="0" max="130" placeholder="例: 28">
-        </div>
-
-        <div>
-          <label>誕生日（月 / 日）</label>
-          <div class="birthday-row">
-            <input id="monthInput" type="number" min="1" max="12" placeholder="月">
-            <input id="dayInput" type="number" min="1" max="31" placeholder="日">
-          </div>
-        </div>
-
-        <div>
-          <label for="leapRuleInput">平年の2/29扱い</label>
-          <select id="leapRuleInput">
-            <option value="feb28">2/28として判定</option>
-            <option value="mar1">3/1として判定</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button id="calcBtn" type="button">生年月日を逆算する</button>
-        <button id="copyBtn" type="button">結果をコピー</button>
-        <button id="clearBtn" type="button">入力クリア</button>
-      </div>
-
-      <div id="resultBox" class="result">未計算</div>
-      <p id="statusText" class="status"></p>
-    </section>
-
     <section class="panel provider-panel">
       <a
         class="provider-banner"
@@ -303,15 +289,68 @@
         </span>
       </a>
     </section>
+
+    <section class="hero">
+      <h1>生年月日逆算くん</h1>
+      <p>占い相談で「年齢」と「誕生日（月日）」だけ分かる相手の生年月日を、2人分まとめて逆算できます。</p>
+    </section>
+
+    <section class="panel">
+      <h2>年齢×誕生日 逆算（2人まで）</h2>
+      <p id="todayText"></p>
+
+      <div class="people-grid">
+        <article class="person-card">
+          <h3>1人目</h3>
+          <label for="name1">名前（任意）</label>
+          <input id="name1" type="text" placeholder="例: 相談相手A">
+
+          <label for="age1">今の年齢</label>
+          <input id="age1" type="number" min="0" max="130" placeholder="例: 28">
+
+          <label>誕生日（月 / 日）</label>
+          <div class="birthday-row">
+            <input id="month1" type="number" min="1" max="12" placeholder="月">
+            <input id="day1" type="number" min="1" max="31" placeholder="日">
+          </div>
+
+          <div id="personResult1" class="person-result">未計算</div>
+        </article>
+
+        <article class="person-card">
+          <h3>2人目</h3>
+          <label for="name2">名前（任意）</label>
+          <input id="name2" type="text" placeholder="例: 相談相手B">
+
+          <label for="age2">今の年齢</label>
+          <input id="age2" type="number" min="0" max="130" placeholder="例: 35">
+
+          <label>誕生日（月 / 日）</label>
+          <div class="birthday-row">
+            <input id="month2" type="number" min="1" max="12" placeholder="月">
+            <input id="day2" type="number" min="1" max="31" placeholder="日">
+          </div>
+
+          <div id="personResult2" class="person-result">未計算</div>
+        </article>
+      </div>
+
+      <div class="actions">
+        <button id="calcBtn" type="button">生年月日を逆算する</button>
+        <button id="copyBtn" type="button">結果をコピー</button>
+        <button id="clearBtn" type="button">入力クリア</button>
+      </div>
+
+      <div id="summaryResult" class="summary-result">未計算</div>
+      <p id="statusText" class="status"></p>
+    </section>
   </main>
 
   <script>
-    const ageInput = document.getElementById("ageInput");
-    const monthInput = document.getElementById("monthInput");
-    const dayInput = document.getElementById("dayInput");
-    const leapRuleInput = document.getElementById("leapRuleInput");
+    const MAX_PEOPLE = 2;
+
     const todayText = document.getElementById("todayText");
-    const resultBox = document.getElementById("resultBox");
+    const summaryResult = document.getElementById("summaryResult");
     const statusText = document.getElementById("statusText");
 
     let latestResultText = "";
@@ -322,6 +361,7 @@
     document.getElementById("calcBtn").addEventListener("click", calculateBirthDate);
     document.getElementById("copyBtn").addEventListener("click", copyResult);
     document.getElementById("clearBtn").addEventListener("click", clearInputs);
+
     window.addEventListener("focus", () => {
       refreshCurrentDate(false);
     });
@@ -331,43 +371,119 @@
 
     function calculateBirthDate() {
       const today = refreshCurrentDate(false);
-      const age = Number(ageInput.value.trim());
-      const month = Number(monthInput.value.trim());
-      const day = Number(dayInput.value.trim());
-      const leapMode = leapRuleInput.value;
+      const summaryLines = [];
+      let hasAnyInput = false;
+      let successCount = 0;
 
-      if (!Number.isInteger(age) || age < 0 || age > 130) {
-        setResultError("年齢を0〜130で入力してください。");
+      for (let i = 1; i <= MAX_PEOPLE; i += 1) {
+        const name = getValue("name" + i);
+        const ageRaw = getValue("age" + i);
+        const monthRaw = getValue("month" + i);
+        const dayRaw = getValue("day" + i);
+        const cardResult = document.getElementById("personResult" + i);
+
+        if (!name && !ageRaw && !monthRaw && !dayRaw) {
+          cardResult.textContent = "未入力";
+          cardResult.classList.remove("error");
+          continue;
+        }
+
+        hasAnyInput = true;
+
+        if (!ageRaw || !monthRaw || !dayRaw) {
+          setCardError(cardResult, "年齢と誕生日（月/日）をすべて入力してください。");
+          continue;
+        }
+
+        const age = Number(ageRaw);
+        const month = Number(monthRaw);
+        const day = Number(dayRaw);
+
+        if (!Number.isInteger(age) || age < 0 || age > 130) {
+          setCardError(cardResult, "年齢を0〜130で入力してください。");
+          continue;
+        }
+
+        if (!isValidMonthDayInput(month, day)) {
+          setCardError(cardResult, "誕生日（月/日）が正しくありません。");
+          continue;
+        }
+
+        const resolved = resolveBirthDate(age, month, day, today);
+        if (!resolved.success) {
+          setCardError(cardResult, "入力条件から生年月日を確定できません。");
+          continue;
+        }
+
+        const label = name || i + "人目";
+        const personText = label + ": " + resolved.text;
+        cardResult.textContent = personText;
+        cardResult.classList.remove("error");
+        summaryLines.push(personText);
+        successCount += 1;
+      }
+
+      if (!hasAnyInput) {
+        setSummaryError("1人以上入力してください。");
         return;
       }
 
-      if (!isValidMonthDayInput(month, day)) {
-        setResultError("誕生日（月/日）が正しくありません。");
+      if (successCount === 0) {
+        setSummaryError("入力エラーがあります。各欄を確認してください。");
         return;
       }
 
-      const birthYear = findBirthYear(age, month, day, today, leapMode);
-      if (birthYear == null) {
-        setResultError("入力条件から生年月日を確定できません。");
-        return;
-      }
-
-      const birthDateText = formatDate(birthYear, month, day);
-      const leapNote =
-        month === 2 && day === 29
-          ? "（平年扱い: " + (leapMode === "mar1" ? "3/1" : "2/28") + "）"
-          : "";
-      const text = "推定生年月日: " + birthDateText + (leapNote ? " " + leapNote : "");
-
-      resultBox.textContent = text;
-      resultBox.classList.remove("error");
-      latestResultText = text;
+      const summaryText = summaryLines.join("\n");
+      summaryResult.textContent = summaryText;
+      summaryResult.classList.remove("error");
+      latestResultText = summaryText;
       setStatus("逆算しました。", true);
+    }
+
+    function resolveBirthDate(age, birthMonth, birthDay, today) {
+      if (birthMonth !== 2 || birthDay !== 29) {
+        const year = findBirthYear(age, birthMonth, birthDay, today, "feb28");
+        if (year == null) {
+          return { success: false };
+        }
+        return { success: true, text: formatDate(year, birthMonth, birthDay) };
+      }
+
+      const yearFeb = findBirthYear(age, 2, 29, today, "feb28");
+      const yearMar = findBirthYear(age, 2, 29, today, "mar1");
+
+      if (yearFeb == null && yearMar == null) {
+        return { success: false };
+      }
+
+      if (yearFeb != null && yearMar != null) {
+        if (yearFeb === yearMar) {
+          return { success: true, text: formatDate(yearFeb, 2, 29) + "（2/29生まれ対応）" };
+        }
+        return {
+          success: true,
+          text:
+            "候補: " +
+            formatDate(yearFeb, 2, 29) +
+            "（2/28基準） / " +
+            formatDate(yearMar, 2, 29) +
+            "（3/1基準）"
+        };
+      }
+
+      if (yearFeb != null) {
+        return { success: true, text: formatDate(yearFeb, 2, 29) + "（2/28基準）" };
+      }
+
+      return { success: true, text: formatDate(yearMar, 2, 29) + "（3/1基準）" };
     }
 
     function findBirthYear(age, birthMonth, birthDay, today, leapMode) {
       const base = today.year - age;
-      const candidates = [base - 1, base, base + 1];
+      const candidates = [];
+      for (let delta = -2; delta <= 2; delta += 1) {
+        candidates.push(base + delta);
+      }
 
       for (let i = 0; i < candidates.length; i += 1) {
         const year = candidates[i];
@@ -456,19 +572,30 @@
     }
 
     function clearInputs() {
-      ageInput.value = "";
-      monthInput.value = "";
-      dayInput.value = "";
-      leapRuleInput.value = "feb28";
-      resultBox.textContent = "未計算";
-      resultBox.classList.remove("error");
+      for (let i = 1; i <= MAX_PEOPLE; i += 1) {
+        document.getElementById("name" + i).value = "";
+        document.getElementById("age" + i).value = "";
+        document.getElementById("month" + i).value = "";
+        document.getElementById("day" + i).value = "";
+        const cardResult = document.getElementById("personResult" + i);
+        cardResult.textContent = "未計算";
+        cardResult.classList.remove("error");
+      }
+
+      summaryResult.textContent = "未計算";
+      summaryResult.classList.remove("error");
       latestResultText = "";
       setStatus("", false);
     }
 
-    function setResultError(message) {
-      resultBox.textContent = message;
-      resultBox.classList.add("error");
+    function setCardError(element, message) {
+      element.textContent = message;
+      element.classList.add("error");
+    }
+
+    function setSummaryError(message) {
+      summaryResult.textContent = message;
+      summaryResult.classList.add("error");
       latestResultText = "";
       setStatus("", false);
     }
@@ -489,6 +616,10 @@
       } catch (error) {
         setStatus("コピーに失敗しました。", false);
       }
+    }
+
+    function getValue(id) {
+      return document.getElementById(id).value.trim();
     }
 
     function formatDate(year, month, day) {
