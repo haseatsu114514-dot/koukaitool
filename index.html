@@ -18,6 +18,9 @@
       --accent: #edf6f0;
       --ok: #2f7c57;
       --danger: #ad1f35;
+      --deep-green: #1f543f;
+      --deep-green-hover: #194332;
+      --deep-green-disabled: #5f8372;
     }
 
     * {
@@ -44,11 +47,11 @@
     }
 
     .hero {
-      background: linear-gradient(130deg, #386a52, #54876e);
+      background: linear-gradient(130deg, var(--deep-green), var(--deep-green));
       color: #f4f9ff;
       border-radius: 16px;
       padding: 18px;
-      box-shadow: 0 14px 30px rgba(32, 64, 49, 0.24);
+      box-shadow: 0 14px 30px rgba(25, 55, 42, 0.26);
     }
 
     .hero h1 {
@@ -259,17 +262,17 @@
     }
 
     #calcBtn {
-      background: #245b45;
+      background: var(--deep-green);
       color: #fff;
       font-weight: 600;
     }
 
     #calcBtn:hover {
-      background: #1d4937;
+      background: var(--deep-green-hover);
     }
 
     #calcBtn:disabled {
-      background: #648772;
+      background: var(--deep-green-disabled);
       color: #eef5f1;
       cursor: default;
     }
