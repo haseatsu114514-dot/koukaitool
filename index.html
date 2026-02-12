@@ -299,21 +299,6 @@
       font-size: 0.94rem;
     }
 
-    .summary-result {
-      margin-top: 8px;
-      border-radius: 10px;
-      background: var(--accent);
-      padding: 10px;
-      min-height: 42px;
-      line-height: 1.55;
-      white-space: pre-line;
-    }
-
-    .summary-result.error {
-      background: #ffecef;
-      color: var(--danger);
-    }
-
     .status {
       margin-top: 6px;
       font-size: 0.85rem;
@@ -379,14 +364,14 @@
     }
 
     .provider-label {
-      font-size: 0.8rem;
+      font-size: 0.92rem;
       letter-spacing: 0.05em;
       color: rgba(248, 251, 255, 0.82);
     }
 
     .provider-title {
       font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
-      font-size: 1.7rem;
+      font-size: 1.92rem;
       font-weight: 700;
       letter-spacing: 0.01em;
       line-height: 1.15;
@@ -394,7 +379,7 @@
     }
 
     .provider-sub {
-      font-size: 0.85rem;
+      font-size: 0.98rem;
       color: rgba(248, 251, 255, 0.9);
     }
   </style>
@@ -466,7 +451,6 @@
         </article>
       </div>
 
-      <div id="summaryResult" class="summary-result">未計算</div>
       <p id="statusText" class="status"></p>
     </section>
 
@@ -490,7 +474,6 @@
 
   <script>
     const todayText = document.getElementById("todayText");
-    const summaryResult = document.getElementById("summaryResult");
     const statusText = document.getElementById("statusText");
     const person2ToggleSlot = document.getElementById("person2ToggleSlot");
     const personCard2 = document.getElementById("personCard2");
@@ -549,7 +532,6 @@
 
     function calculateBirthDate() {
       const today = refreshCurrentDate(false);
-      const summaryLines = [];
       const peopleToCheck = isPerson2Visible ? [1, 2] : [1];
 
       let successCount = 0;
@@ -612,11 +594,9 @@
         const label = name || i + "人目";
         const resolvedDisplayText = formatResolvedDisplayText(resolved);
         const resolvedCopyText = formatResolvedPlainText(resolved);
-        const personDisplayText = label + ": " + resolvedDisplayText;
         const personCopyText = label + ": " + resolvedCopyText;
 
         renderPersonResult(cardResult, label, resolved);
-        summaryLines.push(personDisplayText);
         setPersonCopyState(i, personCopyText);
 
         successCount += 1;
@@ -631,18 +611,14 @@
       }
 
       if (!firstPersonValid) {
-        setSummaryError("1人目の入力を確認してください。");
+        setStatus("1人目の入力を確認してください。", false);
         return;
       }
 
       if (successCount === 0) {
-        setSummaryError("入力エラーがあります。各欄を確認してください。");
+        setStatus("入力エラーがあります。各欄を確認してください。", false);
         return;
       }
-
-      const summaryText = summaryLines.join("\n");
-      summaryResult.textContent = summaryText;
-      summaryResult.classList.remove("error");
       setStatus("", false);
     }
 
@@ -776,7 +752,6 @@
         clearPersonInputValidation(2);
         setPersonCopyState(2, "");
         setPerson2Visibility(false);
-        resetSummaryResult();
         setStatus("", false);
         runAutoCalculation();
         return;
@@ -786,7 +761,6 @@
       setCardMessage(personResultMap[2], "未計算");
       clearPersonInputValidation(2);
       setPersonCopyState(2, "");
-      resetSummaryResult();
       setStatus("", false);
       runAutoCalculation();
     }
@@ -908,7 +882,6 @@
           setPersonCopyState(2, "");
         }
 
-        resetSummaryResult();
         setStatus("", false);
         return;
       }
@@ -1020,7 +993,6 @@
         setCardMessage(personResultMap[2], "未入力");
       }
 
-      resetSummaryResult();
       setStatus("", false);
       runAutoCalculation();
     }
@@ -1063,17 +1035,6 @@
     function setCardError(element, message) {
       element.textContent = message;
       element.classList.add("error");
-    }
-
-    function resetSummaryResult() {
-      summaryResult.textContent = "未計算";
-      summaryResult.classList.remove("error");
-    }
-
-    function setSummaryError(message) {
-      summaryResult.textContent = message;
-      summaryResult.classList.add("error");
-      setStatus("", false);
     }
 
     function setStatus(message, success) {
