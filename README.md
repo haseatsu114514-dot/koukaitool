@@ -19,21 +19,13 @@
 - 結果コピー
 - ページ開きっぱなしで日付が変わっても、基準日を自動更新
 
-## マーケティング導線の使い方
-このツールには「本鑑定・ご相談はこちら」ボタンを入れています。  
-`/Users/hasegawaatsuki/Documents/New project/koukaitool/index.html` の以下をあなたのサイトURLに変更してください。
+## 提供元バナー
+ツール下部に、提供元として以下のリンクバナーを設置しています。
+- 表示名: `占い処 六根清浄`
+- リンク先: `https://uranai-rokkon.com/`
 
-```html
-const MARKETING_SITE_URL =
-  "https://example.com/?utm_source=age2birth&utm_medium=referral&utm_campaign=public_tool";
-```
-
-おすすめ:
-- `utm_source=age2birth`
-- `utm_medium=referral`
-- `utm_campaign=public_tool`
-
-これで、ツール経由の流入を計測しやすくなります。
+バナー画像は以下を利用しています。
+- `/Users/hasegawaatsuki/Documents/New project/koukaitool/assets/rokkon-provider.jpg`
 
 ## 公開方法（GitHub Pages）
 1. GitHubで `Settings` → `Pages`
