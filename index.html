@@ -4,19 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>生年月日逆算くん | 年齢×誕生日で逆算</title>
-  <meta name="description" content="占い師さんや占い好きの人向け。年齢と誕生日（月日）だけで生年月日を逆算できる公開ツール（2人対応）。">
+  <meta name="description" content="占い師さんや占い好きの人向け、「年齢」と「誕生日」だけ分かる相手の生年月日を逆算できるツール。">
   <style>
     :root {
-      --bg1: #f3f8f4;
-      --bg2: #f9fbf8;
+      --bg1: #f6fbf8;
+      --bg2: #fcfefd;
       --card: #ffffff;
-      --line: #d0ddd3;
-      --text: #18281f;
-      --muted: #557062;
-      --brand: #2d6a52;
-      --brand-deep: #21503e;
-      --accent: #e7f2eb;
-      --ok: #1f6f45;
+      --line: #d8e4dc;
+      --text: #1d2d24;
+      --muted: #678274;
+      --brand: #4f8b70;
+      --brand-deep: #3f725c;
+      --accent: #edf6f0;
+      --ok: #2f7c57;
       --danger: #ad1f35;
     }
 
@@ -30,8 +30,8 @@
       color: var(--text);
       font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
       background:
-        radial-gradient(circle at 6% 8%, #e1f0e6 0%, transparent 38%),
-        radial-gradient(circle at 88% 12%, #edf9f0 0%, transparent 34%),
+        radial-gradient(circle at 6% 8%, #e9f5ed 0%, transparent 38%),
+        radial-gradient(circle at 88% 12%, #f1faf4 0%, transparent 34%),
         linear-gradient(140deg, var(--bg1), var(--bg2));
     }
 
@@ -44,11 +44,11 @@
     }
 
     .hero {
-      background: linear-gradient(130deg, #234936, #2f6a53);
+      background: linear-gradient(130deg, #6f9e86, #88b7a0);
       color: #f4f9ff;
       border-radius: 16px;
       padding: 18px;
-      box-shadow: 0 14px 30px rgba(20, 55, 36, 0.2);
+      box-shadow: 0 14px 30px rgba(60, 101, 78, 0.18);
     }
 
     .hero h1 {
@@ -68,7 +68,7 @@
       border: 1px solid var(--line);
       border-radius: 14px;
       padding: 16px;
-      box-shadow: 0 8px 22px rgba(24, 52, 34, 0.06);
+      box-shadow: 0 8px 22px rgba(62, 98, 77, 0.06);
     }
 
     .panel h2 {
@@ -91,7 +91,7 @@
 
     input {
       width: 100%;
-      border: 1px solid #c4d5ca;
+      border: 1px solid #cfddd4;
       border-radius: 9px;
       padding: 8px 10px;
       font-size: 1rem;
@@ -166,8 +166,8 @@
 
     #clearBtn,
     #copyBtn {
-      border: 1px solid #ccd9d1;
-      background: #eef3f0;
+      border: 1px solid #d5e0da;
+      background: #f1f5f2;
       color: var(--text);
     }
 
@@ -209,8 +209,8 @@
       text-decoration: none;
       border-radius: 14px;
       overflow: hidden;
-      border: 1px solid #193425;
-      box-shadow: 0 12px 24px rgba(13, 35, 24, 0.25);
+      border: 1px solid #2d4a3a;
+      box-shadow: 0 12px 24px rgba(36, 62, 48, 0.2);
     }
 
     .provider-banner img {
@@ -231,10 +231,10 @@
       inset: 0;
       background: linear-gradient(
         92deg,
-        rgba(8, 22, 14, 0.72) 0%,
-        rgba(8, 22, 14, 0.58) 46%,
-        rgba(8, 22, 14, 0.34) 72%,
-        rgba(8, 22, 14, 0.22) 100%
+        rgba(18, 43, 29, 0.65) 0%,
+        rgba(18, 43, 29, 0.5) 46%,
+        rgba(18, 43, 29, 0.32) 72%,
+        rgba(18, 43, 29, 0.2) 100%
       );
     }
 
@@ -275,7 +275,7 @@
   <main>
     <section class="hero">
       <h1>生年月日逆算くん</h1>
-      <p>占い師さんや占い好きの人向けに、「年齢」と「誕生日（月日）」だけ分かる相手の生年月日をすぐ逆算できる公開版ツールです。</p>
+      <p>占い師さんや占い好きの人向け、「年齢」と「誕生日」だけ分かる相手の生年月日を逆算できるツール。</p>
     </section>
 
     <section class="panel">
