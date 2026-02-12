@@ -99,6 +99,18 @@
       color: var(--text);
     }
 
+    input.input-error {
+      border-color: #d25b6c;
+      background: #fff7f8;
+    }
+
+    .input-hint {
+      margin: 6px 0 0;
+      font-size: 0.78rem;
+      color: var(--danger);
+      min-height: 1.1em;
+    }
+
     .people-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -253,6 +265,11 @@
       background: var(--brand-deep);
     }
 
+    #calcBtn:disabled {
+      background: #93b4a2;
+      cursor: default;
+    }
+
     #clearBtn,
     #copyBtn {
       border: 1px solid #d5e0da;
@@ -385,6 +402,7 @@
             <input id="month1" type="number" min="1" max="12" placeholder="月">
             <input id="day1" type="number" min="1" max="31" placeholder="日">
           </div>
+          <p id="inputHint1" class="input-hint"></p>
 
           <div id="personResult1" class="person-result">未計算</div>
           <div class="person-actions">
@@ -411,6 +429,7 @@
             <input id="month2" type="number" min="1" max="12" placeholder="月">
             <input id="day2" type="number" min="1" max="31" placeholder="日">
           </div>
+          <p id="inputHint2" class="input-hint"></p>
 
           <div id="personResult2" class="person-result">未入力</div>
           <div class="person-actions">
@@ -448,6 +467,7 @@
   </main>
 
   <script>
+    const calcBtn = document.getElementById("calcBtn");
     const todayText = document.getElementById("todayText");
     const summaryResult = document.getElementById("summaryResult");
     const statusText = document.getElementById("statusText");
@@ -464,6 +484,11 @@
       2: document.getElementById("copyPerson2Btn")
     };
 
+    const inputHintMap = {
+      1: document.getElementById("inputHint1"),
+      2: document.getElementById("inputHint2")
+    };
+
     const latestPersonResultText = {
       1: "",
       2: ""
@@ -476,12 +501,17 @@
     setPerson2Visibility(false);
     setPersonCopyState(1, "");
     setPersonCopyState(2, "");
+    clearPersonInputValidation(1);
+    clearPersonInputValidation(2);
     refreshCurrentDate(true);
+    installRealtimeValidation();
+    applyRealtimeValidationForPerson(1);
+    updateCalcButtonState();
 
-    document.getElementById("calcBtn").addEventListener("click", calculateBirthDate);
+    calcBtn.addEventListener("click", calculateBirthDate);
     document.getElementById("copyBtn").addEventListener("click", copyResult);
     document.getElementById("clearBtn").addEventListener("click", clearInputs);
-    document.getElementById("togglePerson2Btn").addEventListener("click", togglePerson2Card);
+    togglePerson2Btn.addEventListener("click", togglePerson2Card);
     copyPersonBtnMap[1].addEventListener("click", () => copyPersonResult(1));
     copyPersonBtnMap[2].addEventListener("click", () => copyPersonResult(2));
 
@@ -700,18 +730,22 @@
       if (isPerson2Visible) {
         clearPersonInputs(2);
         setCardMessage(personResultMap[2], "未入力");
+        clearPersonInputValidation(2);
         setPersonCopyState(2, "");
         setPerson2Visibility(false);
         resetSummaryResult();
         setStatus("", false);
+        updateCalcButtonState();
         return;
       }
 
       setPerson2Visibility(true);
       setCardMessage(personResultMap[2], "未計算");
+      clearPersonInputValidation(2);
       setPersonCopyState(2, "");
       resetSummaryResult();
       setStatus("", false);
+      updateCalcButtonState();
     }
 
     function setPerson2Visibility(visible) {
@@ -719,6 +753,100 @@
       personCard2.classList.toggle("is-hidden", !visible);
       togglePerson2Btn.textContent = visible ? "− 2人目を閉じる" : "+ 2人目を追加";
       togglePerson2Btn.setAttribute("aria-expanded", visible ? "true" : "false");
+    }
+
+    function installRealtimeValidation() {
+      const fieldMap = {
+        1: ["age1", "month1", "day1"],
+        2: ["age2", "month2", "day2"]
+      };
+
+      const people = [1, 2];
+      for (let i = 0; i < people.length; i += 1) {
+        const personIndex = people[i];
+        const fieldIds = fieldMap[personIndex];
+        for (let j = 0; j < fieldIds.length; j += 1) {
+          const fieldId = fieldIds[j];
+          document.getElementById(fieldId).addEventListener("input", () => {
+            applyRealtimeValidationForPerson(personIndex);
+            updateCalcButtonState();
+          });
+        }
+      }
+    }
+
+    function applyRealtimeValidationForPerson(index) {
+      if (index === 2 && !isPerson2Visible) {
+        clearPersonInputValidation(2);
+        return;
+      }
+
+      const ageInput = document.getElementById("age" + index);
+      const monthInput = document.getElementById("month" + index);
+      const dayInput = document.getElementById("day" + index);
+
+      const ageRaw = ageInput.value.trim();
+      const monthRaw = monthInput.value.trim();
+      const dayRaw = dayInput.value.trim();
+
+      let message = "";
+      let ageError = false;
+      let monthError = false;
+      let dayError = false;
+
+      if (ageRaw !== "") {
+        const age = Number(ageRaw);
+        if (!Number.isInteger(age) || age < 0 || age > 130) {
+          ageError = true;
+          message = "年齢は0〜130で入力してください。";
+        }
+      }
+
+      const hasMonth = monthRaw !== "";
+      const hasDay = dayRaw !== "";
+      if (hasMonth || hasDay) {
+        if (!hasMonth || !hasDay) {
+          monthError = !hasMonth;
+          dayError = !hasDay;
+          if (!message) {
+            message = "誕生日は月日をセットで入力してください。";
+          }
+        } else {
+          const month = Number(monthRaw);
+          const day = Number(dayRaw);
+          if (!isValidMonthDayInput(month, day)) {
+            monthError = true;
+            dayError = true;
+            if (!message) {
+              message = "誕生日（月/日）が正しくありません。";
+            }
+          }
+        }
+      }
+
+      setInputErrorState(ageInput, ageError);
+      setInputErrorState(monthInput, monthError);
+      setInputErrorState(dayInput, dayError);
+      setInputHint(index, message);
+    }
+
+    function updateCalcButtonState() {
+      const ageRaw = getValue("age1");
+      const monthRaw = getValue("month1");
+      const dayRaw = getValue("day1");
+
+      let canCalculate = false;
+      if (ageRaw && monthRaw && dayRaw) {
+        const age = Number(ageRaw);
+        const month = Number(monthRaw);
+        const day = Number(dayRaw);
+        canCalculate =
+          Number.isInteger(age) &&
+          age >= 0 &&
+          age <= 130 &&
+          isValidMonthDayInput(month, day);
+      }
+      calcBtn.disabled = !canCalculate;
     }
 
     function findBirthYear(age, birthMonth, birthDay, today, leapMode) {
@@ -820,12 +948,15 @@
 
       setCardMessage(personResultMap[1], "未計算");
       setCardMessage(personResultMap[2], "未入力");
+      clearPersonInputValidation(1);
+      clearPersonInputValidation(2);
       setPersonCopyState(1, "");
       setPersonCopyState(2, "");
       setPerson2Visibility(false);
 
       resetSummaryResult();
       setStatus("", false);
+      updateCalcButtonState();
     }
 
     function clearPersonInputs(index) {
@@ -833,6 +964,24 @@
       document.getElementById("age" + index).value = "";
       document.getElementById("month" + index).value = "";
       document.getElementById("day" + index).value = "";
+    }
+
+    function clearPersonInputValidation(index) {
+      const ageInput = document.getElementById("age" + index);
+      const monthInput = document.getElementById("month" + index);
+      const dayInput = document.getElementById("day" + index);
+      setInputErrorState(ageInput, false);
+      setInputErrorState(monthInput, false);
+      setInputErrorState(dayInput, false);
+      setInputHint(index, "");
+    }
+
+    function setInputErrorState(element, hasError) {
+      element.classList.toggle("input-error", Boolean(hasError));
+    }
+
+    function setInputHint(index, message) {
+      inputHintMap[index].textContent = message;
     }
 
     function setPersonCopyState(index, text) {
