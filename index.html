@@ -78,11 +78,10 @@
     }
 
     .panel-head {
-      display: grid;
-      grid-template-columns: minmax(0, 420px);
-      justify-content: start;
+      display: flex;
       align-items: center;
-      row-gap: 2px;
+      justify-content: space-between;
+      gap: 10px;
       margin-bottom: 4px;
     }
 
@@ -94,6 +93,8 @@
       margin: 0;
       color: var(--muted);
       font-size: 0.9rem;
+      text-align: right;
+      white-space: nowrap;
     }
 
     label {
@@ -157,7 +158,11 @@
         grid-template-columns: 1fr;
       }
       .panel-head {
-        grid-template-columns: 1fr;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      #todayText {
+        text-align: left;
       }
       .person2-toggle-slot {
         min-height: 70px;
@@ -405,8 +410,8 @@
       <div class="panel-head">
         <div class="head-info">
           <h2>年齢×誕生日 逆算（2人まで）</h2>
-          <p id="todayText"></p>
         </div>
+        <p id="todayText"></p>
       </div>
 
       <div class="people-grid">
@@ -428,7 +433,7 @@
           <div id="personResult1" class="person-result">未計算</div>
           <div class="person-actions">
             <button id="copyPerson1Btn" class="copy-person-btn" type="button" disabled>1人目をコピー</button>
-            <button id="clearPerson1Btn" class="clear-person-btn" type="button">1人目クリア</button>
+            <button id="clearPerson1Btn" class="clear-person-btn" type="button">クリア</button>
           </div>
         </article>
 
@@ -456,7 +461,7 @@
           <div id="personResult2" class="person-result">未入力</div>
           <div class="person-actions">
             <button id="copyPerson2Btn" class="copy-person-btn" type="button" disabled>2人目をコピー</button>
-            <button id="clearPerson2Btn" class="clear-person-btn" type="button">2人目クリア</button>
+            <button id="clearPerson2Btn" class="clear-person-btn" type="button">クリア</button>
           </div>
         </article>
       </div>
@@ -605,12 +610,14 @@
         }
 
         const label = name || i + "人目";
-        const resolvedText = formatResolvedPlainText(resolved);
-        const personText = label + ": " + resolvedText;
+        const resolvedDisplayText = formatResolvedDisplayText(resolved);
+        const resolvedCopyText = formatResolvedPlainText(resolved);
+        const personDisplayText = label + ": " + resolvedDisplayText;
+        const personCopyText = label + ": " + resolvedCopyText;
 
         renderPersonResult(cardResult, label, resolved);
-        summaryLines.push(personText);
-        setPersonCopyState(i, personText);
+        summaryLines.push(personDisplayText);
+        setPersonCopyState(i, personCopyText);
 
         successCount += 1;
         if (isFirstPerson) {
@@ -711,17 +718,34 @@
       return "候補: " + candidateText.join(" / ");
     }
 
+    function formatResolvedDisplayText(resolved) {
+      if (resolved.kind === "single") {
+        const displayDate = formatDisplayDate(resolved.date);
+        if (!resolved.note) {
+          return displayDate;
+        }
+        return displayDate + "（" + resolved.note + "）";
+      }
+      const candidateText = [];
+      for (let i = 0; i < resolved.options.length; i += 1) {
+        const option = resolved.options[i];
+        candidateText.push(formatDisplayDate(option.date) + "（" + option.note + "）");
+      }
+      return "候補: " + candidateText.join(" / ");
+    }
+
     function renderPersonResult(element, label, resolved) {
       const safeLabel = escapeHtml(label);
 
       if (resolved.kind === "single") {
+        const displayDate = formatDisplayDate(resolved.date);
         const noteHtml = resolved.note
           ? '<div class="result-note">（' + escapeHtml(resolved.note) + "）</div>"
           : "";
         element.innerHTML =
           '<div class="result-row">' +
           '<span class="result-name">' + safeLabel + "</span>" +
-          '<span class="result-date">' + escapeHtml(resolved.date) + "</span>" +
+          '<span class="result-date">' + escapeHtml(displayDate) + "</span>" +
           "</div>" +
           noteHtml;
       } else {
@@ -730,7 +754,7 @@
           const option = resolved.options[i];
           badgesHtml +=
             '<span class="candidate-badge">' +
-            '<span class="candidate-date">' + escapeHtml(option.date) + "</span>" +
+            '<span class="candidate-date">' + escapeHtml(formatDisplayDate(option.date)) + "</span>" +
             '<span class="candidate-note">' + escapeHtml(option.note) + "</span>" +
             "</span>";
         }
@@ -980,7 +1004,7 @@
       const current = getCurrentDateParts();
       if (force || current.dateKey !== currentDateKey) {
         currentDateKey = current.dateKey;
-        todayText.textContent = "基準日: " + current.dateKey;
+        todayText.textContent = "基準日: " + formatDisplayDate(current.dateKey);
       }
       return current;
     }
@@ -1089,6 +1113,16 @@
         String(year).padStart(4, "0") +
         String(month).padStart(2, "0") +
         String(day).padStart(2, "0")
+      );
+    }
+
+    function formatDisplayDate(compactDate) {
+      return (
+        compactDate.slice(0, 4) +
+        "/" +
+        compactDate.slice(4, 6) +
+        "/" +
+        compactDate.slice(6, 8)
       );
     }
   </script>
