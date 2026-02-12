@@ -78,11 +78,17 @@
     }
 
     .panel-head {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 420px));
+      justify-content: center;
       align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+      column-gap: 8px;
+      row-gap: 4px;
       margin-bottom: 4px;
+    }
+
+    .head-info {
+      min-width: 0;
     }
 
     #todayText {
@@ -123,6 +129,7 @@
     .people-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 420px));
+      justify-content: center;
       align-items: start;
       gap: 8px;
       margin-top: 8px;
@@ -140,6 +147,12 @@
     @media (max-width: 920px) {
       .people-grid {
         grid-template-columns: 1fr;
+      }
+      .panel-head {
+        grid-template-columns: 1fr;
+      }
+      .person-toggle-wrap {
+        justify-content: flex-start;
       }
     }
 
@@ -173,7 +186,7 @@
     .person-toggle-wrap {
       margin: 0;
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
       align-items: center;
       flex-shrink: 0;
     }
@@ -279,7 +292,7 @@
     }
 
     #clearBtn,
-    #copyBtn {
+    .copy-summary-btn {
       border: 1px solid #d5e0da;
       background: #f1f5f2;
       color: var(--text);
@@ -308,11 +321,7 @@
     }
 
     @media (max-width: 720px) {
-      .panel-head {
-        flex-wrap: wrap;
-      }
       .person-toggle-wrap {
-        width: 100%;
         justify-content: flex-start;
       }
     }
@@ -404,7 +413,7 @@
 
     <section class="panel">
       <div class="panel-head">
-        <div>
+        <div class="head-info">
           <h2>年齢×誕生日 逆算（2人まで）</h2>
           <p id="todayText"></p>
         </div>
@@ -458,7 +467,9 @@
       </div>
 
       <div class="actions">
-        <button id="copyBtn" type="button">結果コピー</button>
+        <button id="copyYearBtn" class="copy-summary-btn" type="button">年をコピー</button>
+        <button id="copyMonthDayBtn" class="copy-summary-btn" type="button">月日をコピー</button>
+        <button id="copyBothBtn" class="copy-summary-btn" type="button">両方コピー</button>
         <button id="clearBtn" type="button">入力クリア</button>
       </div>
 
@@ -488,6 +499,9 @@
     const todayText = document.getElementById("todayText");
     const summaryResult = document.getElementById("summaryResult");
     const statusText = document.getElementById("statusText");
+    const copyYearBtn = document.getElementById("copyYearBtn");
+    const copyMonthDayBtn = document.getElementById("copyMonthDayBtn");
+    const copyBothBtn = document.getElementById("copyBothBtn");
     const personCard2 = document.getElementById("personCard2");
     const togglePerson2Btn = document.getElementById("togglePerson2Btn");
 
@@ -511,7 +525,12 @@
       2: ""
     };
 
-    let latestResultText = "";
+    const latestSummaryCopyText = {
+      year: "",
+      monthDay: "",
+      both: ""
+    };
+
     let currentDateKey = "";
     let isPerson2Visible = false;
 
@@ -525,7 +544,9 @@
     applyRealtimeValidationForPerson(1);
     runAutoCalculation();
 
-    document.getElementById("copyBtn").addEventListener("click", copyResult);
+    copyYearBtn.addEventListener("click", () => copySummaryResult("year"));
+    copyMonthDayBtn.addEventListener("click", () => copySummaryResult("monthDay"));
+    copyBothBtn.addEventListener("click", () => copySummaryResult("both"));
     document.getElementById("clearBtn").addEventListener("click", clearInputs);
     togglePerson2Btn.addEventListener("click", togglePerson2Card);
     copyPersonBtnMap[1].addEventListener("click", () => copyPersonResult(1));
@@ -541,6 +562,9 @@
     function calculateBirthDate() {
       const today = refreshCurrentDate(false);
       const summaryLines = [];
+      const summaryYearLines = [];
+      const summaryMonthDayLines = [];
+      const summaryBothLines = [];
       const peopleToCheck = isPerson2Visible ? [1, 2] : [1];
 
       let successCount = 0;
@@ -602,10 +626,14 @@
 
         const label = name || i + "人目";
         const resolvedText = formatResolvedPlainText(resolved);
+        const copyParts = buildCopyPartsFromResolved(resolved);
         const personText = label + ": " + resolvedText;
 
         renderPersonResult(cardResult, label, resolved);
         summaryLines.push(personText);
+        summaryYearLines.push(label + ": " + copyParts.year);
+        summaryMonthDayLines.push(label + ": " + copyParts.monthDay);
+        summaryBothLines.push(label + ": " + copyParts.both);
         setPersonCopyState(i, personText);
 
         successCount += 1;
@@ -632,7 +660,9 @@
       const summaryText = summaryLines.join("\n");
       summaryResult.textContent = summaryText;
       summaryResult.classList.remove("error");
-      latestResultText = summaryText;
+      latestSummaryCopyText.year = summaryYearLines.join("\n");
+      latestSummaryCopyText.monthDay = summaryMonthDayLines.join("\n");
+      latestSummaryCopyText.both = summaryBothLines.join("\n");
       setStatus("", false);
     }
 
@@ -706,6 +736,31 @@
         candidateText.push(option.date + "（" + option.note + "）");
       }
       return "候補: " + candidateText.join(" / ");
+    }
+
+    function buildCopyPartsFromResolved(resolved) {
+      if (resolved.kind === "single") {
+        return {
+          year: resolved.date.slice(0, 4),
+          monthDay: resolved.date.slice(4, 8),
+          both: resolved.date
+        };
+      }
+
+      const yearParts = [];
+      const monthDayParts = [];
+      const bothParts = [];
+      for (let i = 0; i < resolved.options.length; i += 1) {
+        const option = resolved.options[i];
+        yearParts.push(option.date.slice(0, 4) + "（" + option.note + "）");
+        monthDayParts.push(option.date.slice(4, 8) + "（" + option.note + "）");
+        bothParts.push(option.date + "（" + option.note + "）");
+      }
+      return {
+        year: yearParts.join(" / "),
+        monthDay: monthDayParts.join(" / "),
+        both: bothParts.join(" / ")
+      };
     }
 
     function renderPersonResult(element, label, resolved) {
@@ -1041,13 +1096,17 @@
     function resetSummaryResult() {
       summaryResult.textContent = "未計算";
       summaryResult.classList.remove("error");
-      latestResultText = "";
+      latestSummaryCopyText.year = "";
+      latestSummaryCopyText.monthDay = "";
+      latestSummaryCopyText.both = "";
     }
 
     function setSummaryError(message) {
       summaryResult.textContent = message;
       summaryResult.classList.add("error");
-      latestResultText = "";
+      latestSummaryCopyText.year = "";
+      latestSummaryCopyText.monthDay = "";
+      latestSummaryCopyText.both = "";
       setStatus("", false);
     }
 
@@ -1056,14 +1115,22 @@
       statusText.classList.toggle("ok", Boolean(success));
     }
 
-    async function copyResult() {
-      if (!latestResultText) {
+    async function copySummaryResult(kind) {
+      const text = latestSummaryCopyText[kind];
+      if (!text) {
         setStatus("コピーできる結果がありません。", false);
         return;
       }
+
+      const labelMap = {
+        year: "年",
+        monthDay: "月日",
+        both: "両方"
+      };
+
       try {
-        await navigator.clipboard.writeText(latestResultText);
-        setStatus("結果をコピーしました。", true);
+        await navigator.clipboard.writeText(text);
+        setStatus(labelMap[kind] + "をコピーしました。", true);
       } catch (error) {
         setStatus("コピーに失敗しました。", false);
       }
@@ -1099,9 +1166,7 @@
     function formatDate(year, month, day) {
       return (
         String(year).padStart(4, "0") +
-        "-" +
         String(month).padStart(2, "0") +
-        "-" +
         String(day).padStart(2, "0")
       );
     }
