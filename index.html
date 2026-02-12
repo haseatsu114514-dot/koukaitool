@@ -155,7 +155,8 @@
 
     @media (max-width: 920px) {
       .people-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 436px);
+        justify-content: center;
       }
       .panel-head {
         flex-wrap: wrap;
@@ -167,6 +168,15 @@
       .person2-toggle-slot {
         min-height: 70px;
         align-self: auto;
+      }
+      #personCard1 {
+        order: 1;
+      }
+      #person2ToggleSlot {
+        order: 2;
+      }
+      #personCard2 {
+        order: 3;
       }
     }
 
