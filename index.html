@@ -594,7 +594,7 @@
         const label = name || i + "人目";
         const resolvedDisplayText = formatResolvedDisplayText(resolved);
         const resolvedCopyText = formatResolvedPlainText(resolved);
-        const personCopyText = label + ": " + resolvedCopyText;
+        const personCopyText = resolvedCopyText;
 
         renderPersonResult(cardResult, label, resolved);
         setPersonCopyState(i, personCopyText);
