@@ -39,62 +39,70 @@
     main {
       max-width: 980px;
       margin: 0 auto;
-      padding: 24px 16px 40px;
+      padding: 18px 14px 28px;
       display: grid;
-      gap: 14px;
+      gap: 10px;
     }
 
     .hero {
       background: linear-gradient(130deg, var(--deep-green), var(--deep-green));
       color: #f4f9ff;
       border-radius: 16px;
-      padding: 18px;
+      padding: 14px;
       box-shadow: 0 14px 30px rgba(25, 55, 42, 0.26);
     }
 
     .hero h1 {
       margin: 0;
-      font-size: 1.85rem;
+      font-size: 1.74rem;
       letter-spacing: 0.01em;
     }
 
     .hero p {
-      margin: 8px 0 0;
+      margin: 6px 0 0;
       color: rgba(244, 249, 255, 0.88);
-      line-height: 1.55;
+      line-height: 1.45;
     }
 
     .panel {
       background: var(--card);
       border: 1px solid var(--line);
       border-radius: 14px;
-      padding: 16px;
+      padding: 12px;
       box-shadow: 0 8px 22px rgba(62, 98, 77, 0.06);
     }
 
     .panel h2 {
-      margin: 0 0 10px;
+      margin: 0 0 4px;
       font-size: 1.08rem;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 4px;
     }
 
     #todayText {
       margin: 0;
       color: var(--muted);
-      font-size: 0.93rem;
+      font-size: 0.9rem;
     }
 
     label {
       display: block;
       color: var(--muted);
       font-size: 0.88rem;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     input {
       width: 100%;
       border: 1px solid #cfddd4;
       border-radius: 9px;
-      padding: 8px 10px;
+      padding: 7px 9px;
       font-size: 1rem;
       background: #fff;
       color: var(--text);
@@ -106,24 +114,24 @@
     }
 
     .input-hint {
-      margin: 6px 0 0;
+      margin: 4px 0 0;
       font-size: 0.78rem;
       color: var(--danger);
-      min-height: 1.1em;
+      min-height: 1em;
     }
 
     .people-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 420px));
       align-items: start;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 8px;
+      margin-top: 8px;
     }
 
     .person-card {
       border: 1px solid var(--line);
       border-radius: 10px;
-      padding: 10px;
+      padding: 9px;
       background: #fbfdff;
       width: 100%;
       max-width: 420px;
@@ -136,7 +144,7 @@
     }
 
     .person-card h3 {
-      margin: 0 0 8px;
+      margin: 0 0 6px;
       font-size: 1rem;
     }
 
@@ -147,11 +155,11 @@
     }
 
     .person-result {
-      margin-top: 6px;
+      margin-top: 5px;
       border-radius: 8px;
       background: var(--accent);
-      min-height: 38px;
-      padding: 8px 10px;
+      min-height: 34px;
+      padding: 7px 9px;
       line-height: 1.45;
       font-size: 0.9rem;
       white-space: pre-line;
@@ -163,7 +171,11 @@
     }
 
     .person-toggle-wrap {
-      margin-top: 10px;
+      margin: 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex-shrink: 0;
     }
 
     .toggle-person-btn {
@@ -171,11 +183,11 @@
       background: #f1f6f3;
       color: var(--text);
       font-size: 0.86rem;
-      padding: 7px 10px;
+      padding: 6px 10px;
     }
 
     .person-actions {
-      margin-top: 6px;
+      margin-top: 4px;
       display: flex;
       justify-content: flex-end;
     }
@@ -254,14 +266,14 @@
     .actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
+      gap: 6px;
+      margin-top: 8px;
     }
 
     button {
       border: none;
       border-radius: 9px;
-      padding: 9px 13px;
+      padding: 8px 11px;
       cursor: pointer;
       font-size: 0.94rem;
     }
@@ -274,11 +286,11 @@
     }
 
     .summary-result {
-      margin-top: 12px;
+      margin-top: 8px;
       border-radius: 10px;
       background: var(--accent);
-      padding: 12px;
-      min-height: 48px;
+      padding: 10px;
+      min-height: 42px;
       line-height: 1.55;
       white-space: pre-line;
     }
@@ -289,10 +301,20 @@
     }
 
     .status {
-      margin-top: 8px;
+      margin-top: 6px;
       font-size: 0.85rem;
       color: var(--muted);
       min-height: 1.2em;
+    }
+
+    @media (max-width: 720px) {
+      .panel-head {
+        flex-wrap: wrap;
+      }
+      .person-toggle-wrap {
+        width: 100%;
+        justify-content: flex-start;
+      }
     }
 
     .status.ok {
@@ -381,11 +403,14 @@
     </section>
 
     <section class="panel">
-      <h2>年齢×誕生日 逆算（2人まで）</h2>
-      <p id="todayText"></p>
-
-      <div class="person-toggle-wrap">
-        <button id="togglePerson2Btn" class="toggle-person-btn" type="button" aria-expanded="false">+ 2人目を追加</button>
+      <div class="panel-head">
+        <div>
+          <h2>年齢×誕生日 逆算（2人まで）</h2>
+          <p id="todayText"></p>
+        </div>
+        <div class="person-toggle-wrap">
+          <button id="togglePerson2Btn" class="toggle-person-btn" type="button" aria-expanded="false">+ 2人目を追加</button>
+        </div>
       </div>
 
       <div class="people-grid">
