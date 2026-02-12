@@ -19,8 +19,6 @@
       --ok: #2f7c57;
       --danger: #ad1f35;
       --deep-green: #1f543f;
-      --deep-green-hover: #194332;
-      --deep-green-disabled: #5f8372;
     }
 
     * {
@@ -116,8 +114,8 @@
 
     .people-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      justify-items: start;
+      grid-template-columns: repeat(2, minmax(0, 420px));
+      align-items: start;
       gap: 10px;
       margin-top: 10px;
     }
@@ -127,7 +125,14 @@
       border-radius: 10px;
       padding: 10px;
       background: #fbfdff;
-      width: min(100%, 460px);
+      width: 100%;
+      max-width: 420px;
+    }
+
+    @media (max-width: 920px) {
+      .people-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .person-card h3 {
@@ -261,22 +266,6 @@
       font-size: 0.94rem;
     }
 
-    #calcBtn {
-      background: var(--deep-green);
-      color: #fff;
-      font-weight: 600;
-    }
-
-    #calcBtn:hover {
-      background: var(--deep-green-hover);
-    }
-
-    #calcBtn:disabled {
-      background: var(--deep-green-disabled);
-      color: #eef5f1;
-      cursor: default;
-    }
-
     #clearBtn,
     #copyBtn {
       border: 1px solid #d5e0da;
@@ -395,6 +384,10 @@
       <h2>年齢×誕生日 逆算（2人まで）</h2>
       <p id="todayText"></p>
 
+      <div class="person-toggle-wrap">
+        <button id="togglePerson2Btn" class="toggle-person-btn" type="button" aria-expanded="false">+ 2人目を追加</button>
+      </div>
+
       <div class="people-grid">
         <article id="personCard1" class="person-card">
           <h3>1人目（必須）</h3>
@@ -416,13 +409,7 @@
             <button id="copyPerson1Btn" class="copy-person-btn" type="button" disabled>1人目をコピー</button>
           </div>
         </article>
-      </div>
 
-      <div class="person-toggle-wrap">
-        <button id="togglePerson2Btn" class="toggle-person-btn" type="button" aria-expanded="false">+ 2人目を追加</button>
-      </div>
-
-      <div class="people-grid">
         <article id="personCard2" class="person-card is-hidden">
           <h3>2人目</h3>
           <label for="name2">名前（任意）</label>
@@ -446,7 +433,6 @@
       </div>
 
       <div class="actions">
-        <button id="calcBtn" type="button">生年月日を逆算</button>
         <button id="copyBtn" type="button">結果コピー</button>
         <button id="clearBtn" type="button">入力クリア</button>
       </div>
@@ -474,7 +460,6 @@
   </main>
 
   <script>
-    const calcBtn = document.getElementById("calcBtn");
     const todayText = document.getElementById("todayText");
     const summaryResult = document.getElementById("summaryResult");
     const statusText = document.getElementById("statusText");
@@ -513,9 +498,8 @@
     refreshCurrentDate(true);
     installRealtimeValidation();
     applyRealtimeValidationForPerson(1);
-    updateCalcButtonState();
+    runAutoCalculation();
 
-    calcBtn.addEventListener("click", calculateBirthDate);
     document.getElementById("copyBtn").addEventListener("click", copyResult);
     document.getElementById("clearBtn").addEventListener("click", clearInputs);
     togglePerson2Btn.addEventListener("click", togglePerson2Card);
@@ -563,7 +547,7 @@
             setPersonCopyState(i, "");
             continue;
           }
-          setCardError(cardResult, "年齢と誕生日（月/日）をすべて入力してください。");
+          setCardMessage(cardResult, "入力途中");
           setPersonCopyState(i, "");
           continue;
         }
@@ -624,7 +608,7 @@
       summaryResult.textContent = summaryText;
       summaryResult.classList.remove("error");
       latestResultText = summaryText;
-      setStatus("逆算しました。", true);
+      setStatus("", false);
     }
 
     function resolveBirthDate(age, birthMonth, birthDay, today) {
@@ -742,7 +726,7 @@
         setPerson2Visibility(false);
         resetSummaryResult();
         setStatus("", false);
-        updateCalcButtonState();
+        runAutoCalculation();
         return;
       }
 
@@ -752,7 +736,7 @@
       setPersonCopyState(2, "");
       resetSummaryResult();
       setStatus("", false);
-      updateCalcButtonState();
+      runAutoCalculation();
     }
 
     function setPerson2Visibility(visible) {
@@ -764,8 +748,8 @@
 
     function installRealtimeValidation() {
       const fieldMap = {
-        1: ["age1", "month1", "day1"],
-        2: ["age2", "month2", "day2"]
+        1: ["name1", "age1", "month1", "day1"],
+        2: ["name2", "age2", "month2", "day2"]
       };
 
       const people = [1, 2];
@@ -776,7 +760,7 @@
           const fieldId = fieldIds[j];
           document.getElementById(fieldId).addEventListener("input", () => {
             applyRealtimeValidationForPerson(personIndex);
-            updateCalcButtonState();
+            runAutoCalculation();
           });
         }
       }
@@ -837,23 +821,46 @@
       setInputHint(index, message);
     }
 
-    function updateCalcButtonState() {
+    function runAutoCalculation() {
       const ageRaw = getValue("age1");
       const monthRaw = getValue("month1");
       const dayRaw = getValue("day1");
+      const age = Number(ageRaw);
+      const month = Number(monthRaw);
+      const day = Number(dayRaw);
 
-      let canCalculate = false;
-      if (ageRaw && monthRaw && dayRaw) {
-        const age = Number(ageRaw);
-        const month = Number(monthRaw);
-        const day = Number(dayRaw);
-        canCalculate =
-          Number.isInteger(age) &&
-          age >= 0 &&
-          age <= 130 &&
-          isValidMonthDayInput(month, day);
+      const firstPersonReady =
+        ageRaw &&
+        monthRaw &&
+        dayRaw &&
+        Number.isInteger(age) &&
+        age >= 0 &&
+        age <= 130 &&
+        isValidMonthDayInput(month, day);
+
+      if (!firstPersonReady) {
+        setCardMessage(personResultMap[1], "未計算");
+        setPersonCopyState(1, "");
+
+        if (!isPerson2Visible) {
+          setCardMessage(personResultMap[2], "未入力");
+          setPersonCopyState(2, "");
+        } else {
+          const hasAnySecond =
+            getValue("name2") ||
+            getValue("age2") ||
+            getValue("month2") ||
+            getValue("day2");
+          setCardMessage(personResultMap[2], hasAnySecond ? "未計算" : "未入力");
+          setPersonCopyState(2, "");
+        }
+
+        resetSummaryResult();
+        setStatus("", false);
+        return;
       }
-      calcBtn.disabled = !canCalculate;
+
+      calculateBirthDate();
     }
 
     function findBirthYear(age, birthMonth, birthDay, today, leapMode) {
@@ -963,7 +970,7 @@
 
       resetSummaryResult();
       setStatus("", false);
-      updateCalcButtonState();
+      runAutoCalculation();
     }
 
     function clearPersonInputs(index) {
