@@ -216,6 +216,7 @@
     .person-actions {
       margin-top: 4px;
       display: flex;
+      flex-wrap: wrap;
       gap: 6px;
       justify-content: flex-end;
     }
@@ -418,7 +419,8 @@
 
           <div id="personResult1" class="person-result">未計算</div>
           <div class="person-actions">
-            <button id="copyPerson1Btn" class="copy-person-btn" type="button" disabled>1人目をコピー</button>
+            <button id="copyPerson1CompactBtn" class="copy-person-btn" type="button" disabled>1人目コピー 19900101</button>
+            <button id="copyPerson1SlashBtn" class="copy-person-btn" type="button" disabled>1人目コピー 1990/01/01</button>
             <button id="clearPerson1Btn" class="clear-person-btn" type="button">クリア</button>
           </div>
         </article>
@@ -446,7 +448,8 @@
 
           <div id="personResult2" class="person-result">未入力</div>
           <div class="person-actions">
-            <button id="copyPerson2Btn" class="copy-person-btn" type="button" disabled>2人目をコピー</button>
+            <button id="copyPerson2CompactBtn" class="copy-person-btn" type="button" disabled>2人目コピー 19900101</button>
+            <button id="copyPerson2SlashBtn" class="copy-person-btn" type="button" disabled>2人目コピー 1990/01/01</button>
             <button id="clearPerson2Btn" class="clear-person-btn" type="button">クリア</button>
           </div>
         </article>
@@ -486,8 +489,14 @@
     };
 
     const copyPersonBtnMap = {
-      1: document.getElementById("copyPerson1Btn"),
-      2: document.getElementById("copyPerson2Btn")
+      1: {
+        compact: document.getElementById("copyPerson1CompactBtn"),
+        slash: document.getElementById("copyPerson1SlashBtn")
+      },
+      2: {
+        compact: document.getElementById("copyPerson2CompactBtn"),
+        slash: document.getElementById("copyPerson2SlashBtn")
+      }
     };
 
     const clearPersonBtnMap = {
@@ -500,9 +509,9 @@
       2: document.getElementById("inputHint2")
     };
 
-    const latestPersonResultText = {
-      1: "",
-      2: ""
+    const latestPersonResolvedMap = {
+      1: null,
+      2: null
     };
 
     let currentDateKey = "";
@@ -519,8 +528,10 @@
     runAutoCalculation();
 
     togglePerson2Btn.addEventListener("click", togglePerson2Card);
-    copyPersonBtnMap[1].addEventListener("click", () => copyPersonResult(1));
-    copyPersonBtnMap[2].addEventListener("click", () => copyPersonResult(2));
+    copyPersonBtnMap[1].compact.addEventListener("click", () => copyPersonResult(1, "compact"));
+    copyPersonBtnMap[1].slash.addEventListener("click", () => copyPersonResult(1, "slash"));
+    copyPersonBtnMap[2].compact.addEventListener("click", () => copyPersonResult(2, "compact"));
+    copyPersonBtnMap[2].slash.addEventListener("click", () => copyPersonResult(2, "slash"));
     clearPersonBtnMap[1].addEventListener("click", () => clearPersonBox(1));
     clearPersonBtnMap[2].addEventListener("click", () => clearPersonBox(2));
 
@@ -593,12 +604,8 @@
         }
 
         const label = name || i + "人目";
-        const resolvedDisplayText = formatResolvedDisplayText(resolved);
-        const resolvedCopyText = formatResolvedPlainText(resolved);
-        const personCopyText = resolvedCopyText;
-
         renderPersonResult(cardResult, label, resolved);
-        setPersonCopyState(i, personCopyText);
+        setPersonCopyState(i, resolved);
 
         successCount += 1;
         if (isFirstPerson) {
@@ -680,33 +687,25 @@
       };
     }
 
-    function formatResolvedPlainText(resolved) {
-      if (resolved.kind === "single") {
-        if (!resolved.note) {
-          return resolved.date;
-        }
-        return resolved.date + "（" + resolved.note + "）";
+    function formatDateByCopyMode(compactDate, mode) {
+      if (mode === "slash") {
+        return formatDisplayDate(compactDate);
       }
-      const candidateText = [];
-      for (let i = 0; i < resolved.options.length; i += 1) {
-        const option = resolved.options[i];
-        candidateText.push(option.date + "（" + option.note + "）");
-      }
-      return "候補: " + candidateText.join(" / ");
+      return compactDate;
     }
 
-    function formatResolvedDisplayText(resolved) {
+    function formatResolvedPlainText(resolved, mode) {
       if (resolved.kind === "single") {
-        const displayDate = formatDisplayDate(resolved.date);
+        const outputDate = formatDateByCopyMode(resolved.date, mode);
         if (!resolved.note) {
-          return displayDate;
+          return outputDate;
         }
-        return displayDate + "（" + resolved.note + "）";
+        return outputDate + "（" + resolved.note + "）";
       }
       const candidateText = [];
       for (let i = 0; i < resolved.options.length; i += 1) {
         const option = resolved.options[i];
-        candidateText.push(formatDisplayDate(option.date) + "（" + option.note + "）");
+        candidateText.push(formatDateByCopyMode(option.date, mode) + "（" + option.note + "）");
       }
       return "候補: " + candidateText.join(" / ");
     }
@@ -1023,9 +1022,11 @@
       inputHintMap[index].textContent = message;
     }
 
-    function setPersonCopyState(index, text) {
-      latestPersonResultText[index] = text;
-      copyPersonBtnMap[index].disabled = text === "";
+    function setPersonCopyState(index, resolved) {
+      latestPersonResolvedMap[index] = resolved;
+      const disabled = !resolved;
+      copyPersonBtnMap[index].compact.disabled = disabled;
+      copyPersonBtnMap[index].slash.disabled = disabled;
     }
 
     function setCardMessage(element, message) {
@@ -1043,15 +1044,17 @@
       statusText.classList.toggle("ok", Boolean(success));
     }
 
-    async function copyPersonResult(index) {
-      const text = latestPersonResultText[index];
-      if (!text) {
+    async function copyPersonResult(index, mode) {
+      const resolved = latestPersonResolvedMap[index];
+      if (!resolved) {
         setStatus(index + "人目のコピーできる結果がありません。", false);
         return;
       }
+      const text = formatResolvedPlainText(resolved, mode);
+      const copiedLabel = mode === "slash" ? "YYYY/MM/DD" : "YYYYMMDD";
       try {
         await navigator.clipboard.writeText(text);
-        setStatus(index + "人目の結果をコピーしました。", true);
+        setStatus(index + "人目の結果をコピーしました（" + copiedLabel + "）。", true);
       } catch (error) {
         setStatus("コピーに失敗しました。", false);
       }
