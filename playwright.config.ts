@@ -1,0 +1,3 @@
+import { defineConfig, devices } from "@playwright/test";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+export default defineConfig({ testDir: "./tests/e2e", use: { baseURL: `http://127.0.0.1:3000${basePath}/`, screenshot: "only-on-failure" }, projects: [{ name: "mobile", use: { ...devices["iPhone 13"], defaultBrowserType: "chromium" } }, { name: "desktop", use: { ...devices["Desktop Chrome"] } }], webServer: { command: "pnpm dev --hostname 127.0.0.1", url: `http://127.0.0.1:3000${basePath}/`, reuseExistingServer: !process.env.CI, timeout: 120000 } });
