@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ViewTransition } from "react";
-import { ArrowRight, Check, Quote } from "lucide-react";
+import { ArrowRight, Check, Quote, ArrowLeft } from "lucide-react";
 import { CHARACTER_TYPES, elementStyle, typeByStem, type CharacterType } from "@/data/types";
 import { TYPE_DETAILS } from "@/data/type-details";
 import type { DiagnosisResult } from "@/lib/diagnosis";
@@ -68,7 +68,7 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
     { id: "compat", label: "相性", title: "相性のいいタイプ", body: <Compatibility type={type} /> },
   ];
   return <article className="profile page-width">
-    <Link className="breadcrumb" href={result ? "/#diagnose" : "/types/"}>← {result ? "もう一度診断する" : "ステラタイプ一覧へ"}</Link>
+    <Link className="breadcrumb" href={result ? "/#diagnose" : "/types/"}><ArrowLeft size={15} aria-hidden="true" />{result ? "もう一度診断する" : "ステラタイプ一覧へ"}</Link>
     <div className="profile-hero">
       <ViewTransition name={`character-${type.slug}`}><div className="profile-art" style={elementStyle(type.stem)}><Character type={type} priority />{result && <ItemBadge tenGod={result.tenGod} />}</div></ViewTransition>
       <div className="profile-title">
@@ -84,7 +84,7 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
     <div className="profile-body">
       {chapters.map((chapter, i) => <Chapter key={chapter.id} id={chapter.id} num={i + 1} label={chapter.label} title={chapter.title}>{chapter.body}</Chapter>)}
       <p className="micro disclaimer">占いをもとにした診断なので、当てはまるところだけ参考にしてください。</p>
-      <div className="profile-bottom"><Link className="button secondary" href="/types/">ほかのタイプも見る <ArrowRight size={17} /></Link>{!result && <Link className="text-link" href="/#diagnose">自分のタイプを診断する →</Link>}</div>
+      <div className="profile-bottom"><Link className="button secondary" href="/types/">ほかのタイプも見る <ArrowRight size={17} /></Link>{!result && <Link className="text-link" href="/#diagnose">自分のタイプを診断する <ArrowRight size={17} aria-hidden="true" /></Link>}</div>
     </div>
   </article>;
 }

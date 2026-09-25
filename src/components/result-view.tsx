@@ -1,4 +1,5 @@
 "use client";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { clearRevealPending, isRevealPending, readResult } from "@/lib/result-store";
@@ -14,7 +15,7 @@ export function ResultView() {
     setReveal(isRevealPending());
   }, []);
   if (!loaded) return <div className="empty-state" role="status">結果を読み込んでいます…</div>;
-  if (!result) return <section className="empty-state"><h1>まだ診断結果がありません</h1><p>生年月日を入力すると、あなたのタイプがわかります。</p><Link className="button primary" href="/#diagnose">診断をはじめる →</Link></section>;
+  if (!result) return <section className="empty-state"><h1>まだ診断結果がありません</h1><p>生年月日を入力すると、あなたのタイプがわかります。</p><Link className="button primary" href="/#diagnose">診断をはじめる <ArrowRight size={17} aria-hidden="true" /></Link></section>;
   const type = typeByStem(result.pillar.stem);
   return <>{reveal && <BookReveal type={type} tenGod={result.tenGod} onDone={() => { clearRevealPending(); setReveal(false); }} />}<Profile type={type} result={result} /></>;
 }
