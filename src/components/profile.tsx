@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ViewTransition } from "react";
-import { ArrowRight, Check, Heart, BriefcaseBusiness, Users, Compass, Ribbon, Cookie, Search, Mail, PiggyBank, Sword, Watch, Telescope, BookOpen, type LucideIcon } from "lucide-react";
+import { ArrowRight, Check, Heart, BriefcaseBusiness, Users, Dumbbell, Crown, Cookie, Rose, Mic, PiggyBank, CalendarClock, Watch, Telescope, BookOpen, type LucideIcon } from "lucide-react";
 import { elementColors, typeByStem, type CharacterType } from "@/data/types";
 import type { DiagnosisResult } from "@/lib/diagnosis";
 import { GOD_COPY, type TenGod } from "@/lib/diagnosis/ten-gods";
@@ -15,7 +15,7 @@ const COMPATIBILITY_LABELS: Record<CompatibilityLevel, { label: string; note: st
   caution: { label: "ちょっと注意", note: "考え方がぶつかりやすい相手。違いを知っておけば、うまく付き合えます。" },
   nemesis: { label: "天敵", note: "なぜかペースを乱されがちな相手。張り合わずに、少し距離をとるのがうまくいくコツです。" },
 };
-const ITEM_ICONS: Record<TenGod, LucideIcon> = { 比肩: Compass, 劫財: Ribbon, 食神: Cookie, 傷官: Search, 偏財: Mail, 正財: PiggyBank, 偏官: Sword, 正官: Watch, 偏印: Telescope, 印綬: BookOpen };
+const ITEM_ICONS: Record<TenGod, LucideIcon> = { 比肩: Dumbbell, 劫財: Crown, 食神: Cookie, 傷官: Rose, 偏財: Mic, 正財: PiggyBank, 偏官: CalendarClock, 正官: Watch, 偏印: Telescope, 印綬: BookOpen };
 
 function ItemCard({ tenGod }: { tenGod: TenGod }) {
   const copy = GOD_COPY[tenGod], Icon = ITEM_ICONS[tenGod];
