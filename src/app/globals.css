@@ -842,3 +842,36 @@ img { -webkit-touch-callout: none; -webkit-user-drag: none; }
   .feature-stats strong { font-size: 28px; }
   .feature-stats span { font-size: 10px; letter-spacing: 0; text-align: center; line-height: 1.4; }
 }
+
+/* ============ Typography consistency pass ============
+   Rule: the serif (mincho) is for display headings of 20px and up only.
+   Everything smaller — card names, tile titles, list labels — uses the bold sans,
+   which stays legible on phones. One scale for small UI text:
+   label 11px · meta 12px · body-s 13px · name 15px (16px desktop). */
+.type-card h3, .feature-grid h3, .compat-group h3, .steps h3, .strength-pair h3, .care-pair h3, .item-title, .parade-item, .insight-label {
+  font-family: var(--sans); font-weight: 700; letter-spacing: .02em;
+}
+.type-card-body { padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.type-card .type-card-no { margin: 0; font-size: 14px; line-height: 1; letter-spacing: .04em; }
+.type-card h3 { margin: 0; font-size: 16px; line-height: 1.45; }
+.card-tags { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px; }
+.card-tags li { font-size: 11px; line-height: 1; padding: 5px 8px; border-radius: 99px; color: var(--body); background: #ffffff0d; border: 1px solid #ffffff1a; letter-spacing: .02em; white-space: nowrap; }
+.feature-grid h3 { font-size: 16px; line-height: 1.5; }
+.compat-group h3, .strength-pair h3, .care-pair h3 { font-size: 16px; }
+.steps h3 { font-size: 16px; }
+.compat-group li a span:last-child { font-weight: 700; letter-spacing: .02em; }
+.micro, .sec-lead, .feature-grid p, .compat-group > p, .hero-note { letter-spacing: .02em; }
+@media (max-width: 700px) {
+  body { letter-spacing: .02em; }
+  .type-card-body { padding-top: 10px; gap: 5px; }
+  .type-card .type-card-no { font-size: 13px; }
+  .type-card h3 { font-size: 14px; line-height: 1.4; }
+  .card-tags li { font-size: 10px; padding: 4px 7px; }
+  .feature-grid h3 { font-size: 15px; }
+  .compat-group h3, .strength-pair h3, .care-pair h3, .steps h3 { font-size: 15px; }
+  .compat-group li a { font-size: 11px; }
+  .sec-lead { font-size: 13px; line-height: 1.85; }
+  .keywords span { font-size: 11px; letter-spacing: .04em; }
+  .chapter-body > p, .chapter-body .lead-text, .aruaru li, .strength-list li { letter-spacing: .02em; }
+}
+.breadcrumb { display: inline-flex; align-items: center; gap: 6px; }
