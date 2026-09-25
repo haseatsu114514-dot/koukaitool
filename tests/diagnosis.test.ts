@@ -3,6 +3,7 @@ import { Solar } from "lunar-typescript";
 import { birthDateSchema, dayPillar, todayInJapan, STEMS, BRANCHES } from "../src/lib/diagnosis/calendar";
 import { HIDDEN_STEMS, TEN_GODS, tenGod } from "../src/lib/diagnosis/ten-gods";
 import { diagnose } from "../src/lib/diagnosis";
+import { compatibility } from "../src/lib/diagnosis/compatibility";
 import { CHARACTER_TYPES, generationRequest } from "../src/data/types";
 describe("Gregorian day pillar", () => {
   it("matches the published 6tail fixture 1986-05-29 癸酉", () => { expect(dayPillar({ year: 1986, month: 5, day: 29 })).toMatchObject({ stem: "癸", branch: "酉" }); });
@@ -56,5 +57,20 @@ describe("本気 and ten gods", () => {
     expect(new Set(CHARACTER_TYPES.map(t => t.slug)).size).toBe(10);
     for (const type of CHARACTER_TYPES) { expect(type.strengths.length).toBe(3); expect(type.summary.length).toBeGreaterThan(40); expect(generationRequest(type).prompt).toContain(type.imagePrompt); }
     expect(TEN_GODS.length).toBe(10);
+  });
+});
+describe("compatibility", () => {
+  it("uses 干合 as best, the generating element as good, and the controlling element as caution", () => {
+    expect(compatibility("甲")).toEqual({ best: ["己"], good: ["壬", "癸"], caution: ["庚", "辛"] });
+    expect(compatibility("己")).toEqual({ best: ["甲"], good: ["丙", "丁"], caution: ["乙"] });
+    expect(compatibility("乙")).toEqual({ best: ["庚"], good: ["壬", "癸"], caution: ["辛"] });
+    expect(compatibility("丙")).toEqual({ best: ["辛"], good: ["甲", "乙"], caution: ["壬", "癸"] });
+    expect(compatibility("癸")).toEqual({ best: ["戊"], good: ["庚", "辛"], caution: ["己"] });
+  });
+  it("never lists a type twice or pairs a type with itself", () => {
+    for (const stem of STEMS) {
+      const all = Object.values(compatibility(stem)).flat();
+      expect(new Set(all).size).toBe(all.length); expect(all).not.toContain(stem);
+    }
   });
 });
