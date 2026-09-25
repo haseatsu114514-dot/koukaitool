@@ -68,7 +68,7 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
     { id: "compat", label: "相性", title: "相性のいいタイプ", body: <Compatibility type={type} /> },
   ];
   return <article className="profile page-width">
-    <Link className="breadcrumb" href={result ? "/diagnose/" : "/types/"}>← {result ? "もう一度診断する" : "ステラタイプ一覧へ"}</Link>
+    <Link className="breadcrumb" href={result ? "/#diagnose" : "/types/"}>← {result ? "もう一度診断する" : "ステラタイプ一覧へ"}</Link>
     <div className="profile-hero">
       <ViewTransition name={`character-${type.slug}`}><div className="profile-art" style={elementStyle(type.stem)}><Character type={type} priority />{result && <ItemBadge tenGod={result.tenGod} />}</div></ViewTransition>
       <div className="profile-title">
@@ -83,8 +83,8 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
     <nav className="profile-toc" aria-label="このページの内容">{chapters.map(chapter => <a key={chapter.id} href={`#${chapter.id}`}>{chapter.label}</a>)}</nav>
     <div className="profile-body">
       {chapters.map((chapter, i) => <Chapter key={chapter.id} id={chapter.id} num={i + 1} label={chapter.label} title={chapter.title}>{chapter.body}</Chapter>)}
-      <p className="micro disclaimer">占いをもとにした診断なので、当てはまるところだけ参考にしてください。<Link href="/about/">診断のしくみ</Link></p>
-      <div className="profile-bottom"><Link className="button secondary" href="/types/">ほかのタイプも見る <ArrowRight size={17} /></Link>{!result && <Link className="text-link" href="/diagnose/">自分のタイプを診断する →</Link>}</div>
+      <p className="micro disclaimer">占いをもとにした診断なので、当てはまるところだけ参考にしてください。</p>
+      <div className="profile-bottom"><Link className="button secondary" href="/types/">ほかのタイプも見る <ArrowRight size={17} /></Link>{!result && <Link className="text-link" href="/#diagnose">自分のタイプを診断する →</Link>}</div>
     </div>
   </article>;
 }

@@ -641,3 +641,15 @@ h1, h2 { letter-spacing: .06em; }
   .preview-grid, .catalog-grid { gap: 36px 16px; }
   .profile-title h1 { font-size: clamp(26px, 7.4vw, 40px); letter-spacing: .02em; }
 }
+
+/* ============ Birth form in the hero ============ */
+.hero-form { margin-top: 40px; max-width: 520px; padding: 24px 26px 18px; border-radius: 20px; border: 1px solid #e3b45a55; background-image: var(--grain-light), linear-gradient(160deg, #1a2f4dcc, #10213acc); background-size: 180px, auto; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 24px 60px -30px #000, 0 0 40px -10px #3fb4e633; scroll-margin-top: 120px; animation: rise .9s cubic-bezier(.2,.8,.2,1) .3s both; }
+.hero-form .birth-form .button { margin-top: 16px; }
+.hero-form .hero-note { margin-top: 12px; text-align: center; }
+.hero-form:has(:focus-visible, input:focus, select:focus) { border-color: var(--accent); box-shadow: 0 0 0 4px #e3b45a1f, 0 24px 60px -30px #000; }
+@media (max-width: 900px) { .hero-form { margin-inline: auto; text-align: left; } }
+@media (max-width: 700px) { .hero-form { padding: 20px 16px 14px; } }
+.hero-form { background-image: linear-gradient(160deg, #182c4aee, #0e1f37ee); margin-top: 32px; }
+.hero h1 { font-size: clamp(40px, 5vw, 68px); margin: 22px 0 24px; }
+.hero-description { line-height: 2; }
+.hero { padding-block: 16px 64px; }
