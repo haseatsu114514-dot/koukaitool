@@ -875,3 +875,23 @@ img { -webkit-touch-callout: none; -webkit-user-drag: none; }
   .chapter-body > p, .chapter-body .lead-text, .aruaru li, .strength-list li { letter-spacing: .02em; }
 }
 .breadcrumb { display: inline-flex; align-items: center; gap: 6px; }
+
+/* ============ "質問ゼロ" band: instant answer, said briefly ============ */
+.instant { text-align: center; padding-block: 72px 24px; }
+.instant-lead { font-size: 14px; letter-spacing: .2em; color: var(--muted); }
+.instant-title { margin-top: 12px; font-size: clamp(28px, 4vw, 44px); line-height: 1.45; }
+.instant-facts { display: flex; justify-content: center; gap: 12px; margin: 32px 0 0; }
+.instant-facts div { min-width: 120px; padding: 14px 18px; border-radius: 16px; border: 1px solid #e3b45a44; background: linear-gradient(160deg, #1a2f4d, #10213a); }
+.instant-facts dt { font-size: 12px; letter-spacing: .12em; color: var(--muted); }
+.instant-facts dd { margin: 4px 0 0; font-size: 13px; color: var(--body); }
+.instant-facts strong { font-family: var(--num); font-style: italic; font-weight: 600; font-size: 40px; line-height: 1; color: var(--accent); margin-right: 4px; text-shadow: 0 0 20px #e3b45a55; }
+@media (max-width: 700px) {
+  .instant { padding-block: 48px 8px; }
+  .instant-lead { font-size: 12px; letter-spacing: .14em; }
+  .instant-title { font-size: clamp(24px, 7vw, 30px); }
+  .instant-facts { gap: 8px; margin-top: 22px; }
+  .instant-facts div { min-width: 0; flex: 1; padding: 10px 6px; border-radius: 14px; }
+  .instant-facts dt { font-size: 11px; letter-spacing: .06em; }
+  .instant-facts dd { font-size: 12px; }
+  .instant-facts strong { font-size: 30px; }
+}
