@@ -1,12 +1,12 @@
 import { test, expect } from "@playwright/test";
 test("birthday validation → result → share image → catalog", async ({ page }) => {
   const errors: string[] = []; page.on("pageerror", error => errors.push(error.message));
-  await page.goto("./"); await page.getByRole("link", { name: "私のタイプを見つける", exact: true }).click();
-  await page.getByRole("button", { name: "私のタイプを診断する" }).click(); await expect(page.locator(".form-error")).toContainText("すべて入力");
+  await page.goto("./");
+  await page.getByRole("button", { name: "診断する", exact: true }).click(); await expect(page.locator(".form-error")).toContainText("すべて入力");
   await page.getByLabel("年", { exact: true }).fill("2001"); await page.getByRole("combobox", { name: "月", exact: true }).selectOption("2"); await page.getByRole("combobox", { name: "日", exact: true }).selectOption("29");
-  await page.getByRole("button", { name: "私のタイプを診断する" }).click(); await expect(page.locator(".form-error")).toContainText("この月にはない");
+  await page.getByRole("button", { name: "診断する", exact: true }).click(); await expect(page.locator(".form-error")).toContainText("この月にはない");
   await page.getByLabel("年", { exact: true }).fill("2000"); await page.getByRole("combobox", { name: "月", exact: true }).selectOption("1"); await page.getByRole("combobox", { name: "日", exact: true }).selectOption("7");
-  await page.getByRole("button", { name: "私のタイプを診断する" }).click();
+  await page.getByRole("button", { name: "診断する", exact: true }).click();
   await expect(page.locator(".book-reveal")).toBeVisible(); await expect(page.locator(".book-reveal")).toBeHidden({ timeout: 8000 });
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
   await expect(page.getByText("あなたのアイテム", { exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "本", exact: true })).toBeVisible(); await expect(page.getByText("学んだことを人に伝えられる")).toBeVisible();
