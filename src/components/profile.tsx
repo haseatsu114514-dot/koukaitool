@@ -68,12 +68,12 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
     { id: "compat", label: "相性", title: "相性のいいタイプ", body: <Compatibility type={type} /> },
   ];
   return <article className="profile page-width">
-    <Link className="breadcrumb" href={result ? "/diagnose/" : "/types/"}>← {result ? "もう一度診断する" : "タイプ一覧へ"}</Link>
+    <Link className="breadcrumb" href={result ? "/diagnose/" : "/types/"}>← {result ? "もう一度診断する" : "ステラタイプ一覧へ"}</Link>
     <div className="profile-hero">
       <ViewTransition name={`character-${type.slug}`}><div className="profile-art" style={elementStyle(type.stem)}><Character type={type} priority />{result && <ItemBadge tenGod={result.tenGod} />}</div></ViewTransition>
       <div className="profile-title">
         <p className="profile-no"><span>No.</span>{number}<small>/ 10</small></p>
-        {result && <p className="result-lead">あなたのタイプは</p>}
+        {result && <p className="result-lead">あなたのステラタイプは</p>}
         <h1><Bx>{type.displayName}</Bx></h1>
         <p className="profile-catch"><Bx>{type.shortCatch}</Bx></p>
         <div className="keywords">{type.keywords.map(word => <span key={word}>{word}</span>)}</div>

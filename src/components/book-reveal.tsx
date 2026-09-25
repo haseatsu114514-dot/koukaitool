@@ -47,7 +47,7 @@ export function BookReveal({ type, tenGod, onDone }: { type: CharacterType; tenG
       <div className="reveal-card">
         <div className="reveal-card-art"><Character type={type} priority /></div>
         <span className="reveal-item"><ItemIcon size={22} strokeWidth={1.6} /></span>
-        <p>あなたのタイプは</p>
+        <p>あなたのステラタイプは</p>
         <strong>{type.displayName}</strong>
         <p className="reveal-item-label">アイテム：{GOD_COPY[tenGod].item}</p>
       </div>
