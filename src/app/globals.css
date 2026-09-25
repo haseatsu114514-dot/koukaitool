@@ -156,9 +156,11 @@ img { display: block; max-width: 100%; }
 .strength-list { list-style: none; margin: 0; padding: 0; }
 .strength-list li { display: flex; gap: 10px; align-items: center; margin: 10px 0; font-size: 16px; }
 .strength-list svg { color: var(--accent); flex-shrink: 0; }
-.god-insight { border-top: 1px solid var(--line); padding-top: 22px; margin-top: 22px; }
+.item-card { display: flex; gap: 24px; align-items: flex-start; padding: 28px 32px; border-radius: var(--radius); border: 1px solid #e3b45a66; background: linear-gradient(160deg, #1a2f4d, var(--surface)); }
+.item-icon { flex-shrink: 0; width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; color: var(--accent); border: 1px solid var(--accent); background: var(--paper); }
+.profile-body .item-card h2 { font-size: 26px; margin: 2px 0 4px; }
 .insight-label { font-size: 13px; color: var(--accent); font-weight: 700; }
-.god-insight h3 { font-size: 18px; margin: 4px 0 8px; }
+.item-card h3 { font-size: 16px; margin-bottom: 6px; }
 .gentle-tip { border-left: 2px solid var(--accent); padding-left: 12px; margin-top: 12px; font-size: 14px; }
 .tendency-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
 .tendency-grid svg { color: var(--glow); }
@@ -169,6 +171,8 @@ img { display: block; max-width: 100%; }
 .compat-best { border-left-color: var(--accent); }
 .compat-good { border-left-color: var(--glow); }
 .compat-caution { border-left-color: #8a97aa; }
+.compat-nemesis { border-left-color: #e5484d; }
+.compat-nemesis h3 { color: #ff8a80; }
 .compat-group h3 { font-size: 17px; }
 .compat-best h3 { color: var(--accent); }
 .compat-group > p { grid-column: 1; font-size: 14px; }
@@ -231,6 +235,8 @@ img { display: block; max-width: 100%; }
   .strength-section { padding: 22px 20px; }
   .tendency-grid { grid-template-columns: 1fr; gap: 24px; }
   .compat-group { padding: 18px; }
+  .item-card { flex-direction: column; align-items: center; text-align: center; padding: 24px 20px; }
+  .item-card .gentle-tip { text-align: left; }
   .compat-group li a { width: 104px; }
   .site-footer { display: block; padding: 24px 20px; }
   .site-footer > div { margin-top: 12px; }

@@ -1,19 +1,20 @@
 import { STEMS, mod, type Stem } from "./calendar";
+import { tenGod } from "./ten-gods";
 
 /** Compatibility by day stem.
- * best    = 干合 partner (甲己・乙庚・丙辛・丁壬・戊癸, i.e. index +5).
- * good    = stems whose element generates mine (相生: 水→木→火→土→金→水).
- * caution = stems whose element controls mine (相剋), except the 干合 partner,
- *           because a combination outranks the clash. */
-export type CompatibilityLevel = "best" | "good" | "caution";
+ * best     = 干合 partner (甲己・乙庚・丙辛・丁壬・戊癸, i.e. index +5).
+ * good     = stems whose element generates mine (相生: 水→木→火→土→金→水).
+ * nemesis  = the stem that is 偏官 to me (controls me with the same polarity, e.g. 丁 for 辛).
+ * caution  = the stem that is 正官 to me, unless it is the 干合 partner (a combination outranks the clash). */
+export type CompatibilityLevel = "best" | "good" | "caution" | "nemesis";
 const element = (stem: Stem) => Math.floor(STEMS.indexOf(stem) / 2);
-const stemsOf = (el: number) => [STEMS[el * 2], STEMS[el * 2 + 1]];
 export const combinationPartner = (stem: Stem): Stem => STEMS[mod(STEMS.indexOf(stem) + 5, 10)];
 export function compatibility(stem: Stem): Record<CompatibilityLevel, Stem[]> {
-  const partner = combinationPartner(stem), el = element(stem);
+  const partner = combinationPartner(stem), generator = mod(element(stem) - 1, 5);
   return {
     best: [partner],
-    good: stemsOf(mod(el - 1, 5)),
-    caution: stemsOf(mod(el - 2, 5)).filter(target => target !== partner),
+    good: STEMS.filter(target => element(target) === generator),
+    caution: STEMS.filter(target => tenGod(stem, target) === "正官" && target !== partner),
+    nemesis: STEMS.filter(target => tenGod(stem, target) === "偏官"),
   };
 }

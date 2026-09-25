@@ -60,17 +60,17 @@ describe("本気 and ten gods", () => {
   });
 });
 describe("compatibility", () => {
-  it("uses 干合 as best, the generating element as good, and the controlling element as caution", () => {
-    expect(compatibility("甲")).toEqual({ best: ["己"], good: ["壬", "癸"], caution: ["庚", "辛"] });
-    expect(compatibility("己")).toEqual({ best: ["甲"], good: ["丙", "丁"], caution: ["乙"] });
-    expect(compatibility("乙")).toEqual({ best: ["庚"], good: ["壬", "癸"], caution: ["辛"] });
-    expect(compatibility("丙")).toEqual({ best: ["辛"], good: ["甲", "乙"], caution: ["壬", "癸"] });
-    expect(compatibility("癸")).toEqual({ best: ["戊"], good: ["庚", "辛"], caution: ["己"] });
+  it("uses 干合 as best, the generating element as good, 偏官 as nemesis and non-partner 正官 as caution", () => {
+    expect(compatibility("甲")).toEqual({ best: ["己"], good: ["壬", "癸"], caution: ["辛"], nemesis: ["庚"] });
+    expect(compatibility("己")).toEqual({ best: ["甲"], good: ["丙", "丁"], caution: [], nemesis: ["乙"] });
+    expect(compatibility("丙")).toEqual({ best: ["辛"], good: ["甲", "乙"], caution: ["癸"], nemesis: ["壬"] });
+    expect(compatibility("辛")).toEqual({ best: ["丙"], good: ["戊", "己"], caution: [], nemesis: ["丁"] });
   });
   it("never lists a type twice or pairs a type with itself", () => {
     for (const stem of STEMS) {
       const all = Object.values(compatibility(stem)).flat();
       expect(new Set(all).size).toBe(all.length); expect(all).not.toContain(stem);
+      expect(compatibility(stem).nemesis).toHaveLength(1);
     }
   });
 });
