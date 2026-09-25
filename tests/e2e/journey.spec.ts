@@ -7,6 +7,7 @@ test("birthday validation → result → share image → catalog", async ({ page
   await page.getByRole("button", { name: "私のタイプを診断する" }).click(); await expect(page.locator(".form-error")).toContainText("この月にはない");
   await page.getByLabel("年", { exact: true }).fill("2000"); await page.getByRole("combobox", { name: "月", exact: true }).selectOption("1"); await page.getByRole("combobox", { name: "日", exact: true }).selectOption("7");
   await page.getByRole("button", { name: "私のタイプを診断する" }).click();
+  await expect(page.locator(".book-reveal")).toBeVisible(); await expect(page.locator(".book-reveal")).toBeHidden({ timeout: 8000 });
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
   await expect(page.getByText("あなたのアイテム", { exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "本", exact: true })).toBeVisible(); await expect(page.getByText("学んだことを人に伝えられる")).toBeVisible();
   expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => JSON.stringify(sessionStorage))).not.toContain("2000");

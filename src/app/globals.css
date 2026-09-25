@@ -381,3 +381,48 @@ img { display: block; max-width: 100%; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* ============ Result intro: the book opens ============ */
+.book-reveal {
+  position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; cursor: pointer; overflow: hidden;
+  background: radial-gradient(circle at 50% 45%, #173a64 0, #0b1729 60%, #060d18 100%);
+  animation: br-fade-in .35s ease-out both;
+  transition: opacity .5s ease, visibility .5s;
+}
+.book-reveal.is-leaving { opacity: 0; visibility: hidden; }
+.book-reveal.is-leaving .reveal-card { scale: 1.08; transition: scale .5s ease; }
+.book-stage { position: relative; width: 200px; height: 260px; perspective: 1400px; }
+@media (max-width: 480px) { .book-stage { scale: .78; } }
+.book-glow { position: absolute; inset: -60px; border-radius: 50%; background: radial-gradient(circle, #5cc3ec66, #3fb4e61a 45%, transparent 70%); animation: br-glow 1s ease-out 1.5s both; }
+.book { position: absolute; inset: 0; transform-style: preserve-3d; animation: br-book-in .8s cubic-bezier(.2,.9,.3,1.2) both, br-book-wobble .35s ease-in-out .85s 2 alternate, br-book-slide .8s cubic-bezier(.4,0,.2,1) 1.1s both, br-book-away .6s ease-in 2.5s both; }
+.book-inside { position: absolute; inset: 0; border-radius: 4px 10px 10px 4px; background: radial-gradient(circle at 50% 50%, #fffbe9, #f1ddb0 70%, #d9bb82); box-shadow: inset 6px 0 14px #0003; display: grid; place-items: center; text-align: center; font-family: var(--serif); font-weight: 700; color: #7a5a2a; font-size: 18px; line-height: 1.6; }
+.book-inside::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle, #fff 0, #ffe9a8aa 30%, transparent 65%); opacity: 0; animation: br-inner-light .8s ease-out 1.7s both; }
+.book-page { position: absolute; inset: 3px 3px 3px 0; border-radius: 2px 8px 8px 2px; background: linear-gradient(90deg, #eadbb8, #fbf3de 20%, #f6eaca); box-shadow: inset -2px 0 4px #0001; transform-origin: left center; backface-visibility: hidden; animation: br-flip .7s cubic-bezier(.4,0,.2,1) both; animation-delay: calc(1.3s + var(--p) * .14s); }
+.book-cover { position: absolute; inset: 0; transform-origin: left center; transform-style: preserve-3d; animation: br-cover-open .9s cubic-bezier(.5,0,.2,1) 1.05s both; }
+.book-cover-front, .book-cover-back { position: absolute; inset: 0; border-radius: 4px 10px 10px 4px; backface-visibility: hidden; }
+.book-cover-front { background: radial-gradient(circle at 50% 42%, #1d4270, #10284a 60%, #0b1c36); box-shadow: 0 0 0 1px #e3b45a55, 0 20px 50px -10px #000c, inset 10px 0 12px -6px #0009; }
+.book-cover-front::before { content: ""; position: absolute; inset: -18px; border-radius: 22px; background: radial-gradient(closest-side, #5cc3ec55, transparent); z-index: -1; filter: blur(8px); }
+.book-cover-back { transform: rotateY(180deg); background: radial-gradient(1.5px 1.5px at 30% 20%, #ffe7a8 50%, transparent), radial-gradient(1px 1px at 70% 40%, #fff 50%, transparent), radial-gradient(1.5px 1.5px at 40% 75%, #bfe9ff 50%, transparent), radial-gradient(1px 1px at 80% 85%, #ffe7a8 50%, transparent), linear-gradient(90deg, #0b1c36, #173a64); box-shadow: inset 0 0 0 1px #e3b45a44; }
+.book-cover-art { width: 100%; height: 100%; display: block; filter: drop-shadow(0 0 6px #e3b45a88); }
+.book-burst { position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px; border-radius: 50%; background: radial-gradient(circle, #fff, #ffe6a3 35%, color-mix(in srgb, var(--el) 50%, #ffe6a3) 55%, transparent 70%); opacity: 0; animation: br-burst 1s ease-out 1.85s both; mix-blend-mode: screen; }
+.book-spark { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; background: #ffe7a8; clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); filter: drop-shadow(0 0 6px #e3b45a); opacity: 0; animation: br-spark 1.2s cubic-bezier(.2,.8,.3,1) both; animation-delay: calc(1.9s + var(--delay)); }
+.book-spark:nth-child(3n) { background: #bfe9ff; filter: drop-shadow(0 0 6px var(--glow)); }
+.book-spark:nth-child(4n) { background: var(--el); }
+.reveal-card { position: absolute; left: 50%; top: 50%; width: min(92vw, 420px); translate: -50% -50%; text-align: center; opacity: 0; animation: br-card-pop .9s cubic-bezier(.2,1.3,.4,1) 2.35s both; }
+.reveal-card-art { width: 190px; height: 190px; margin: 0 auto 14px; border-radius: 50%; background: var(--tint); border: 4px solid var(--el); box-shadow: 0 0 0 8px #e3b45a22, 0 0 60px color-mix(in srgb, var(--el) 60%, transparent); display: grid; place-items: center; overflow: hidden; }
+.reveal-card-art .character { width: 88%; height: 88%; }
+.reveal-card p { font-size: 14px; color: var(--muted); }
+.reveal-card strong { display: block; font-family: var(--serif); font-size: clamp(22px, 6.4vw, 30px); white-space: nowrap; line-height: 1.4; background: linear-gradient(100deg, var(--accent) 25%, #fff4d2 45%, var(--accent) 65%); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shine 3s linear infinite; }
+.reveal-skip { position: absolute; bottom: 28px; left: 0; right: 0; text-align: center; font-size: 12px; color: var(--muted); animation: br-fade-in .6s ease 1s both; }
+@keyframes br-fade-in { from { opacity: 0; } }
+@keyframes br-book-in { from { opacity: 0; transform: translateY(60px) scale(.6) rotateX(25deg); } }
+@keyframes br-book-wobble { from { rotate: -2deg; } to { rotate: 2deg; } }
+@keyframes br-book-slide { to { translate: 100px 0; } }
+@keyframes br-book-away { to { opacity: .15; scale: .85; filter: blur(3px); } }
+@keyframes br-cover-open { to { transform: rotateY(-172deg); } }
+@keyframes br-flip { to { transform: rotateY(-165deg); } }
+@keyframes br-inner-light { 50% { opacity: 1; } to { opacity: .5; } }
+@keyframes br-glow { from { opacity: 0; scale: .5; } to { opacity: 1; scale: 1.6; } }
+@keyframes br-burst { 0% { opacity: 0; scale: .2; } 20% { opacity: 1; } 100% { opacity: 0; scale: 6; } }
+@keyframes br-spark { 0% { opacity: 0; transform: rotate(var(--a)) translateX(0) scale(.4); } 20% { opacity: 1; } 100% { opacity: 0; transform: rotate(var(--a)) translateX(var(--d)) scale(1.2) rotate(180deg); } }
+@keyframes br-card-pop { 0% { opacity: 0; translate: -50% 10%; scale: .2; } 100% { opacity: 1; translate: -50% -50%; scale: 1; } }
