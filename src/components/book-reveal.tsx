@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { elementColors, type CharacterType } from "@/data/types";
+import { GOD_COPY, type TenGod } from "@/lib/diagnosis/ten-gods";
+import { ITEM_ICONS } from "./item-icon";
 import { Character } from "./character";
 
 const SPARKS = Array.from({ length: 14 }, (_, i) => ({ angle: (360 / 14) * i + (i % 3) * 9, distance: 140 + (i % 4) * 45, delay: (i % 5) * 60 }));
@@ -18,7 +20,8 @@ function CoverArt() {
   </svg>;
 }
 
-export function BookReveal({ type, onDone }: { type: CharacterType; onDone: () => void }) {
+export function BookReveal({ type, tenGod, onDone }: { type: CharacterType; tenGod: TenGod; onDone: () => void }) {
+  const ItemIcon = ITEM_ICONS[tenGod];
   const [leaving, setLeaving] = useState(false);
   const element = elementColors(type.stem);
   const done = useRef(onDone); done.current = onDone;
@@ -43,8 +46,10 @@ export function BookReveal({ type, onDone }: { type: CharacterType; onDone: () =
       {SPARKS.map((spark, i) => <i key={i} className="book-spark" style={{ "--a": `${spark.angle}deg`, "--d": `${spark.distance}px`, "--delay": `${spark.delay}ms` } as React.CSSProperties} />)}
       <div className="reveal-card">
         <div className="reveal-card-art"><Character type={type} priority /></div>
+        <span className="reveal-item"><ItemIcon size={22} strokeWidth={1.6} /></span>
         <p>あなたのタイプは</p>
         <strong>{type.displayName}</strong>
+        <p className="reveal-item-label">アイテム：{GOD_COPY[tenGod].item}</p>
       </div>
     </div>
     <p className="reveal-skip">タップでスキップ</p>

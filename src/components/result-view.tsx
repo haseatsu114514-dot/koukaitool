@@ -16,5 +16,5 @@ export function ResultView() {
   if (!loaded) return <div className="empty-state" role="status">結果を読み込んでいます…</div>;
   if (!result) return <section className="empty-state"><h1>まだ診断結果がありません</h1><p>生年月日を入力すると、あなたのタイプがわかります。</p><Link className="button primary" href="/diagnose/">診断をはじめる →</Link></section>;
   const type = typeByStem(result.pillar.stem);
-  return <>{reveal && <BookReveal type={type} onDone={() => { clearRevealPending(); setReveal(false); }} />}<Profile type={type} result={result} /></>;
+  return <>{reveal && <BookReveal type={type} tenGod={result.tenGod} onDone={() => { clearRevealPending(); setReveal(false); }} />}<Profile type={type} result={result} /></>;
 }

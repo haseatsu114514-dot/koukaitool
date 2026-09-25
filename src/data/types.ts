@@ -10,6 +10,8 @@ export const ELEMENT_COLORS = [
   { color: "#3b8fe6", tint: "#c9def6" },
 ] as const;
 export const elementColors = (stem: Stem) => ELEMENT_COLORS[Math.floor(STEMS.indexOf(stem) / 2)];
+/** CSS custom properties (--tint / --el) consumed by the stylesheet for character backgrounds and rings. */
+export const elementStyle = (stem: Stem) => { const { tint, color } = elementColors(stem); return { "--tint": tint, "--el": color } as React.CSSProperties; };
 export type CharacterType = {
   stem: Stem; slug: string; displayName: string; shortCatch: string; summary: string;
   strengths: string[]; romance: string; workStyle: string; relationshipStyle: string;
