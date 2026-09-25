@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ja" className={`${sans.variable} ${serif.variable}`} style={{ colorScheme: "dark" }} data-scroll-behavior="smooth"><body><a className="skip-link" href="#main">本文へスキップ</a>
+  return <html lang="ja" className={`${sans.variable} ${serif.variable}`} style={{ colorScheme: "dark" }} data-scroll-behavior="smooth"><body><div className="sky" aria-hidden="true"><i className="stars stars-far" /><i className="stars stars-near" /><i className="shooting-star" /></div><a className="skip-link" href="#main">本文へスキップ</a>
     <header className="site-header"><Link className="brand" href="/" aria-label="ステラファイル トップ"><Sparkle className="brand-mark" size={22} fill="currentColor" /><span>ステラファイル</span></Link>
       <nav aria-label="メインナビゲーション"><Link className="nav-guide" href="/about/">診断について</Link><Link href="/types/">タイプ一覧</Link><Link className="nav-cta" href="/diagnose/">診断する</Link></nav>
     </header>
