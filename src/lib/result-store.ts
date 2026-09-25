@@ -4,9 +4,14 @@ import { RULE_VERSION, type DiagnosisResult } from "./diagnosis";
 import { mainQiProvider, tenGod } from "./diagnosis/ten-gods";
 const key = "stella-result-v1";
 let memoryResult: DiagnosisResult | null = null;
+/** True only between a fresh diagnosis and the first result render, so the book-opening intro never replays on reload. */
+let revealPending = false;
+export const isRevealPending = () => revealPending;
+export function clearRevealPending() { revealPending = false; }
 const storedSchema = z.object({ ruleVersion: z.literal(RULE_VERSION), pillar: z.object({ stem: z.enum(STEMS), branch: z.enum(BRANCHES), cycleIndex: z.number().int().min(0).max(59) }) });
 export function saveResult(result: DiagnosisResult) {
   memoryResult = result;
+  revealPending = true;
   try { sessionStorage.setItem(key, JSON.stringify({ ruleVersion: result.ruleVersion, pillar: result.pillar })); } catch { /* Private browsing: client navigation still works through memory. */ }
 }
 export function readResult(): DiagnosisResult | null {
