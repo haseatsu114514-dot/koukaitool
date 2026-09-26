@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { Solar } from "lunar-typescript";
-import { birthDateSchema, dayPillar, todayInJapan, STEMS, BRANCHES } from "../src/lib/diagnosis/calendar";
+import { birthDateSchema, dayPillar, monthBranch, todayInJapan, STEMS, BRANCHES } from "../src/lib/diagnosis/calendar";
 import { HIDDEN_STEMS, TEN_GODS, tenGod } from "../src/lib/diagnosis/ten-gods";
 import { diagnose } from "../src/lib/diagnosis";
 import { compatibility } from "../src/lib/diagnosis/compatibility";
@@ -49,8 +49,15 @@ describe("本気 and ten gods", () => {
   it("covers every branch and supports replacing the hidden-stem provider", () => {
     expect(BRANCHES.map(branch => HIDDEN_STEMS[branch].main).join("")).toBe("癸己甲乙戊丙丁己庚辛戊壬");
     const result = diagnose({ year: 2000, month: 1, day: 7 });
-    expect(result.tenGod).toBe("印綬"); expect(result.scope).toBe("day-branch");
+    expect(result.pillar.branch).toBe("子"); expect(result.monthBranch).toBe("丑"); expect(result.hiddenStem).toBe("己");
+    expect(result.tenGod).toBe("正財"); expect(result.scope).toBe("month-branch");
     expect(diagnose({ year: 2000, month: 1, day: 7 }, { id: "test", select: () => "丙" }).tenGod).toBe("食神");
+  });
+  it("takes the month branch from the calendar month without 節入り", () => {
+    expect(Array.from({ length: 12 }, (_, i) => monthBranch({ year: 2000, month: i + 1, day: 15 })).join("")).toBe("丑寅卯辰巳午未申酉戌亥子");
+    // 2000-02-01 is before 立春 but still uses 寅; 2000-12-31 uses 子.
+    expect(diagnose({ year: 2000, month: 2, day: 1 }).monthBranch).toBe("寅");
+    expect(diagnose({ year: 2000, month: 12, day: 31 }).monthBranch).toBe("子");
   });
   it("contains ten unique complete profiles and a shared art guide", () => {
     expect(new Set(CHARACTER_TYPES.map(t => t.stem)).size).toBe(10);

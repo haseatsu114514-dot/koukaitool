@@ -8,11 +8,11 @@ let memoryResult: DiagnosisResult | null = null;
 let revealPending = false;
 export const isRevealPending = () => revealPending;
 export function clearRevealPending() { revealPending = false; }
-const storedSchema = z.object({ ruleVersion: z.literal(RULE_VERSION), pillar: z.object({ stem: z.enum(STEMS), branch: z.enum(BRANCHES), cycleIndex: z.number().int().min(0).max(59) }) });
+const storedSchema = z.object({ ruleVersion: z.literal(RULE_VERSION), pillar: z.object({ stem: z.enum(STEMS), branch: z.enum(BRANCHES), cycleIndex: z.number().int().min(0).max(59) }), monthBranch: z.enum(BRANCHES) });
 export function saveResult(result: DiagnosisResult) {
   memoryResult = result;
   revealPending = true;
-  try { sessionStorage.setItem(key, JSON.stringify({ ruleVersion: result.ruleVersion, pillar: result.pillar })); } catch { /* Private browsing: client navigation still works through memory. */ }
+  try { sessionStorage.setItem(key, JSON.stringify({ ruleVersion: result.ruleVersion, pillar: result.pillar, monthBranch: result.monthBranch })); } catch { /* Private browsing: client navigation still works through memory. */ }
 }
 export function readResult(): DiagnosisResult | null {
   if (memoryResult) return memoryResult;
@@ -21,7 +21,7 @@ export function readResult(): DiagnosisResult | null {
     if (!parsed.success) return null;
     const { pillar } = parsed.data;
     if (STEMS[pillar.cycleIndex % 10] !== pillar.stem || BRANCHES[pillar.cycleIndex % 12] !== pillar.branch) return null;
-    const hiddenStem = mainQiProvider.select(pillar.branch);
-    return { ...parsed.data, hiddenStem, tenGod: tenGod(pillar.stem, hiddenStem), providerId: mainQiProvider.id, scope: "day-branch" };
+    const hiddenStem = mainQiProvider.select(parsed.data.monthBranch);
+    return { ...parsed.data, hiddenStem, tenGod: tenGod(pillar.stem, hiddenStem), providerId: mainQiProvider.id, scope: "month-branch" };
   } catch { return null; }
 }

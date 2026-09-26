@@ -29,10 +29,15 @@ export function birthDateSchema(today = todayInJapan()) {
 /** Gregorian civil date, midnight boundary. UTC is only an integer day counter,
  * not a conversion of a person's birth time. No device-timezone or DST dependency.
  * 2000-01-07 = 甲子 (index 0). Tests cross-check an independent calendar library.
- * Scope is 1900–2100; no year/month/hour pillars or solar-term approximation.
+ * Scope is 1900–2100; no year/hour pillars or solar-term approximation.
  */
 export function dayPillar(date: BirthDate) {
   const days = Math.floor((Date.UTC(date.year, date.month - 1, date.day) - Date.UTC(2000, 0, 7)) / 86_400_000);
   const index = mod(days, 60);
   return { stem: STEMS[index % 10], branch: BRANCHES[index % 12], cycleIndex: index };
+}
+/** Month branch by calendar month (1月=丑 … 12月=子). Deliberately ignores 節入り, so days
+ * before each month's 節入り keep that calendar month's branch. */
+export function monthBranch(date: BirthDate): Branch {
+  return BRANCHES[date.month % 12];
 }
