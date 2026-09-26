@@ -4,6 +4,7 @@ import { Copy, Download, Share2 } from "lucide-react";
 import { CHARACTER_TYPES, characterAsset, elementColors, type CharacterType } from "@/data/types";
 import { assetPath } from "@/lib/paths";
 import { SITE_NAME, SITE_TAGLINE } from "@/lib/site";
+import { track } from "@/lib/analytics";
 import { LOGO_PATH } from "./logo";
 
 const SERIF = '"Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif';
@@ -81,9 +82,10 @@ export function ShareActions({ type, mode }: { type: CharacterType; mode: "resul
     text: mode === "result" ? `私は「${type.displayName}」でした！\n${type.shortCatch}\nあなたは何タイプ？ #ステラファイル` : `「${type.displayName}」は、こんなタイプ。\n${type.shortCatch}\nあなたは何タイプ？ #ステラファイル`,
     url: `${window.location.origin}${assetPath(`/types/${type.slug}/`)}`,
   });
-  async function copy() { const data = shareData(); try { await navigator.clipboard.writeText(`${data.text}\n${data.url}`); setMessage("コピーしました。"); } catch { setMessage(`コピーできませんでした。こちらの文を選択してください：${data.text} ${data.url}`); } }
-  async function share() { if (!navigator.share) { await copy(); return; } try { await navigator.share(shareData()); } catch (error) { if (!(error instanceof DOMException && error.name === "AbortError")) setMessage("シェアできませんでした。コピーボタンをお試しください。"); } }
-  async function save() { setSaving(true); try { await exportCard(type); setMessage("画像を保存しました。"); } catch { setMessage("画像を保存できませんでした。もう一度お試しください。"); } finally { setSaving(false); } }
+  const tracked = (method: "image" | "native" | "copy") => track({ name: "share", method, content_type: mode, item_id: type.slug });
+  async function copy() { const data = shareData(); try { await navigator.clipboard.writeText(`${data.text}\n${data.url}`); setMessage("コピーしました。"); tracked("copy"); } catch { setMessage(`コピーできませんでした。こちらの文を選択してください：${data.text} ${data.url}`); } }
+  async function share() { if (!navigator.share) { await copy(); return; } try { await navigator.share(shareData()); tracked("native"); } catch (error) { if (!(error instanceof DOMException && error.name === "AbortError")) setMessage("シェアできませんでした。コピーボタンをお試しください。"); } }
+  async function save() { setSaving(true); try { await exportCard(type); setMessage("画像を保存しました。"); tracked("image"); } catch { setMessage("画像を保存できませんでした。もう一度お試しください。"); } finally { setSaving(false); } }
   return <div className={`share-actions share-${mode}`}>
     {mode === "type" && <p className="share-label">このタイプをシェア</p>}
     <div className="share-buttons">

@@ -13,8 +13,8 @@ test("birthday validation → result → share image → catalog", async ({ page
   await expect(page.getByText("星から受け取ったギフト", { exact: false })).toBeVisible();
   // The item is not drawn over the character; a hint under the title points down to its chapter.
   await expect(page.locator(".profile-art a")).toHaveCount(0); await expect(page.locator(".item-hint")).toHaveAttribute("href", "#item");
-  // The official LINE invitation sits once, below the explanation (URL comes from NEXT_PUBLIC_LINE_URL in playwright.config).
-  await expect(page.getByRole("link", { name: "LINEで友だち追加" })).toHaveCount(1); await expect(page.getByRole("link", { name: "LINEで友だち追加" })).toHaveAttribute("href", "https://lin.ee/e2e-example");
+  // The official LINE invitation sits once, below the explanation. Grizzly has its own URL in playwright.config (NEXT_PUBLIC_LINE_URLS); other types fall back to NEXT_PUBLIC_LINE_URL.
+  await expect(page.getByRole("link", { name: "LINEで友だち追加" })).toHaveCount(1); await expect(page.getByRole("link", { name: "LINEで友だち追加" })).toHaveAttribute("href", "https://lin.ee/e2e-grizzly");
   await expect(page.getByText("グループ", { exact: false }).first()).toBeVisible(); await expect(page.getByText("エレメント", { exact: false })).toHaveCount(0);
   expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => JSON.stringify(sessionStorage))).not.toContain("2000");
   await page.reload(); await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");

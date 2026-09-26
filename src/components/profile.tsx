@@ -84,7 +84,7 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
     <nav className="profile-toc" aria-label="このページの内容">{chapters.map(chapter => <a key={chapter.id} href={`#${chapter.id}`}>{chapter.toc}</a>)}</nav>
     <div className="profile-body">
       {chapters.map(chapter => <Chapter key={chapter.id} id={chapter.id} title={chapter.title}>{chapter.body}</Chapter>)}
-      {result && <LineCta />}
+      {result && <LineCta type={type} />}
       <p className="micro disclaimer">占いをもとにした診断なので、当てはまるところだけ参考にしてください。</p>
       {result ? <section className="cta-panel" aria-labelledby="share-title">
         <span className="cta-panel-art" style={elementStyle(type.stem)} aria-hidden="true"><Character type={type} /></span>

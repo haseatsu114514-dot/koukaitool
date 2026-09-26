@@ -107,6 +107,21 @@ PNG保存はCanvasによる1080×1350（サイトのWebフォント、ロゴ、�
 
 診断結果ページの説明（各章）の下に「LINEで友だち追加」ボタンを表示します。URLは `NEXT_PUBLIC_LINE_URL`（GitHub Actionsでは **Settings → Secrets and variables → Actions → Variables** の `LINE_FRIEND_URL`）で設定し、未設定ならボタンは出ません。タイプ紹介ページ（診断していない人が見るページ）には出しません。ボタンはLINEのロゴを使わない文字ボタンです。
 
+タイプごとに別の友だち追加URLを使うこともできます。`NEXT_PUBLIC_LINE_URLS`（Actionsの変数 `LINE_FRIEND_URLS`）に `{"grizzly":"https://…","rabbit":"https://…"}` のようなJSONを入れると、そのタイプの人にはそのURLを、書いていないタイプには共通URLを出します。Lステップやエルメなどで「流入経路」ごとのURLを発行すれば、友だち追加の時点でタイプ別のタグが付き、タイプ別の配信ができます。JSONの誤り・存在しないタイプ名・https以外のURLはビルドを失敗させます。
+
+## アクセス解析（任意）
+
+`NEXT_PUBLIC_GA_ID`（Actionsの変数 `GA_MEASUREMENT_ID`、`G-` で始まるGA4の測定ID）を設定したときだけGoogle アナリティクスを読み込み、プライバシーページにも説明が出ます。未設定なら何も送りません。導線を見るために次のイベントを送ります（生年月日とアイテムは送りません）。
+
+| イベント | 意味 | パラメータ |
+|---|---|---|
+| `diagnosis_complete` | 診断した（再読み込みでは数えない） | `stella_type` |
+| `line_view` | LINEの案内が画面に半分以上入った | `stella_type` |
+| `line_click` | 「LINEで友だち追加」を押した | `stella_type` |
+| `share` | 画像保存・シェア・コピー | `method`（image / native / copy）、`content_type`（result / type）、`item_id` |
+
+`sitemap.xml` と `robots.txt` も書き出します。GitHub Pagesのプロジェクトサイト（`/koukaitool/`）では `robots.txt` は検索エンジンに読まれないので、Search Consoleに `sitemap.xml` を直接登録してください。独自ドメインに移すと `robots.txt` も有効になります。
+
 ## 用語
 
 画面では五行の用語（木・火・土・金・水、エレメント）を使わず、「緑・赤・黄・白・青グループ」と呼びます（`GROUP_NAMES` / `groupName`）。コード内の `ELEMENT_COLORS` などの名前は内部用です。

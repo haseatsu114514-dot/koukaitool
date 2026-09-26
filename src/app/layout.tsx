@@ -4,6 +4,7 @@ import { assetPath, siteUrl } from "@/lib/paths";
 import { pageMetadata, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
 import { TabBar } from "@/components/tab-bar";
 import { LogoMark } from "@/components/logo";
+import { Analytics } from "@/components/analytics";
 import "./globals.css";
 /** Only the weights the stylesheet uses: mincho headings (700) and gothic body (400/700). */
 const FONTS_URL = "https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@700&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap";
@@ -31,5 +32,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <nav aria-label="フッター"><Link href="/">ホーム</Link><Link href="/types/">ステラタイプ一覧</Link><Link href="/privacy/">プライバシー</Link></nav>
       <p className="footer-note">占いをもとにした、自分を知るためのコンテンツです。<span>© Stella File</span></p>
     </footer>
+    <Analytics />
   </body></html>;
 }

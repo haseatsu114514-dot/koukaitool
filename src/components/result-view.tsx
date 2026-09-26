@@ -5,12 +5,15 @@ import { useEffect, useState } from "react";
 import { clearRevealPending, isRevealPending, readResult } from "@/lib/result-store";
 import type { DiagnosisResult } from "@/lib/diagnosis";
 import { typeByStem } from "@/data/types";
+import { track } from "@/lib/analytics";
 import { BookReveal } from "./book-reveal";
 import { Profile } from "./profile";
 export function ResultView() {
   const [result, setResult] = useState<DiagnosisResult | null>(null); const [loaded, setLoaded] = useState(false); const [reveal, setReveal] = useState(false);
   useEffect(() => {
-    setResult(readResult()); setLoaded(true);
+    const stored = readResult(); setResult(stored); setLoaded(true);
+    // A pending reveal means this is a fresh diagnosis rather than a reload or a revisit.
+    if (stored && isRevealPending()) track({ name: "diagnosis_complete", stella_type: typeByStem(stored.pillar.stem).slug });
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) clearRevealPending();
     setReveal(isRevealPending());
   }, []);
