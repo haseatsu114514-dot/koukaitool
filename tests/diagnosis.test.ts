@@ -5,6 +5,7 @@ import { HIDDEN_STEMS, TEN_GODS, tenGod } from "../src/lib/diagnosis/ten-gods";
 import { diagnose } from "../src/lib/diagnosis";
 import { compatibility } from "../src/lib/diagnosis/compatibility";
 import { CHARACTER_TYPES, generationRequest } from "../src/data/types";
+import { TYPE_DETAILS } from "../src/data/type-details";
 describe("Gregorian day pillar", () => {
   it("matches the published 6tail fixture 1986-05-29 癸酉", () => { expect(dayPillar({ year: 1986, month: 5, day: 29 })).toMatchObject({ stem: "癸", branch: "酉" }); });
   it("uses 2000-01-07 as 甲子 and repeats after 60 days", () => {
@@ -57,6 +58,14 @@ describe("本気 and ten gods", () => {
     expect(new Set(CHARACTER_TYPES.map(t => t.slug)).size).toBe(10);
     for (const type of CHARACTER_TYPES) { expect(type.strengths.length).toBe(3); expect(type.summary.length).toBeGreaterThan(40); expect(generationRequest(type).prompt).toContain(type.imagePrompt); }
     expect(TEN_GODS.length).toBe(10);
+  });
+  it("keeps every long-form profile the same shape", () => {
+    for (const type of CHARACTER_TYPES) {
+      const detail = TYPE_DETAILS[type.slug];
+      expect(detail.aruaru, type.slug).toHaveLength(6); expect(detail.jobs, type.slug).toHaveLength(8);
+      // The card heading already says "ストレスがたまると", so the body must not repeat it.
+      expect(detail.stress.startsWith("ストレスがたま"), type.slug).toBe(false);
+    }
   });
 });
 describe("compatibility", () => {

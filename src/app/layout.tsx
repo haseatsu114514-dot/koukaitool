@@ -1,28 +1,35 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { Sparkle } from "lucide-react";
-import { assetPath } from "@/lib/paths";
+import { assetPath, siteUrl } from "@/lib/paths";
+import { pageMetadata, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
 import { TabBar } from "@/components/tab-bar";
 import "./globals.css";
-const FONTS_URL = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap";
+/** Only the weights the stylesheet uses: numerals (italic 500/600), mincho headings (700/800), gothic body (400/700). */
+const FONTS_URL = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Shippori+Mincho+B1:wght@700;800&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap";
 export const metadata: Metadata = {
-  title: { default: "ステラファイル｜生年月日でわかる10のステラタイプ診断", template: "%s｜ステラファイル" },
-  description: "生年月日を入れるだけで、10のステラタイプからあなたの性格タイプを診断。恋愛・仕事の傾向や、相性のいいタイプもわかります。",
+  metadataBase: siteUrl,
+  title: { default: `${SITE_NAME}｜${SITE_TAGLINE}`, template: `%s｜${SITE_NAME}` },
+  ...pageMetadata({ description: "生年月日を入れるだけで、10のステラタイプからあなたのタイプを診断。性格・恋愛・仕事の傾向と、相性のいい相手がわかります。質問ゼロ・登録なし。", path: "/" }),
   icons: { icon: assetPath("/favicon.svg"), apple: assetPath("/icons/apple-touch-icon.png") },
   manifest: assetPath("/manifest.webmanifest"),
-  appleWebApp: { capable: true, title: "ステラファイル", statusBarStyle: "black-translucent" },
+  appleWebApp: { capable: true, title: SITE_NAME, statusBarStyle: "black-translucent" },
   formatDetection: { telephone: false },
   robots: { index: true, follow: true },
 };
 /** App-ready viewport: edge-to-edge under the notch (safe areas handled in CSS), no zoom-on-focus jumps. */
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#0b1729", colorScheme: "dark" };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ja" style={{ colorScheme: "dark" }} data-scroll-behavior="smooth"><head><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />{/* Loaded at runtime (not via next/font) so builds never depend on downloading ~200 Japanese font subsets. */}<link rel="stylesheet" href={FONTS_URL} /></head><body><div className="sky" aria-hidden="true"><i className="stars stars-far" /><i className="stars stars-near" /><i className="shooting-star" /></div><a className="skip-link" href="#main">本文へスキップ</a>
-    <header className="site-header"><Link className="brand" href="/" aria-label="ステラファイル トップ"><Sparkle className="brand-mark" size={22} fill="currentColor" /><span>ステラファイル</span></Link>
+  return <html lang="ja" style={{ colorScheme: "dark" }} data-scroll-behavior="smooth"><head><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />{/* Loaded at runtime (not via next/font) so builds never depend on downloading ~200 Japanese font subsets. Disclosed on the privacy page. */}<link rel="stylesheet" href={FONTS_URL} /></head><body><div className="sky" aria-hidden="true"><i className="stars stars-far" /><i className="stars stars-near" /><i className="shooting-star" /></div><a className="skip-link" href="#main">本文へスキップ</a>
+    <header className="site-header"><Link className="brand" href="/" aria-label={`${SITE_NAME} トップ`}><Sparkle className="brand-mark" size={22} fill="currentColor" aria-hidden="true" /><span>{SITE_NAME}</span></Link>
       <nav aria-label="メインナビゲーション"><Link href="/types/">ステラタイプ一覧</Link><Link className="nav-cta" href="/#diagnose">診断する</Link></nav>
     </header>
     <main id="main">{children}</main>
     <TabBar />
-    <footer className="site-footer"><Link className="footer-brand" href="/">ステラファイル</Link><div><Link href="/privacy/">プライバシー</Link><span>© Stella File</span></div></footer>
+    <footer className="site-footer">
+      <div className="footer-brand"><Link href="/"><Sparkle size={16} fill="currentColor" aria-hidden="true" />{SITE_NAME}</Link><p>{SITE_TAGLINE}</p></div>
+      <nav aria-label="フッター"><Link href="/">ホーム</Link><Link href="/types/">ステラタイプ一覧</Link><Link href="/privacy/">プライバシー</Link></nav>
+      <p className="footer-note">占いをもとにした、自分を知るためのコンテンツです。<span>© Stella File</span></p>
+    </footer>
   </body></html>;
 }
