@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { Solar } from "lunar-typescript";
-import { birthDateSchema, dayPillar, monthBranch, todayInJapan, STEMS, BRANCHES } from "../src/lib/diagnosis/calendar";
+import { birthDateSchema, dayPillar, monthBranch, setsuiri, todayInJapan, STEMS, BRANCHES } from "../src/lib/diagnosis/calendar";
 import { HIDDEN_STEMS, TEN_GODS, tenGod } from "../src/lib/diagnosis/ten-gods";
 import { diagnose } from "../src/lib/diagnosis";
 import { compatibility } from "../src/lib/diagnosis/compatibility";
@@ -53,17 +53,73 @@ describe("本気 and ten gods", () => {
     expect(result.tenGod).toBe("正財"); expect(result.scope).toBe("month-branch");
     expect(diagnose({ year: 2000, month: 1, day: 7 }, { id: "test", select: () => "丙" }).tenGod).toBe("食神");
   });
-  it("takes the month branch from the calendar month without 節入り", () => {
-    expect(Array.from({ length: 12 }, (_, i) => monthBranch({ year: 2000, month: i + 1, day: 15 })).join("")).toBe("丑寅卯辰巳午未申酉戌亥子");
-    // 2000-02-01 is before 立春 but still uses 寅; 2000-12-31 uses 子.
-    expect(diagnose({ year: 2000, month: 2, day: 1 }).monthBranch).toBe("寅");
-    expect(diagnose({ year: 2000, month: 12, day: 31 }).monthBranch).toBe("子");
-  });
   it("contains ten unique complete profiles and a shared art guide", () => {
     expect(new Set(CHARACTER_TYPES.map(t => t.stem)).size).toBe(10);
     expect(new Set(CHARACTER_TYPES.map(t => t.slug)).size).toBe(10);
     for (const type of CHARACTER_TYPES) { expect(type.strengths.length).toBe(3); expect(type.summary.length).toBeGreaterThan(40); expect(generationRequest(type).prompt).toContain(type.imagePrompt); }
     expect(TEN_GODS.length).toBe(10);
+  });
+});
+describe("節入り and month branch", () => {
+  const minutes = (year: number, month: number, t: { day: number; hour: number; minute: number }) => Date.UTC(year, month - 1, t.day, t.hour, t.minute) / 60_000;
+  it("matches lunar-typescript (UTC+8 shifted to JST, nearest minute) for every 節 1900–2100", () => {
+    const terms = ["小寒", "立春", "惊蛰", "清明", "立夏", "芒种", "小暑", "立秋", "白露", "寒露", "立冬", "大雪"];
+    for (let year = 1900; year <= 2100; year++) {
+      const table = Solar.fromYmd(year, 6, 1).getLunar().getJieQiTable();
+      terms.forEach((name, i) => {
+        const t = table[name];
+        const expected = Math.round(Date.UTC(t.getYear(), t.getMonth() - 1, t.getDay(), t.getHour(), t.getMinute(), t.getSecond()) / 60_000) + 60;
+        expect(minutes(year, i + 1, setsuiri(year, i + 1)), `${year} ${name}`).toBe(expected);
+      });
+    }
+  });
+  it("stays within one minute of the NAOJ 暦要項", () => {
+    // 国立天文台 暦要項 二十四節気 (JST, DDHHMM for 小寒 … 大雪).
+    const naoj: Record<number, string> = {
+      2005: "051503 040243 052045 050134 051853 052302 070917 071903 072157 081333 071642 070933",
+      2024: "060549 041727 051123 041602 050910 051310 062320 070909 071211 080400 070720 070017",
+      2025: "051133 032310 051707 042149 051457 051857 070505 071452 071752 080941 071304 070605",
+      2026: "051723 040502 052259 050340 052049 060048 071057 072043 072341 081529 071852 071153",
+    };
+    for (const [year, row] of Object.entries(naoj)) row.split(" ").forEach((entry, i) => {
+      const published = { day: +entry.slice(0, 2), hour: +entry.slice(2, 4), minute: +entry.slice(4) };
+      expect(Math.abs(minutes(+year, i + 1, setsuiri(+year, i + 1)) - minutes(+year, i + 1, published)), `${year}-${i + 1}`).toBeLessThanOrEqual(1);
+    });
+  });
+  it("stays within 15 minutes of an independent solar-longitude formula for every 節 1900–2100", () => {
+    // Meeus, Astronomical Algorithms ch. 25 (low precision, about 0.01°); UT is used for TT.
+    const rad = Math.PI / 180;
+    const longitude = (ms: number) => {
+      const T = (ms / 86_400_000 + 2440587.5 - 2451545) / 36525;
+      const M = (357.52911 + 35999.05029 * T - 0.0001537 * T * T) * rad;
+      const C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(M) + (0.019993 - 0.000101 * T) * Math.sin(2 * M) + 0.000289 * Math.sin(3 * M);
+      return 280.46646 + 36000.76983 * T + 0.0003032 * T * T + C - 0.00569 - 0.00478 * Math.sin((125.04 - 1934.136 * T) * rad);
+    };
+    for (let year = 1900; year <= 2100; year++) for (let month = 1; month <= 12; month++) {
+      const tableMs = minutes(year, month, setsuiri(year, month)) * 60_000 - 9 * 3_600_000;
+      const target = 285 + 30 * (month - 1);
+      let lo = tableMs - 2 * 86_400_000, hi = tableMs + 2 * 86_400_000;
+      for (let k = 0; k < 40; k++) { const mid = (lo + hi) / 2; if (((longitude(mid) - target) % 360 + 540) % 360 - 180 >= 0) hi = mid; else lo = mid; }
+      expect(Math.abs(tableMs - hi) / 60_000, `${year}-${month}`).toBeLessThan(15);
+    }
+  });
+  it("switches the month branch at 節入り and treats the 節入り day as noon", () => {
+    expect(Array.from({ length: 12 }, (_, i) => monthBranch({ year: 2024, month: i + 1, day: 15 })).join("")).toBe("丑寅卯辰巳午未申酉戌亥子");
+    expect(Array.from({ length: 12 }, (_, i) => monthBranch({ year: 2024, month: i + 1, day: 1 })).join("")).toBe("子丑寅卯辰巳午未申酉戌亥");
+    // 2024 立春 is 02-04 17:27 JST: noon on that day is still 丑, a known later time is 寅.
+    expect(monthBranch({ year: 2024, month: 2, day: 4 })).toBe("丑");
+    expect(monthBranch({ year: 2024, month: 2, day: 4 }, { hour: 17, minute: 27 })).toBe("寅");
+    expect(monthBranch({ year: 2024, month: 2, day: 5 })).toBe("寅");
+    // 2024 大雪 is 12-07 00:17 JST (12-06 in UTC+8).
+    expect(monthBranch({ year: 2024, month: 12, day: 6 })).toBe("亥");
+    expect(monthBranch({ year: 2024, month: 12, day: 7 })).toBe("子");
+    // 2025 立春 is 02-03 23:10 JST.
+    expect(monthBranch({ year: 2025, month: 2, day: 3 })).toBe("丑");
+    expect(diagnose({ year: 2025, month: 2, day: 4 }).monthBranch).toBe("寅");
+    expect(diagnose({ year: 1900, month: 1, day: 1 }).monthBranch).toBe("子");
+    // 2000 小寒 is 01-06 10:01 JST, before noon, so the 節入り day itself is already 丑.
+    expect(diagnose({ year: 2000, month: 1, day: 5 }).monthBranch).toBe("子");
+    expect(diagnose({ year: 2000, month: 1, day: 6 }).monthBranch).toBe("丑");
   });
 });
 describe("compatibility", () => {
