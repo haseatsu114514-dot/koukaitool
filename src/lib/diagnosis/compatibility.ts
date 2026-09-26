@@ -18,3 +18,12 @@ export function compatibility(stem: Stem): Record<CompatibilityLevel, Stem[]> {
     caution: STEMS.filter(target => tenGod(stem, target) === "偏官"),
   };
 }
+
+/** What the site shows: four levels for every other type.
+ * best / good as above; foe = caution; mid (そこそこ) = everyone else, including the "attracted" stems. */
+export type StellaLevel = "best" | "good" | "mid" | "foe";
+export function stellaCompatibility(stem: Stem): Record<StellaLevel, Stem[]> {
+  const { best, good, caution } = compatibility(stem);
+  const placed = new Set<Stem>([stem, ...best, ...good, ...caution]);
+  return { best, good, mid: STEMS.filter(target => !placed.has(target)), foe: caution };
+}

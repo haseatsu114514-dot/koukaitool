@@ -84,15 +84,18 @@ export function ShareActions({ type, mode }: { type: CharacterType; mode: "resul
   });
   const tracked = (method: "image" | "native" | "copy") => track({ name: "share", method, content_type: mode, item_id: type.slug });
   async function copy() { const data = shareData(); try { await navigator.clipboard.writeText(`${data.text}\n${data.url}`); setMessage("コピーしました。"); tracked("copy"); } catch { setMessage(`コピーできませんでした。こちらの文を選択してください：${data.text} ${data.url}`); } }
-  async function share() { if (!navigator.share) { await copy(); return; } try { await navigator.share(shareData()); tracked("native"); } catch (error) { if (!(error instanceof DOMException && error.name === "AbortError")) setMessage("シェアできませんでした。コピーボタンをお試しください。"); } }
+  async function share() { if (!navigator.share) { await copy(); return; } try { await navigator.share(shareData()); tracked("native"); } catch (error) { if (!(error instanceof DOMException && error.name === "AbortError")) await copy(); } }
   async function save() { setSaving(true); try { await exportCard(type); setMessage("画像を保存しました。"); tracked("image"); } catch { setMessage("画像を保存できませんでした。もう一度お試しください。"); } finally { setSaving(false); } }
   return <div className={`share-actions share-${mode}`}>
     {mode === "type" && <p className="share-label">このタイプをシェア</p>}
-    <div className="share-buttons">
-      {mode === "result" && <button type="button" className="button secondary share-save" onClick={save} disabled={saving}><Download size={17} aria-hidden="true" />{saving ? "保存中…" : "結果画像を保存"}</button>}
+    {mode === "result" ? <div className="share-pair">
+      <button type="button" className="button secondary" onClick={save} disabled={saving}><Download size={17} aria-hidden="true" />{saving ? "保存中…" : "画像を保存"}</button>
+      {/* Where the share sheet is missing (most desktop browsers), this copies the text and link instead. */}
+      <button type="button" className="button secondary" onClick={share}><Share2 size={17} aria-hidden="true" />シェア</button>
+    </div> : <div className="share-buttons">
       <button type="button" className="chip-button" onClick={share}><Share2 size={16} aria-hidden="true" />シェア</button>
-      <button type="button" className="chip-button" onClick={copy}><Copy size={16} aria-hidden="true" />{mode === "result" ? "コピー" : "リンクをコピー"}</button>
-    </div>
+      <button type="button" className="chip-button" onClick={copy}><Copy size={16} aria-hidden="true" />リンクをコピー</button>
+    </div>}
     <p className="share-status micro" role="status">{message}</p>
   </div>;
 }

@@ -3,7 +3,7 @@ import { Solar } from "lunar-typescript";
 import { birthDateSchema, dayPillar, monthBranch, setsuiri, todayInJapan, STEMS, BRANCHES } from "../src/lib/diagnosis/calendar";
 import { HIDDEN_STEMS, TEN_GODS, tenGod } from "../src/lib/diagnosis/ten-gods";
 import { diagnose } from "../src/lib/diagnosis";
-import { compatibility } from "../src/lib/diagnosis/compatibility";
+import { compatibility, stellaCompatibility } from "../src/lib/diagnosis/compatibility";
 import { CHARACTER_TYPES, generationRequest } from "../src/data/types";
 import { TYPE_DETAILS } from "../src/data/type-details";
 describe("Gregorian day pillar", () => {
@@ -143,6 +143,16 @@ describe("compatibility", () => {
       const all = Object.values(compatibility(stem)).flat();
       expect(new Set(all).size).toBe(all.length); expect(all).not.toContain(stem);
       expect(compatibility(stem).caution).toHaveLength(1);
+    }
+  });
+});
+describe("four-level compatibility shown on the site", () => {
+  it("puts every other type in exactly one of 最高・いい・そこそこ・天敵", () => {
+    expect(stellaCompatibility("甲")).toEqual({ best: ["己"], good: ["壬", "癸"], mid: ["乙", "丙", "丁", "戊", "辛"], foe: ["庚"] });
+    for (const stem of STEMS) {
+      const all = Object.values(stellaCompatibility(stem)).flat();
+      expect(all).toHaveLength(9); expect(new Set(all).size).toBe(9); expect(all).not.toContain(stem);
+      expect(stellaCompatibility(stem).foe).toEqual(compatibility(stem).caution);
     }
   });
 });

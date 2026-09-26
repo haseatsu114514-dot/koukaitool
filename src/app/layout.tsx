@@ -23,13 +23,13 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, view
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="ja" style={{ colorScheme: "dark" }} data-scroll-behavior="smooth"><head><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />{/* Loaded at runtime (not via next/font) so builds never depend on downloading ~200 Japanese font subsets. Disclosed on the privacy page. */}<link rel="stylesheet" href={FONTS_URL} /></head><body><div className="sky" aria-hidden="true" /><a className="skip-link" href="#main">本文へスキップ</a>
     <header className="site-header"><Link className="brand" href="/" aria-label={`${SITE_NAME} トップ`}><LogoMark className="brand-mark" size={20} /><span>{SITE_NAME}</span></Link>
-      <nav aria-label="メインナビゲーション"><Link href="/types/">ステラタイプ一覧</Link><Link className="nav-cta" href="/#diagnose">診断する</Link></nav>
+      <nav aria-label="メインナビゲーション"><Link href="/types/">タイプ図鑑</Link><Link className="nav-cta" href="/#diagnose">診断する</Link></nav>
     </header>
     <main id="main">{children}</main>
     <TabBar />
     <footer className="site-footer">
       <div className="footer-brand"><Link href="/"><LogoMark className="brand-mark" size={16} />{SITE_NAME}</Link><p>{SITE_TAGLINE}</p></div>
-      <nav aria-label="フッター"><Link href="/">ホーム</Link><Link href="/types/">ステラタイプ一覧</Link><Link href="/privacy/">プライバシー</Link></nav>
+      <nav aria-label="フッター"><Link href="/">ホーム</Link><Link href="/types/">タイプ図鑑</Link><Link href="/privacy/">プライバシー</Link></nav>
       <p className="footer-note">占いをもとにした、自分を知るためのコンテンツです。<span>© Stella File</span></p>
     </footer>
     <Analytics />

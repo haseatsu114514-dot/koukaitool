@@ -105,7 +105,11 @@ PNG保存はCanvasによる1080×1350（サイトのWebフォント、ロゴ、�
 
 ## 公式LINEへの案内
 
-診断結果ページの説明（各章）の下に「LINEで友だち追加」ボタンを表示します。URLは `NEXT_PUBLIC_LINE_URL`（GitHub Actionsでは **Settings → Secrets and variables → Actions → Variables** の `LINE_FRIEND_URL`）で設定し、未設定ならボタンは出ません。タイプ紹介ページ（診断していない人が見るページ）には出しません。ボタンはLINEのロゴを使わない文字ボタンです。
+診断結果ページの説明（各章）の下に「結果の続きを、LINEで」の案内を表示します。この結果でわかることと、LINEでさらに詳しくなること（性格・仕事・相性・アイテム・気をつけたい時期）を表で並べ、「LINEで続きを読む」ボタンで友だち追加へ進みます。
+
+相性は「最高の相性・相性がいい・そこそこ・天敵」の4段階です（`stellaCompatibility`）。LINEのURLを設定すると、そこそこ・天敵は何タイプあるかだけを見せる鍵つき表示になり、中身はLINEで届けます。URLが未設定なら4段階すべてをサイトに表示します。
+
+URLは `NEXT_PUBLIC_LINE_URL`（GitHub Actionsでは **Settings → Secrets and variables → Actions → Variables** の `LINE_FRIEND_URL`）で設定し、未設定ならボタンは出ません。タイプ紹介ページ（診断していない人が見るページ）には出しません。ボタンはLINEのロゴを使わない文字ボタンです。
 
 タイプごとに別の友だち追加URLを使うこともできます。`NEXT_PUBLIC_LINE_URLS`（Actionsの変数 `LINE_FRIEND_URLS`）に `{"grizzly":"https://…","rabbit":"https://…"}` のようなJSONを入れると、そのタイプの人にはそのURLを、書いていないタイプには共通URLを出します。Lステップやエルメなどで「流入経路」ごとのURLを発行すれば、友だち追加の時点でタイプ別のタグが付き、タイプ別の配信ができます。JSONの誤り・存在しないタイプ名・https以外のURLはビルドを失敗させます。
 

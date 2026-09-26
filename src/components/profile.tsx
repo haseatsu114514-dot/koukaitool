@@ -1,22 +1,24 @@
 import Link from "next/link";
 import { ViewTransition } from "react";
-import { ArrowRight, Check, ArrowLeft, RotateCcw, ChevronDown } from "lucide-react";
+import { ArrowRight, Check, ArrowLeft, RotateCcw, ChevronDown, Lock } from "lucide-react";
 import { CHARACTER_TYPES, groupName, elementStyle, typeByStem, type CharacterType } from "@/data/types";
 import { TYPE_DETAILS } from "@/data/type-details";
 import type { DiagnosisResult } from "@/lib/diagnosis";
 import { GOD_COPY, type TenGod } from "@/lib/diagnosis/ten-gods";
-import { compatibility, type CompatibilityLevel } from "@/lib/diagnosis/compatibility";
+import { stellaCompatibility, type StellaLevel } from "@/lib/diagnosis/compatibility";
+import { lineUrlFor } from "@/lib/line";
 import { Bx } from "./bx";
 import { Character } from "./character";
 import { ITEM_ICONS } from "./item-icon";
 import { ShareActions } from "./share-actions";
 import { LineCta } from "./line-cta";
+import { ProfileToc } from "./profile-toc";
 
-const COMPATIBILITY_LABELS: Record<CompatibilityLevel, { label: string; note: string }> = {
+const COMPATIBILITY_LABELS: Record<StellaLevel, { label: string; note: string }> = {
   best: { label: "最高の相性", note: "自然と惹かれ合う組み合わせ。一緒にいると、お互いの足りないところを補えます。" },
   good: { label: "相性がいい", note: "あなたを後ろから支えてくれる相手。そばにいると力が出やすくなります。" },
-  attracted: { label: "惹かれやすい相手", note: "つい気になって、世話を焼きたくなる相手。あなたの応援が、相手の力になります。" },
-  caution: { label: "ちょっと注意", note: "考え方がぶつかりやすい相手。違いを知っておけば、うまく付き合えます。" },
+  mid: { label: "そこそこ", note: "付かず離れずの関係。無理に合わせなくて大丈夫です。" },
+  foe: { label: "天敵", note: "考え方がぶつかりやすい相手。言い方をひと工夫するだけで、ずいぶんラクになります。" },
 };
 
 function ItemCard({ tenGod }: { tenGod: TenGod }) {
@@ -27,13 +29,21 @@ function ItemCard({ tenGod }: { tenGod: TenGod }) {
   </>;
 }
 
-function Compatibility({ type }: { type: CharacterType }) {
-  const groups = compatibility(type.stem);
-  return <div className="compat-groups">
-    {(Object.keys(COMPATIBILITY_LABELS) as CompatibilityLevel[]).filter(level => groups[level].length > 0).map(level => <div key={level} className={`compat-group compat-${level}`}>
-      <h3>{COMPATIBILITY_LABELS[level].label}</h3><p><Bx>{COMPATIBILITY_LABELS[level].note}</Bx></p>
-      <ul>{groups[level].map(stem => { const partner = typeByStem(stem); return <li key={stem}><Link href={`/types/${partner.slug}/`}><span className="compat-art" style={elementStyle(stem)}><Character type={partner} /></span><span><Bx>{partner.displayName}</Bx></span></Link></li>; })}</ul>
-    </div>)}
+/** 最高・いい are always shown. Once the official LINE is set up, そこそこ and 天敵 are kept for LINE: the row says how many types there are, not which. */
+function Compatibility({ type, locked, onResult }: { type: CharacterType; locked: boolean; onResult: boolean }) {
+  const groups = stellaCompatibility(type.stem);
+  return <div className="compat-rows">
+    {(Object.keys(COMPATIBILITY_LABELS) as StellaLevel[]).map(level => {
+      const hidden = locked && (level === "mid" || level === "foe");
+      return <div key={level} className={`compat-row compat-${level}`}>
+        <h3 className="compat-label">{COMPATIBILITY_LABELS[level].label}</h3>
+        {hidden ? <p className="compat-lock"><span className="compat-q" aria-hidden="true">?</span><span>{groups[level].length}タイプ</span><Lock size={13} strokeWidth={2.2} aria-hidden="true" />{onResult ? <a href="#line">LINEで見られます</a> : <span>診断結果からLINEで見られます</span>}</p>
+          : <div className="compat-main">
+            <ul>{groups[level].map(stem => { const partner = typeByStem(stem); return <li key={stem}><Link href={`/types/${partner.slug}/`}><span className="compat-art" style={elementStyle(stem)}><Character type={partner} /></span><span className="compat-name"><Bx>{partner.displayName}</Bx></span></Link></li>; })}</ul>
+            <p className="compat-note"><Bx>{COMPATIBILITY_LABELS[level].note}</Bx></p>
+          </div>}
+      </div>;
+    })}
   </div>;
 }
 
@@ -61,10 +71,10 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
     { id: "friends", toc: "人間関係", title: "人との付き合い方", body: <p><Bx>{detail.relationships}</Bx></p> },
     { id: "care", toc: "ストレス", title: "疲れたときは", body: <p><Bx>{detail.stress}</Bx></p> },
     { id: "advice", toc: "アドバイス", title: "アドバイス", body: <div className="advice-box"><p><Bx>{detail.advice}</Bx></p></div> },
-    { id: "compat", toc: "相性", title: "相性", body: <Compatibility type={type} /> },
+    { id: "compat", toc: "相性", title: "相性", body: <Compatibility type={type} locked={!!lineUrlFor(type.slug)} onResult={!!result} /> },
   ];
   return <article className="profile page-width">
-    {!result && <Link className="breadcrumb" href="/types/"><ArrowLeft size={15} aria-hidden="true" />ステラタイプ一覧へ</Link>}
+    {!result && <Link className="breadcrumb" href="/types/"><ArrowLeft size={15} aria-hidden="true" />ステラタイプ図鑑へ</Link>}
     <div className="profile-hero">
       <ViewTransition name={`character-${type.slug}`}><div className="profile-art" style={elementStyle(type.stem)}><Character type={type} priority /></div></ViewTransition>
       <div className="profile-title">
@@ -81,7 +91,7 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
         </div>}
       </div>
     </div>
-    <nav className="profile-toc" aria-label="このページの内容">{chapters.map(chapter => <a key={chapter.id} href={`#${chapter.id}`}>{chapter.toc}</a>)}</nav>
+    <ProfileToc items={chapters.map(chapter => ({ id: chapter.id, label: chapter.toc }))} />
     <div className="profile-body">
       {chapters.map(chapter => <Chapter key={chapter.id} id={chapter.id} title={chapter.title}>{chapter.body}</Chapter>)}
       {result && <LineCta type={type} />}
