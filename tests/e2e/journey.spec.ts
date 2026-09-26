@@ -9,7 +9,7 @@ test("birthday validation → result → share image → catalog", async ({ page
   await page.getByRole("button", { name: "診断する", exact: true }).click();
   await expect(page.locator(".book-reveal")).toBeVisible(); await expect(page.locator(".book-reveal")).toBeHidden({ timeout: 8000 });
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
-  await expect(page.getByRole("heading", { name: "あなたのアイテム", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "本", exact: true })).toBeVisible(); await expect(page.getByText("学んだことを人に伝えられる")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "あなたのアイテム", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "スケジュール帳", exact: true })).toBeVisible(); await expect(page.getByText("先を見越して、しっかり計画できる")).toBeVisible();
   await expect(page.getByText("アイテムは10通り", { exact: false })).toBeVisible();
   expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => JSON.stringify(sessionStorage))).not.toContain("2000");
   await page.reload(); await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");

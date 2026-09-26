@@ -26,7 +26,7 @@ function ItemBadge({ tenGod }: { tenGod: TenGod }) {
 function ItemCard({ tenGod }: { tenGod: TenGod }) {
   const copy = GOD_COPY[tenGod], Icon = ITEM_ICONS[tenGod];
   return <>
-    <p className="chapter-lead"><Bx>同じタイプでも、生まれた日によってアイテムは10通り。あなただけの持ち味を表しています。</Bx></p>
+    <p className="chapter-lead"><Bx>同じタイプでも、生まれた季節によってアイテムは10通り。あなただけの持ち味を表しています。</Bx></p>
     <div className="item-card frame"><div className="item-icon"><Icon size={34} strokeWidth={1.5} aria-hidden="true" /></div><div><h3 className="item-name">{copy.item}</h3><p className="item-title"><Bx>{copy.title}</Bx></p><p><Bx>{copy.strength}</Bx></p><p className="gentle-tip"><Bx>{copy.hint}</Bx></p></div></div>
   </>;
 }
