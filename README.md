@@ -105,7 +105,7 @@ PNG保存はCanvasによる1080×1350（サイトのWebフォント、ロゴ、�
 
 ## 公式LINEへの案内
 
-診断結果ページに「LINEで友だち追加」ボタンを2か所（タイプ紹介の直後と、ページの終わり）表示します。URLは `NEXT_PUBLIC_LINE_URL`（GitHub Actionsでは **Settings → Secrets and variables → Actions → Variables** の `LINE_FRIEND_URL`）で設定し、未設定ならボタンは出ません。タイプ紹介ページ（診断していない人が見るページ）には出しません。ボタンはLINEのロゴを使わない文字ボタンです。
+診断結果ページの説明（各章）の下に「LINEで友だち追加」ボタンを表示します。URLは `NEXT_PUBLIC_LINE_URL`（GitHub Actionsでは **Settings → Secrets and variables → Actions → Variables** の `LINE_FRIEND_URL`）で設定し、未設定ならボタンは出ません。タイプ紹介ページ（診断していない人が見るページ）には出しません。ボタンはLINEのロゴを使わない文字ボタンです。
 
 ## 用語
 

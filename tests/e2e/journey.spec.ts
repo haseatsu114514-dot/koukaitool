@@ -10,9 +10,9 @@ test("birthday validation → result → share image → catalog", async ({ page
   await expect(page.locator(".book-reveal")).toBeVisible(); await expect(page.locator(".book-reveal")).toBeHidden({ timeout: 8000 });
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
   await expect(page.getByRole("heading", { name: "あなたのアイテム", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "スケジュール帳", exact: true })).toBeVisible(); await expect(page.getByText("先を見越して、しっかり計画できる")).toBeVisible();
-  await expect(page.getByText("アイテムは10通り", { exact: false })).toBeVisible();
-  // The official LINE invitation appears twice after a diagnosis (URL comes from NEXT_PUBLIC_LINE_URL in playwright.config).
-  await expect(page.getByRole("link", { name: "LINEで友だち追加" })).toHaveCount(2); await expect(page.getByRole("link", { name: "LINEで友だち追加" }).first()).toHaveAttribute("href", "https://lin.ee/e2e-example");
+  await expect(page.getByText("星から受け取ったギフト", { exact: false })).toBeVisible();
+  // The official LINE invitation sits once, below the explanation (URL comes from NEXT_PUBLIC_LINE_URL in playwright.config).
+  await expect(page.getByRole("link", { name: "LINEで友だち追加" })).toHaveCount(1); await expect(page.getByRole("link", { name: "LINEで友だち追加" })).toHaveAttribute("href", "https://lin.ee/e2e-example");
   await expect(page.getByText("グループ", { exact: false }).first()).toBeVisible(); await expect(page.getByText("エレメント", { exact: false })).toHaveCount(0);
   expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => JSON.stringify(sessionStorage))).not.toContain("2000");
   await page.reload(); await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");

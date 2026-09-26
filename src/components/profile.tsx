@@ -27,7 +27,7 @@ function ItemBadge({ tenGod }: { tenGod: TenGod }) {
 function ItemCard({ tenGod }: { tenGod: TenGod }) {
   const copy = GOD_COPY[tenGod], Icon = ITEM_ICONS[tenGod];
   return <>
-    <p className="chapter-lead"><Bx>同じタイプでも、生まれた季節によってアイテムは10通り。あなただけの持ち味を表しています。</Bx></p>
+    <p className="chapter-lead"><Bx>アイテムは、あなたが生まれたときに星から受け取ったギフト。タイプとは別に、あなたが持っているもうひとつの持ち味です。</Bx></p>
     <div className="item-card"><div className="item-icon"><Icon size={34} strokeWidth={1.5} aria-hidden="true" /></div><div><h3 className="item-name">{copy.item}</h3><p className="item-title"><Bx>{copy.title}</Bx></p><p><Bx>{copy.strength}</Bx></p><p className="gentle-tip"><Bx>{copy.hint}</Bx></p></div></div>
   </>;
 }
@@ -85,11 +85,10 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
         </div>}
       </div>
     </div>
-    {result && <LineCta variant="bar" />}
     <nav className="profile-toc" aria-label="このページの内容">{chapters.map(chapter => <a key={chapter.id} href={`#${chapter.id}`}>{chapter.toc}</a>)}</nav>
     <div className="profile-body">
       {chapters.map(chapter => <Chapter key={chapter.id} id={chapter.id} title={chapter.title}>{chapter.body}</Chapter>)}
-      {result && <LineCta variant="panel" />}
+      {result && <LineCta />}
       <p className="micro disclaimer">占いをもとにした診断なので、当てはまるところだけ参考にしてください。</p>
       {result ? <section className="cta-panel" aria-labelledby="share-title">
         <span className="cta-panel-art" style={elementStyle(type.stem)} aria-hidden="true"><Character type={type} /></span>
