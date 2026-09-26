@@ -37,7 +37,7 @@ type CharacterAsset = {
 
 ## 画像差し替えTODO
 
-- [ ] 己「ほっとけないカンガルー」（`kangaroo`）：旧「頼られ師匠ゾウ」から動物ごと変更。現在は仮SVG（`public/characters/kangaroo.svg`）なので、`generationRequest` のpromptで画像生成して差し替える。
+- [ ] 己「ほっとけないアルパカ」（`alpaca`）：旧「頼られ師匠ゾウ」→「ほっとけないカンガルー」から動物ごと変更。子どものアルパカを添えた仮SVG（`public/characters/alpaca.svg`）なので、`generationRequest` のpromptで画像生成して差し替える。
 - [ ] 全10タイプ：仮SVGを画像生成アセットへ作り替え、`status` を `generated` → 確認後 `approved` に更新する。
 
 ## 品質確認
