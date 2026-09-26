@@ -1,0 +1,2 @@
+/** Brand mark on a 64-unit grid: a file folder with a five-point star cut out ("Stella" + "File"). Fill with the evenodd rule. Plain .ts so the OG script can import it too. */
+export const LOGO_PATH = "M13 18h13.5a3 3 0 0 1 2.4 1.2L32 23h19a3 3 0 0 1 3 3v24a3 3 0 0 1-3 3H13a3 3 0 0 1-3-3V21a3 3 0 0 1 3-3Z M32.00 29.00 34.47 35.80 41.70 36.05 35.99 40.50 38.00 47.45 32.00 43.40 26.00 47.45 28.01 40.50 22.30 36.05 29.53 35.80Z";

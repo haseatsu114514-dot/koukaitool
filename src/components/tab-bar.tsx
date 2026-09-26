@@ -7,8 +7,8 @@ import { RESULT_KEY } from "@/lib/result-key";
 
 const TABS = [
   { href: "/", label: "ホーム", icon: House, match: (p: string) => p === "/" },
-  { href: "/types/", label: "タイプ", icon: LayoutGrid, match: (p: string) => p.startsWith("/types") },
-  { href: "/result/", label: "結果", icon: BookOpen, match: (p: string) => p.startsWith("/result") },
+  { href: "/types/", label: "図鑑", icon: LayoutGrid, match: (p: string) => p.startsWith("/types") },
+  { href: "/result/", label: "マイファイル", icon: BookOpen, match: (p: string) => p.startsWith("/result") },
 ];
 
 /** App-style bottom navigation shown on phones (the header nav is hidden there). The result tab is dimmed until this tab holds a result. */

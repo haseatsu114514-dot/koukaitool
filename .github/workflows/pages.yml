@@ -15,6 +15,12 @@ jobs:
     env:
       NEXT_PUBLIC_BASE_PATH: /koukaitool
       NEXT_PUBLIC_SITE_URL: https://haseatsu114514-dot.github.io
+      # Settings → Secrets and variables → Actions → Variables → LINE_FRIEND_URL. Unset hides the LINE button.
+      NEXT_PUBLIC_LINE_URL: ${{ vars.LINE_FRIEND_URL }}
+      # Optional: JSON of type slug → friend-add URL (e.g. one Lステップ/エルメ source URL per type).
+      NEXT_PUBLIC_LINE_URLS: ${{ vars.LINE_FRIEND_URLS }}
+      # Optional: GA4 measurement ID (G-...). Unset means no analytics.
+      NEXT_PUBLIC_GA_ID: ${{ vars.GA_MEASUREMENT_ID }}
       NEXT_TELEMETRY_DISABLED: 1
     steps:
       - uses: actions/checkout@v4

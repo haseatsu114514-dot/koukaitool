@@ -32,7 +32,7 @@ Next.js App Router / React / TypeScript / Zod。CSSの共通トークンとセ�
 | --- | --- |
 | `/` | サービス説明、生年月日フォーム（`#diagnose`。実在日・未来日チェック）、10タイプのプレビュー |
 | `/result/` | 診断結果（本を開く演出 → タイプ詳細＋アイテム＋結果シェア）。直接訪問・保存失敗時は再診断を案内 |
-| `/types/` | 10タイプ一覧と、枠の色（エレメント）の説明 |
+| `/types/` | 10タイプ一覧と、枠の色（緑・赤・黄・白・青のグループ）の説明 |
 | `/types/[slug]/` | 生年月日を含まない共有可能なタイプ紹介。シェアで来た人向けに診断導線を上部に置く |
 | `/privacy/` | 入力・端末内一時保存・共有・Webフォントの説明 |
 
@@ -52,7 +52,7 @@ src/
     tab-bar.tsx         スマホ用の下部タブ
     bx.tsx              BudouXによる文節単位の改行
   data/
-    types.ts            10タイプの名前・キャッチ・要約・強み、エレメント色、画像プロンプト
+    types.ts            10タイプの名前・キャッチ・要約・強み、グループの色、画像プロンプト
     type-details.ts     タイプ詳細ページの長文（性格・あるある・恋愛・仕事など）
     art-direction.ts    共通絵柄、asset schema、生成provider interface
   lib/
@@ -93,7 +93,7 @@ docs/                   計算ルールとブランド/拡張仕様
 
 生年月日はブラウザ内でのみ使用し、サーバー、URL、localStorage、sessionStorageへ保存しません。sessionStorageには日干支・サイクル番号・月支とルールの版だけを保存。タブ内の再読み込みに対応し、不正・旧形式データは無視します。保存領域が使用不可でも同一クライアント遷移中はメモリから結果を表示できます。共有は一般的なタイプ紹介URLと、誕生日や通変星（アイテム）を含まない画像・文章を使用します。タイプ紹介ページの共有文は「私は〜でした」ではなく、タイプの紹介として書きます。
 
-PNG保存はCanvasによる1080×1350（サイトのWebフォント、星空、サイトURL入り）。Threads専用APIは使わず、共有文コピーと端末の共有メニューに対応します。Web Share / Clipboardが使用できない場合もメッセージで案内します。
+PNG保存はCanvasによる1080×1350（サイトのWebフォント、ロゴ、サイトURL入り）。Threads専用APIは使わず、共有文コピーと端末の共有メニューに対応します。Web Share / Clipboardが使用できない場合もメッセージで案内します。
 
 閲覧時にGoogle Fonts（fonts.googleapis.com / fonts.gstatic.com）へリクエストが発生し、IPアドレス等がGoogleに送られます。プライバシーページに記載しています。フォントを自サイト配信に切り替えた場合は、その記載も更新してください。
 
@@ -102,6 +102,33 @@ PNG保存はCanvasによる1080×1350（サイトのWebフォント、星空、�
 10体の仮SVGは独自に作成。参考画像の丸い線・少ない色数という方向性を参考にし、素材自体は転用していません。生成APIは未接続。`generationRequest(type)` で、共通絵柄＋固有プロンプト＋negative prompt＋サイズを取得できます。
 
 `CharacterAsset` に状態（placeholder / generated / approved）、サイズ、alt、絵柄版、生成元を持たせています。将来はサーバー側で `ImageGenerationProvider` を実装し、レビュー済み画像だけを公開します。詳細は [アセット設計](docs/art-direction.md)。
+
+## 公式LINEへの案内
+
+診断結果ページの説明（各章）の下に「結果の続きを、LINEで」の案内を表示します。この結果でわかることと、LINEでさらに詳しくなること（性格・仕事・相性・アイテム・気をつけたい時期）を表で並べ、「LINEで続きを読む」ボタンで友だち追加へ進みます。
+
+相性は「最高の相性・相性がいい・そこそこ・天敵」の4段階です（`stellaCompatibility`）。LINEのURLを設定すると、そこそこ・天敵は何タイプあるかだけを見せる鍵つき表示になり、中身はLINEで届けます。URLが未設定なら4段階すべてをサイトに表示します。
+
+URLは `NEXT_PUBLIC_LINE_URL`（GitHub Actionsでは **Settings → Secrets and variables → Actions → Variables** の `LINE_FRIEND_URL`）で設定し、未設定ならボタンは出ません。タイプ紹介ページ（診断していない人が見るページ）には出しません。ボタンはLINEのロゴを使わない文字ボタンです。
+
+タイプごとに別の友だち追加URLを使うこともできます。`NEXT_PUBLIC_LINE_URLS`（Actionsの変数 `LINE_FRIEND_URLS`）に `{"grizzly":"https://…","rabbit":"https://…"}` のようなJSONを入れると、そのタイプの人にはそのURLを、書いていないタイプには共通URLを出します。Lステップやエルメなどで「流入経路」ごとのURLを発行すれば、友だち追加の時点でタイプ別のタグが付き、タイプ別の配信ができます。JSONの誤り・存在しないタイプ名・https以外のURLはビルドを失敗させます。
+
+## アクセス解析（任意）
+
+`NEXT_PUBLIC_GA_ID`（Actionsの変数 `GA_MEASUREMENT_ID`、`G-` で始まるGA4の測定ID）を設定したときだけGoogle アナリティクスを読み込み、プライバシーページにも説明が出ます。未設定なら何も送りません。導線を見るために次のイベントを送ります（生年月日とアイテムは送りません）。
+
+| イベント | 意味 | パラメータ |
+|---|---|---|
+| `diagnosis_complete` | 診断した（再読み込みでは数えない） | `stella_type` |
+| `line_view` | LINEの案内が画面に半分以上入った | `stella_type` |
+| `line_click` | 「LINEで友だち追加」を押した | `stella_type` |
+| `share` | 画像保存・シェア・コピー | `method`（image / native / copy）、`content_type`（result / type）、`item_id` |
+
+`sitemap.xml` と `robots.txt` も書き出します。GitHub Pagesのプロジェクトサイト（`/koukaitool/`）では `robots.txt` は検索エンジンに読まれないので、Search Consoleに `sitemap.xml` を直接登録してください。独自ドメインに移すと `robots.txt` も有効になります。
+
+## 用語
+
+画面では五行の用語（木・火・土・金・水、エレメント）を使わず、「緑・赤・黄・白・青グループ」と呼びます（`GROUP_NAMES` / `groupName`）。コード内の `ELEMENT_COLORS` などの名前は内部用です。
 
 ## GitHub Pages
 
