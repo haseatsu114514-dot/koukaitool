@@ -30,7 +30,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <footer className="site-footer">
       <div className="footer-brand"><Link href="/"><LogoMark className="brand-mark" size={16} />{SITE_NAME}</Link><p>{SITE_TAGLINE}</p></div>
       <nav aria-label="フッター"><Link href="/">ホーム</Link><Link href="/types/">タイプ図鑑</Link><Link href="/privacy/">プライバシー</Link></nav>
-      <p className="footer-note">占いをもとにした、自分を知るためのコンテンツです。<span>© Stella File</span></p>
+      <p className="footer-note">占いをもとにした、自分を知るためのコンテンツです。<span>© ステラファイル</span></p>
     </footer>
     <Analytics />
   </body></html>;

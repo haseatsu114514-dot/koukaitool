@@ -17,17 +17,8 @@ export default function Home() {
         <div className="hero-faces" aria-hidden="true">{CHARACTER_TYPES.map(type => <span key={type.slug} className="hero-face" style={elementStyle(type.stem)}><Character type={type} priority /></span>)}</div>
         <p className="hero-kicker">生年月日でわかる 10のステラタイプ診断</p>
         <h1>あなたは、<br /><span className="nowrap">どの<span className="accent">ステラタイプ</span>？</span></h1>
-        <p className="hero-description"><Bx>生年月日を入れるだけ。質問はありません。</Bx><br /><Bx>性格・恋愛・仕事の傾向と、相性のいいタイプがわかります。</Bx></p>
+        <p className="hero-description"><Bx>生年月日を入れるだけ。質問はありません。</Bx><br /><Bx>性格・恋愛・仕事・相性と、あなたの「アイテム」がわかります。</Bx></p>
         <div id="diagnose" className="hero-form"><BirthForm /><p className="micro hero-note">約10秒・無料・登録なし。生年月日はどこにも送信されません</p></div>
-      </div>
-      <div className="constellation" aria-label="10のステラタイプ">
-        <div className="constellation-ring" aria-hidden="true" />
-        <div className="constellation-core" aria-hidden="true"><span className="core-num">10</span><span className="core-label">のタイプ</span></div>
-        <ul className="constellation-orbit">
-          {CHARACTER_TYPES.map((type, i) => <li key={type.slug} style={{ "--a": `${i * 36 - 90}deg` } as React.CSSProperties}>
-            <Link href={`/types/${type.slug}/`} className="constellation-star" style={elementStyle(type.stem)} aria-label={type.displayName}><Character type={type} priority /></Link>
-          </li>)}
-        </ul>
       </div>
     </section>
     <section className="section page-width home-types" aria-labelledby="home-types-title">
@@ -47,7 +38,6 @@ export default function Home() {
           <p><Bx>占いをもとにした読みものです。当てはまるところだけ、自分を知るヒントとして使ってください。</Bx></p>
         </div>
         <div className="about-actions">
-          <Link className="button primary" href="#diagnose">生年月日を入力する <ArrowRight size={18} aria-hidden="true" /></Link>
           <Link className="text-link" href="/privacy/">生年月日の扱いについて <ArrowRight size={15} aria-hidden="true" /></Link>
         </div>
       </div>

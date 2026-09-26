@@ -6,6 +6,7 @@ import { TYPE_DETAILS } from "@/data/type-details";
 import type { DiagnosisResult } from "@/lib/diagnosis";
 import { GOD_COPY, type TenGod } from "@/lib/diagnosis/ten-gods";
 import { stellaCompatibility, type StellaLevel } from "@/lib/diagnosis/compatibility";
+import { COMPATIBILITY_COPY } from "@/data/compatibility-copy";
 import { lineUrlFor } from "@/lib/line";
 import { Bx } from "./bx";
 import { Character } from "./character";
@@ -13,13 +14,8 @@ import { ITEM_ICONS } from "./item-icon";
 import { ShareActions } from "./share-actions";
 import { LineCta } from "./line-cta";
 import { ProfileToc } from "./profile-toc";
-
-const COMPATIBILITY_LABELS: Record<StellaLevel, { label: string; note: string }> = {
-  best: { label: "最高の相性", note: "自然と惹かれ合う組み合わせ。一緒にいると、お互いの足りないところを補えます。" },
-  good: { label: "相性がいい", note: "あなたを後ろから支えてくれる相手。そばにいると力が出やすくなります。" },
-  mid: { label: "そこそこ", note: "付かず離れずの関係。無理に合わせなくて大丈夫です。" },
-  foe: { label: "天敵", note: "考え方がぶつかりやすい相手。言い方をひと工夫するだけで、ずいぶんラクになります。" },
-};
+import { FriendCheck } from "./friend-check";
+import { ClearResultButton } from "./clear-result";
 
 function ItemCard({ tenGod }: { tenGod: TenGod }) {
   const copy = GOD_COPY[tenGod], Icon = ITEM_ICONS[tenGod];
@@ -33,17 +29,18 @@ function ItemCard({ tenGod }: { tenGod: TenGod }) {
 function Compatibility({ type, locked, onResult }: { type: CharacterType; locked: boolean; onResult: boolean }) {
   const groups = stellaCompatibility(type.stem);
   return <div className="compat-rows">
-    {(Object.keys(COMPATIBILITY_LABELS) as StellaLevel[]).map(level => {
+    {(Object.keys(groups) as StellaLevel[]).map(level => {
       const hidden = locked && (level === "mid" || level === "foe");
       return <div key={level} className={`compat-row compat-${level}`}>
-        <h3 className="compat-label">{COMPATIBILITY_LABELS[level].label}</h3>
-        {hidden ? <p className="compat-lock"><span className="compat-q" aria-hidden="true">?</span><span>{groups[level].length}タイプ</span><Lock size={13} strokeWidth={2.2} aria-hidden="true" />{onResult ? <a href="#line">LINEで見られます</a> : <span>診断結果からLINEで見られます</span>}</p>
+        <h3 className="compat-label">{COMPATIBILITY_COPY[level].label}</h3>
+        {hidden ? <p className="compat-lock"><span className="compat-q" aria-hidden="true">?</span><span>{groups[level].length}タイプ</span><Lock size={13} strokeWidth={2.2} aria-hidden="true" />{onResult && <a href="#line">LINEで見られます</a>}</p>
           : <div className="compat-main">
             <ul>{groups[level].map(stem => { const partner = typeByStem(stem); return <li key={stem}><Link href={`/types/${partner.slug}/`}><span className="compat-art" style={elementStyle(stem)}><Character type={partner} /></span><span className="compat-name"><Bx>{partner.displayName}</Bx></span></Link></li>; })}</ul>
-            <p className="compat-note"><Bx>{COMPATIBILITY_LABELS[level].note}</Bx></p>
+            <p className="compat-note"><Bx>{COMPATIBILITY_COPY[level].note}</Bx></p>
           </div>}
       </div>;
     })}
+    {locked && !onResult && <p className="compat-lock-note"><Bx>そこそこ・天敵のタイプは、自分のタイプなら診断後にLINEで見られます。</Bx></p>}
   </div>;
 }
 
@@ -61,6 +58,7 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
   const chapters: { id: string; toc: string; title: string; body: React.ReactNode }[] = [
     { id: "about", toc: "性格", title: "どんな人？", body: detail.intro.map(text => <p key={text} className="lead-text"><Bx>{text}</Bx></p>) },
     { id: "aruaru", toc: "あるある", title: "あるある", body: <ol className="aruaru">{detail.aruaru.map(text => <li key={text}><Bx>{text}</Bx></li>)}</ol> },
+    { id: "compat", toc: "相性", title: "相性", body: <><Compatibility type={type} locked={!!lineUrlFor(type.slug)} onResult={!!result} />{result && <FriendCheck me={type} locked={!!lineUrlFor(type.slug)} />}</> },
     { id: "strength", toc: "強み", title: "強みと苦手なこと", body: <div className="strength-pair">
       <div className="strength-section"><h3>強み</h3><ul className="strength-list">{type.strengths.map(item => <li key={item}><Check size={18} aria-hidden="true" /><Bx>{item}</Bx></li>)}</ul></div>
       <div className="weak-section"><h3>ちょっと苦手なこと</h3><p><Bx>{detail.weakness}</Bx></p></div>
@@ -71,14 +69,13 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
     { id: "friends", toc: "人間関係", title: "人との付き合い方", body: <p><Bx>{detail.relationships}</Bx></p> },
     { id: "care", toc: "ストレス", title: "疲れたときは", body: <p><Bx>{detail.stress}</Bx></p> },
     { id: "advice", toc: "アドバイス", title: "アドバイス", body: <div className="advice-box"><p><Bx>{detail.advice}</Bx></p></div> },
-    { id: "compat", toc: "相性", title: "相性", body: <Compatibility type={type} locked={!!lineUrlFor(type.slug)} onResult={!!result} /> },
   ];
   return <article className="profile page-width">
     {!result && <Link className="breadcrumb" href="/types/"><ArrowLeft size={15} aria-hidden="true" />ステラタイプ図鑑へ</Link>}
     <div className="profile-hero">
       <ViewTransition name={`character-${type.slug}`}><div className="profile-art" style={elementStyle(type.stem)}><Character type={type} priority /></div></ViewTransition>
       <div className="profile-title">
-        <p className="profile-meta"><span className="profile-no">No.{number}<small>/ 10</small></span><span className="element-chip" style={elementStyle(type.stem)}><span className="element-orb" aria-hidden="true" />{groupName(type.stem)}</span></p>
+        <p className="profile-meta"><span className="profile-no"><small>図鑑</small>No.{number}</span><span className="element-chip" style={elementStyle(type.stem)}><span className="element-orb" aria-hidden="true" />{groupName(type.stem)}</span></p>
         {result && <p className="result-lead">あなたのステラタイプは</p>}
         <h1><Bx>{type.displayName}</Bx></h1>
         <p className="profile-catch"><Bx>{type.shortCatch}</Bx></p>
@@ -99,9 +96,9 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
       {result ? <section className="cta-panel" aria-labelledby="share-title">
         <span className="cta-panel-art" style={elementStyle(type.stem)} aria-hidden="true"><Character type={type} /></span>
         <h2 id="share-title" className="cta-panel-title">結果をシェアしよう</h2>
-        <p className="cta-panel-text"><Bx>画像を保存してSNSに、リンクで友だちに。友だちのタイプがわかれば、ふたりの相性も確かめられます。</Bx></p>
+        <p className="cta-panel-text"><Bx>画像を保存してSNSに、リンクで友だちに。友だちにも診断してもらって、タイプを見せ合ってみてください。</Bx></p>
         <ShareActions type={type} mode="result" />
-        <div className="cta-panel-links"><Link className="text-link" href="/#diagnose"><RotateCcw size={15} aria-hidden="true" />もう一度診断する</Link><Link className="text-link" href="/types/">ほかのタイプも見る <ArrowRight size={15} aria-hidden="true" /></Link></div>
+        <div className="cta-panel-links"><Link className="text-link" href="/#diagnose"><RotateCcw size={15} aria-hidden="true" />生年月日を入れ直す</Link><Link className="text-link" href="/types/">ほかのタイプも見る <ArrowRight size={15} aria-hidden="true" /></Link><ClearResultButton /></div>
       </section> : <section className="cta-panel" aria-labelledby="cta-title">
         <span className="cta-panel-art" style={elementStyle(type.stem)} aria-hidden="true"><Character type={type} /></span>
         <h2 id="cta-title" className="cta-panel-title">あなたのタイプを調べる</h2>

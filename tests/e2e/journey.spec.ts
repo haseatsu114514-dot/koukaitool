@@ -20,11 +20,25 @@ test("birthday validation → result → share image → catalog", async ({ page
   // With LINE set up, 最高・いい are shown and そこそこ・天敵 wait on LINE.
   await expect(page.locator(".compat-best")).toContainText("ほっとけないアルパカ"); await expect(page.locator(".compat-lock")).toHaveCount(2); await expect(page.locator(".compat-foe")).not.toContainText("ドーベルマン");
   await expect(page.getByText("グループ", { exact: false }).first()).toBeVisible(); await expect(page.getByText("エレメント", { exact: false })).toHaveCount(0);
-  expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => JSON.stringify(sessionStorage))).not.toContain("2000");
+  expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => JSON.stringify(localStorage) + JSON.stringify(sessionStorage))).not.toContain("2000");
+  // Friend check: shows the friend's type and the pair, without replacing the visitor's own result.
+  const friend = page.locator(".friend-check");
+  await friend.getByLabel("年", { exact: true }).fill("1992"); await friend.getByRole("combobox", { name: "月", exact: true }).selectOption("8"); await friend.getByRole("combobox", { name: "日", exact: true }).selectOption("11");
+  await friend.getByRole("button", { name: "相性を調べる" }).click();
+  await expect(friend.locator(".friend-result")).toContainText("ほっとけないアルパカ"); await expect(friend.locator(".friend-result")).toContainText("最高の相性");
+  await friend.getByRole("button", { name: "別の友だちを調べる" }).click();
+  await friend.getByLabel("年", { exact: true }).fill("1992"); await friend.getByRole("combobox", { name: "月", exact: true }).selectOption("8"); await friend.getByRole("combobox", { name: "日", exact: true }).selectOption("12");
+  await friend.getByRole("button", { name: "相性を調べる" }).click();
+  await expect(friend.locator(".friend-result")).toContainText("正々堂々ドーベルマン"); await expect(friend.locator(".friend-lock")).toBeVisible();
+  // The result is kept in this browser: it survives a reload and a fresh visit to マイファイル.
   await page.reload(); await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
+  await page.goto("./"); await page.goto("./result/"); await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
   const download = page.waitForEvent("download"); await page.getByRole("button", { name: "画像を保存" }).first().click(); expect((await download).suggestedFilename()).toBe("stella-file-grizzly.png");
   await expect(page.getByRole("heading", { name: "結果をシェアしよう" })).toBeVisible();
-  await page.getByRole("link", { name: "ほかのタイプも見る" }).click(); await expect(page.locator(".type-card")).toHaveCount(10);
+  // "この結果を消す" removes it after confirmation.
+  page.once("dialog", dialog => dialog.accept()); await page.getByRole("button", { name: "この結果を消す" }).click();
+  await expect(page).toHaveURL(/\/$/); await page.goto("./result/"); await expect(page.getByRole("link", { name: "診断をはじめる" })).toBeVisible();
+  await page.goto("./types/"); await expect(page.locator(".type-card")).toHaveCount(10);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(errors).toEqual([]);
 });
@@ -43,6 +57,7 @@ test("a shared type page leads visitors to their own diagnosis", async ({ page }
   await expect(page.getByRole("button", { name: "画像を保存" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "あなたのアイテム" })).toHaveCount(0);
   await expect(page.getByRole("link", { name: "LINEで続きを読む" })).toHaveCount(0);
+  await expect(page.locator(".compat-lock")).toHaveCount(2); await expect(page.getByText("自分のタイプなら診断後にLINEで見られます", { exact: false })).toHaveCount(1);
   await expect(page.locator(".profile-cta").getByRole("link", { name: "生年月日で診断する" })).toBeVisible();
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /\/og\/fox\.jpg$/);
   await page.locator(".profile-cta").getByRole("link", { name: "生年月日で診断する" }).click();
