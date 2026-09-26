@@ -27,6 +27,11 @@ type CharacterAsset = {
 
 外部API接続時は、秘密鍵をブラウザへ渡さず、サーバー側のproviderが処理します。生成元・モデル・日付・絵柄版を保存し、人の確認後にapprovedとします。アセットは自サイトへ配置するか、画像書き出しに必要なCORSを許可。一時URLを永続アセットURLにしないでください。
 
+## 画像差し替えTODO
+
+- [ ] 己「ほっとけないカンガルー」（`kangaroo`）：旧「頼られ師匠ゾウ」から動物ごと変更。現在は仮SVG（`public/characters/kangaroo.svg`）なので、`generationRequest` のpromptで画像生成して差し替える。
+- [ ] 全10タイプ：仮SVGを画像生成アセットへ作り替え、`status` を `generated` → 確認後 `approved` に更新する。
+
 ## 品質確認
 
 - 主役はキャラクター。小物は1〜2点、背景は疎にする。
