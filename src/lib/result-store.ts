@@ -2,7 +2,7 @@ import { z } from "zod";
 import { BRANCHES, STEMS } from "./diagnosis/calendar";
 import { RULE_VERSION, type DiagnosisResult } from "./diagnosis";
 import { mainQiProvider, tenGod } from "./diagnosis/ten-gods";
-const key = "stella-result-v1";
+import { RESULT_KEY as key } from "./result-key";
 let memoryResult: DiagnosisResult | null = null;
 /** True only between a fresh diagnosis and the first result render, so the book-opening intro never replays on reload. */
 let revealPending = false;
