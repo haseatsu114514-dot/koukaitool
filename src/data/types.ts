@@ -9,11 +9,11 @@ export const ELEMENT_COLORS = [
   { color: "#c3ccd8", tint: "#ece7df" },
   { color: "#3b8fe6", tint: "#c9def6" },
 ] as const;
-/** Plain names for the legend; each element holds a yang/yin pair of types. */
-export const ELEMENT_NAMES = ["木", "火", "土", "金", "水"] as const;
+/** What users see: colour groups, never the five-element terms (木火土金水). Each group holds a yang/yin pair of types. */
+export const GROUP_NAMES = ["緑", "赤", "黄", "白", "青"] as const;
 export const elementIndex = (stem: Stem) => Math.floor(STEMS.indexOf(stem) / 2);
 export const elementColors = (stem: Stem) => ELEMENT_COLORS[elementIndex(stem)];
-export const elementName = (stem: Stem) => ELEMENT_NAMES[elementIndex(stem)];
+export const groupName = (stem: Stem) => `${GROUP_NAMES[elementIndex(stem)]}グループ`;
 /** CSS custom properties (--tint / --el) consumed by the stylesheet for character backgrounds and rings. */
 export const elementStyle = (stem: Stem) => { const { tint, color } = elementColors(stem); return { "--tint": tint, "--el": color } as React.CSSProperties; };
 export type CharacterType = {

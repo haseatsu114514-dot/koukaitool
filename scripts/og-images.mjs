@@ -7,7 +7,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { chromium } from "@playwright/test";
 
 register("./lib/ts-paths.mjs", import.meta.url);
-const { CHARACTER_TYPES, elementColors, elementName } = await import("../src/data/types.ts");
+const { CHARACTER_TYPES, elementColors, groupName } = await import("../src/data/types.ts");
 const { SITE_NAME, SITE_TAGLINE } = await import("../src/lib/site.ts");
 const { LOGO_PATH } = await import("../src/lib/logo-path.ts");
 
@@ -69,7 +69,7 @@ async function typeCard(type, index) {
   return { name: type.slug, style: `--el:${color};--tint:${tint}`, html: `${sky(type.slug)}
     <div class="disc" style="left:110px;top:105px;width:420px;height:420px"><img src="${await art(type.slug)}"></div>
     <div class="copy" style="left:612px;right:64px">
-      <p class="no">No.${String(index + 1).padStart(2, "0")}<span>${elementName(type.stem)}のエレメント</span></p>
+      <p class="no">No.${String(index + 1).padStart(2, "0")}<span>${groupName(type.stem)}</span></p>
       <h1 style="margin-top:12px;font-size:56px">${type.displayName}</h1>
       <p class="catch" style="margin-top:16px">${type.shortCatch.split("。").filter(Boolean).map(s => `${s}。`).join("<br>")}</p>
       <ul class="tags" style="margin-top:22px">${type.keywords.map(k => `<li>${k}</li>`).join("")}</ul>
@@ -95,7 +95,7 @@ const cards = [await homeCard(), ...await Promise.all(CHARACTER_TYPES.map(typeCa
 const text = [SITE_NAME, SITE_TAGLINE, ...Object.values(HOME).flat(), ...CHARACTER_TYPES.flatMap(t => [t.displayName, t.shortCatch, ...t.keywords])].join("");
 const fonts = (await Promise.all([
   inlineFonts("Shippori Mincho B1", "wght@700", text),
-  inlineFonts("Zen Kaku Gothic New", "wght@400;700", `${text}No.0123456789のエレメント木火土金水`),
+  inlineFonts("Zen Kaku Gothic New", "wght@400;700", `${text}No.0123456789緑赤黄白青グループ`),
 ])).join("\n");
 
 const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});

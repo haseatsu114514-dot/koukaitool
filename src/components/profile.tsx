@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ViewTransition } from "react";
 import { ArrowRight, Check, ArrowLeft, RotateCcw } from "lucide-react";
-import { CHARACTER_TYPES, elementName, elementStyle, typeByStem, type CharacterType } from "@/data/types";
+import { CHARACTER_TYPES, groupName, elementStyle, typeByStem, type CharacterType } from "@/data/types";
 import { TYPE_DETAILS } from "@/data/type-details";
 import type { DiagnosisResult } from "@/lib/diagnosis";
 import { GOD_COPY, type TenGod } from "@/lib/diagnosis/ten-gods";
@@ -10,6 +10,7 @@ import { Bx } from "./bx";
 import { Character } from "./character";
 import { ITEM_ICONS } from "./item-icon";
 import { ShareActions } from "./share-actions";
+import { LineCta } from "./line-cta";
 
 const COMPATIBILITY_LABELS: Record<CompatibilityLevel, { label: string; note: string }> = {
   best: { label: "最高の相性", note: "自然と惹かれ合う組み合わせ。一緒にいると、お互いの足りないところを補えます。" },
@@ -72,7 +73,7 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
     <div className="profile-hero">
       <ViewTransition name={`character-${type.slug}`}><div className="profile-art" style={elementStyle(type.stem)}><Character type={type} priority />{result && <ItemBadge tenGod={result.tenGod} />}</div></ViewTransition>
       <div className="profile-title">
-        <p className="profile-meta"><span className="profile-no">No.{number}<small>/ 10</small></span><span className="element-chip" style={elementStyle(type.stem)}><span className="element-orb" aria-hidden="true" />{elementName(type.stem)}のエレメント</span></p>
+        <p className="profile-meta"><span className="profile-no">No.{number}<small>/ 10</small></span><span className="element-chip" style={elementStyle(type.stem)}><span className="element-orb" aria-hidden="true" />{groupName(type.stem)}</span></p>
         {result && <p className="result-lead">あなたのステラタイプは</p>}
         <h1><Bx>{type.displayName}</Bx></h1>
         <p className="profile-catch"><Bx>{type.shortCatch}</Bx></p>
@@ -84,9 +85,11 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
         </div>}
       </div>
     </div>
+    {result && <LineCta variant="bar" />}
     <nav className="profile-toc" aria-label="このページの内容">{chapters.map(chapter => <a key={chapter.id} href={`#${chapter.id}`}>{chapter.toc}</a>)}</nav>
     <div className="profile-body">
       {chapters.map(chapter => <Chapter key={chapter.id} id={chapter.id} title={chapter.title}>{chapter.body}</Chapter>)}
+      {result && <LineCta variant="panel" />}
       <p className="micro disclaimer">占いをもとにした診断なので、当てはまるところだけ参考にしてください。</p>
       {result ? <section className="cta-panel" aria-labelledby="share-title">
         <span className="cta-panel-art" style={elementStyle(type.stem)} aria-hidden="true"><Character type={type} /></span>

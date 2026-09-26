@@ -11,6 +11,9 @@ test("birthday validation → result → share image → catalog", async ({ page
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
   await expect(page.getByRole("heading", { name: "あなたのアイテム", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "スケジュール帳", exact: true })).toBeVisible(); await expect(page.getByText("先を見越して、しっかり計画できる")).toBeVisible();
   await expect(page.getByText("アイテムは10通り", { exact: false })).toBeVisible();
+  // The official LINE invitation appears twice after a diagnosis (URL comes from NEXT_PUBLIC_LINE_URL in playwright.config).
+  await expect(page.getByRole("link", { name: "LINEで友だち追加" })).toHaveCount(2); await expect(page.getByRole("link", { name: "LINEで友だち追加" }).first()).toHaveAttribute("href", "https://lin.ee/e2e-example");
+  await expect(page.getByText("グループ", { exact: false }).first()).toBeVisible(); await expect(page.getByText("エレメント", { exact: false })).toHaveCount(0);
   expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => JSON.stringify(sessionStorage))).not.toContain("2000");
   await page.reload(); await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
   const download = page.waitForEvent("download"); await page.getByRole("button", { name: "結果画像を保存" }).first().click(); expect((await download).suggestedFilename()).toBe("stella-file-grizzly.png");
@@ -33,6 +36,7 @@ test("a shared type page leads visitors to their own diagnosis", async ({ page }
   // Public page: no "your result" wording, a diagnosis CTA near the top, and a per-type OG card.
   await expect(page.getByRole("button", { name: "結果画像を保存" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "あなたのアイテム" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "LINEで友だち追加" })).toHaveCount(0);
   await expect(page.locator(".profile-cta").getByRole("link", { name: "生年月日で診断する" })).toBeVisible();
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /\/og\/fox\.jpg$/);
   await page.locator(".profile-cta").getByRole("link", { name: "生年月日で診断する" }).click();

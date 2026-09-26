@@ -32,7 +32,7 @@ Next.js App Router / React / TypeScript / Zod。CSSの共通トークンとセ�
 | --- | --- |
 | `/` | サービス説明、生年月日フォーム（`#diagnose`。実在日・未来日チェック）、10タイプのプレビュー |
 | `/result/` | 診断結果（本を開く演出 → タイプ詳細＋アイテム＋結果シェア）。直接訪問・保存失敗時は再診断を案内 |
-| `/types/` | 10タイプ一覧と、枠の色（エレメント）の説明 |
+| `/types/` | 10タイプ一覧と、枠の色（緑・赤・黄・白・青のグループ）の説明 |
 | `/types/[slug]/` | 生年月日を含まない共有可能なタイプ紹介。シェアで来た人向けに診断導線を上部に置く |
 | `/privacy/` | 入力・端末内一時保存・共有・Webフォントの説明 |
 
@@ -52,7 +52,7 @@ src/
     tab-bar.tsx         スマホ用の下部タブ
     bx.tsx              BudouXによる文節単位の改行
   data/
-    types.ts            10タイプの名前・キャッチ・要約・強み、エレメント色、画像プロンプト
+    types.ts            10タイプの名前・キャッチ・要約・強み、グループの色、画像プロンプト
     type-details.ts     タイプ詳細ページの長文（性格・あるある・恋愛・仕事など）
     art-direction.ts    共通絵柄、asset schema、生成provider interface
   lib/
@@ -102,6 +102,14 @@ PNG保存はCanvasによる1080×1350（サイトのWebフォント、ロゴ、�
 10体の仮SVGは独自に作成。参考画像の丸い線・少ない色数という方向性を参考にし、素材自体は転用していません。生成APIは未接続。`generationRequest(type)` で、共通絵柄＋固有プロンプト＋negative prompt＋サイズを取得できます。
 
 `CharacterAsset` に状態（placeholder / generated / approved）、サイズ、alt、絵柄版、生成元を持たせています。将来はサーバー側で `ImageGenerationProvider` を実装し、レビュー済み画像だけを公開します。詳細は [アセット設計](docs/art-direction.md)。
+
+## 公式LINEへの案内
+
+診断結果ページに「LINEで友だち追加」ボタンを2か所（タイプ紹介の直後と、ページの終わり）表示します。URLは `NEXT_PUBLIC_LINE_URL`（GitHub Actionsでは **Settings → Secrets and variables → Actions → Variables** の `LINE_FRIEND_URL`）で設定し、未設定ならボタンは出ません。タイプ紹介ページ（診断していない人が見るページ）には出しません。ボタンはLINEのロゴを使わない文字ボタンです。
+
+## 用語
+
+画面では五行の用語（木・火・土・金・水、エレメント）を使わず、「緑・赤・黄・白・青グループ」と呼びます（`GROUP_NAMES` / `groupName`）。コード内の `ELEMENT_COLORS` などの名前は内部用です。
 
 ## GitHub Pages
 
