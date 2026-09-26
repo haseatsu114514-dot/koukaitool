@@ -16,7 +16,6 @@ const COMPATIBILITY_LABELS: Record<CompatibilityLevel, { label: string; note: st
   good: { label: "相性がいい", note: "あなたを後ろから支えてくれる相手。そばにいると力が出やすくなります。" },
   attracted: { label: "惹かれやすい相手", note: "つい気になって、世話を焼きたくなる相手。あなたが力を注ぐほど、相手も輝きます。" },
   caution: { label: "ちょっと注意", note: "考え方がぶつかりやすい相手。違いを知っておけば、うまく付き合えます。" },
-  nemesis: { label: "天敵", note: "なぜかペースを乱されがちな相手。張り合わずに、少し距離をとるのがうまくいくコツです。" },
 };
 
 function ItemBadge({ tenGod }: { tenGod: TenGod }) {

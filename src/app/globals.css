@@ -180,8 +180,6 @@ img { display: block; max-width: 100%; }
 .compat-best { border-left-color: var(--accent); }
 .compat-good { border-left-color: var(--glow); }
 .compat-caution { border-left-color: #8a97aa; }
-.compat-nemesis { border-left-color: #e5484d; }
-.compat-nemesis h3 { color: #ff8a80; }
 .compat-group h3 { font-size: 17px; }
 .compat-best h3 { color: var(--accent); }
 .compat-group > p { grid-column: 1; font-size: 14px; }
@@ -360,7 +358,6 @@ img { display: block; max-width: 100%; }
 .compat-good { --tone: var(--glow); }
 .compat-attracted { --tone: #ff9ecb; border-left-color: #ff9ecb; }
 .compat-attracted h3 { color: #ffb8d9; }
-.compat-nemesis { --tone: #e5484d; }
 .compat-group:hover { translate: 4px 0; box-shadow: 0 12px 30px -18px #000; }
 .compat-art { transition: scale .3s, rotate .3s, box-shadow .3s; }
 .compat-group li a:hover .compat-art { scale: 1.1; rotate: -6deg; box-shadow: 0 0 18px color-mix(in srgb, var(--el) 70%, transparent); }
