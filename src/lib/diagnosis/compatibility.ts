@@ -27,3 +27,10 @@ export function stellaCompatibility(stem: Stem): Record<StellaLevel, Stem[]> {
   const placed = new Set<Stem>([stem, ...best, ...good, ...caution]);
   return { best, good, mid: STEMS.filter(target => !placed.has(target)), foe: caution };
 }
+
+/** Where a partner falls for me: one of the four levels, or "same" for the same type. */
+export function stellaLevel(stem: Stem, partner: Stem): StellaLevel | "same" {
+  if (stem === partner) return "same";
+  const groups = stellaCompatibility(stem);
+  return (Object.keys(groups) as StellaLevel[]).find(level => groups[level].includes(partner))!;
+}

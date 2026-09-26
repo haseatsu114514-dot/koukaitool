@@ -31,12 +31,12 @@ Next.js App Router / React / TypeScript / Zod。CSSの共通トークンとセ�
 | URL | 役割 |
 | --- | --- |
 | `/` | サービス説明、生年月日フォーム（`#diagnose`。実在日・未来日チェック）、10タイプのプレビュー |
-| `/result/` | 診断結果（本を開く演出 → タイプ詳細＋アイテム＋結果シェア）。直接訪問・保存失敗時は再診断を案内 |
+| `/result/` | マイファイル（本を開く演出 → タイプ詳細・相性・友だちとの相性チェック・アイテム・LINE案内・結果シェア）。結果がなければ診断を案内 |
 | `/types/` | 10タイプ一覧と、枠の色（緑・赤・黄・白・青のグループ）の説明 |
 | `/types/[slug]/` | 生年月日を含まない共有可能なタイプ紹介。シェアで来た人向けに診断導線を上部に置く |
-| `/privacy/` | 入力・端末内一時保存・共有・Webフォントの説明 |
+| `/privacy/` | 入力・端末内保存・共有・Webフォント・公式LINE（・アクセス解析）の説明 |
 
-スマホ幅（700px以下）ではヘッダーのナビを隠し、下部タブバー（ホーム／タイプ／結果）に切り替えます。
+スマホ幅（700px以下）ではヘッダーのナビを隠し、下部タブバー（ホーム／図鑑／マイファイル）に切り替えます。
 
 ```text
 src/
@@ -48,7 +48,7 @@ src/
     book-reveal.tsx     結果表示前の演出
     character.tsx       アセット表示アダプター
     type-card.tsx       一覧カード
-    result-view.tsx     一時保存からの結果復元
+    result-view.tsx     端末内保存からの結果復元
     tab-bar.tsx         スマホ用の下部タブ
     bx.tsx              BudouXによる文節単位の改行
   data/
@@ -61,7 +61,7 @@ src/
       setsuiri.ts       1900〜2100年の節入り時刻表（日本時間、生成物）
       ten-gods.ts       本気表、陰陽五行による通変星、補足文章
       index.ts          diagnose() と計算ルールの版
-    result-store.ts     生年月日を含まないタブ内一時保存
+    result-store.ts     生年月日を含まない端末内保存（localStorage）と消去
     paths.ts            GitHub Pagesのサブパス対応、OG用の絶対URL
     site.ts             サイト名・キャッチ、ページごとのメタ情報（OG/Xカード）
 public/characters/      10体のオリジナル仮SVG
@@ -91,7 +91,7 @@ docs/                   計算ルールとブランド/拡張仕様
 
 ## プライバシーと共有
 
-生年月日はブラウザ内でのみ使用し、サーバー、URL、localStorage、sessionStorageへ保存しません。sessionStorageには日干支・サイクル番号・月支とルールの版だけを保存。タブ内の再読み込みに対応し、不正・旧形式データは無視します。保存領域が使用不可でも同一クライアント遷移中はメモリから結果を表示できます。共有は一般的なタイプ紹介URLと、誕生日や通変星（アイテム）を含まない画像・文章を使用します。タイプ紹介ページの共有文は「私は〜でした」ではなく、タイプの紹介として書きます。
+生年月日はブラウザ内でのみ使用し、サーバー、URL、localStorage、sessionStorageへ保存しません。次に開いたときもマイファイルを見られるよう、localStorageに日干支・サイクル番号・月支とルールの版だけを保存します（以前の版がsessionStorageに残した結果は一度だけ移します）。結果ページの「この結果を消す」で削除できます。不正・旧形式データは無視します。友だちとの相性チェックに入れた生年月日と結果は保存しません。保存領域が使用不可でも同一クライアント遷移中はメモリから結果を表示できます。共有は一般的なタイプ紹介URLと、誕生日や通変星（アイテム）を含まない画像・文章を使用します。タイプ紹介ページの共有文は「私は〜でした」ではなく、タイプの紹介として書きます。
 
 PNG保存はCanvasによる1080×1350（サイトのWebフォント、ロゴ、サイトURL入り）。Threads専用APIは使わず、共有文コピーと端末の共有メニューに対応します。Web Share / Clipboardが使用できない場合もメッセージで案内します。
 
@@ -122,6 +122,7 @@ URLは `NEXT_PUBLIC_LINE_URL`（GitHub Actionsでは **Settings → Secrets and 
 | `diagnosis_complete` | 診断した（再読み込みでは数えない） | `stella_type` |
 | `line_view` | LINEの案内が画面に半分以上入った | `stella_type` |
 | `line_click` | 「LINEで友だち追加」を押した | `stella_type` |
+| `friend_check` | 友だちとの相性を調べた | `stella_type`、`friend_type` |
 | `share` | 画像保存・シェア・コピー | `method`（image / native / copy）、`content_type`（result / type）、`item_id` |
 
 `sitemap.xml` と `robots.txt` も書き出します。GitHub Pagesのプロジェクトサイト（`/koukaitool/`）では `robots.txt` は検索エンジンに読まれないので、Search Consoleに `sitemap.xml` を直接登録してください。独自ドメインに移すと `robots.txt` も有効になります。
