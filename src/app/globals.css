@@ -205,9 +205,6 @@ button, .button, .tab-bar, .profile-toc, .keywords, .chip-button { -webkit-user-
 .profile-hero { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 64px; }
 .profile-art { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border-radius: var(--r-l); border: 3px solid var(--el); }
 .profile-art .character { width: 84%; height: 84%; object-fit: contain; }
-.item-badge { position: absolute; top: 14px; right: 14px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.item-badge-icon { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--accent); color: var(--accent); background: var(--paper); }
-.item-badge-label { max-width: 130px; padding: 1px 10px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: 12px; font-weight: 700; line-height: 1.6; text-align: center; }
 .profile-title > * { animation: rise .6s var(--ease) both; }
 .profile-title > :nth-child(n+3) { animation-delay: .08s; }
 .profile-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 14px; }
@@ -219,6 +216,9 @@ button, .button, .tab-bar, .profile-toc, .keywords, .chip-button { -webkit-user-
 .profile-catch { font-size: 17px; line-height: 1.9; color: var(--body); }
 .keywords { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; padding: 0; list-style: none; }
 .keywords li { padding: 4px 12px; border-radius: 999px; background: var(--surface-2); font-size: 13px; }
+.item-hint { display: block; width: fit-content; max-width: 100%; margin-top: 18px; font-size: 13px; line-height: 1.7; color: var(--accent); }
+.item-hint svg { margin-left: 3px; vertical-align: -3px; }
+@media (hover: hover) { .item-hint:hover { text-decoration: underline; text-underline-offset: 3px; } }
 .profile-cta { display: grid; justify-items: start; gap: 10px; margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); }
 .profile-cta-lead { font-size: 15px; font-weight: 700; color: var(--accent); }
 
@@ -327,8 +327,6 @@ button, .button, .tab-bar, .profile-toc, .keywords, .chip-button { -webkit-user-
 .reveal-card-art .character { width: 88%; height: 88%; }
 .reveal-card p { font-size: 14px; color: var(--muted); }
 .reveal-card strong { display: block; font-family: var(--serif); font-size: clamp(22px, 6.4vw, 30px); line-height: 1.4; white-space: nowrap; color: var(--ink); }
-.reveal-item { position: absolute; top: 0; left: calc(50% + 48px); display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--accent); color: var(--accent); background: var(--paper); animation: br-item-pop .5s var(--ease) 2.7s both; }
-.reveal-card .reveal-item-label { margin-top: 6px; font-weight: 700; color: var(--accent); }
 .reveal-skip { position: absolute; bottom: calc(28px + env(safe-area-inset-bottom)); left: 0; right: 0; text-align: center; font-size: 12px; color: var(--muted); animation: br-fade-in .5s ease 1s both; }
 
 /* ---------- Motion (one-time only) ---------- */
@@ -345,7 +343,6 @@ button, .button, .tab-bar, .profile-toc, .keywords, .chip-button { -webkit-user-
 @keyframes br-cover-open { to { transform: rotateY(-172deg); } }
 @keyframes br-flip { to { transform: rotateY(-165deg); } }
 @keyframes br-card-pop { from { opacity: 0; translate: -50% -44%; } to { opacity: 1; translate: -50% -50%; } }
-@keyframes br-item-pop { from { opacity: 0; scale: .6; } }
 
 @media (hover: none) {
   .type-card:hover .type-card-art, .constellation-star:hover { transform: none; }
@@ -374,6 +371,7 @@ button, .button, .tab-bar, .profile-toc, .keywords, .chip-button { -webkit-user-
   .profile-art { width: 100%; max-width: 360px; }
   .profile-meta, .keywords, .share-buttons { justify-content: center; }
   .profile-cta { justify-items: center; }
+  .item-hint { margin-inline: auto; }
   .profile-toc { top: 64px; border-radius: var(--r); }
   .strength-pair { grid-template-columns: 1fr; }
   .compat-group { grid-template-columns: 1fr; }
@@ -450,8 +448,6 @@ button, .button, .tab-bar, .profile-toc, .keywords, .chip-button { -webkit-user-
   .breadcrumb { margin-bottom: 12px; font-size: 12px; }
   .profile-hero { gap: 18px; }
   .profile-art { max-width: 280px; }
-  .item-badge { top: 10px; right: 10px; }
-  .item-badge-icon { width: 48px; height: 48px; }
   .profile-meta { gap: 8px 10px; margin-bottom: 8px; }
   .profile-no { font-size: 14px; }
   .element-chip { font-size: 11px; }
@@ -460,6 +456,7 @@ button, .button, .tab-bar, .profile-toc, .keywords, .chip-button { -webkit-user-
   .profile-catch { max-width: 20em; margin-inline: auto; font-size: 15px; line-height: 1.85; }
   .keywords { margin-top: 12px; }
   .keywords li { font-size: 12px; }
+  .item-hint { margin: 14px auto 0; font-size: 12px; text-align: center; }
   .share-actions { margin-top: 16px; }
   .share-buttons { gap: 6px; }
   .share-save { flex: 1 1 100%; max-width: 320px; }

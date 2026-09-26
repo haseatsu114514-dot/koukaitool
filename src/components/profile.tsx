@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ViewTransition } from "react";
-import { ArrowRight, Check, ArrowLeft, RotateCcw } from "lucide-react";
+import { ArrowRight, Check, ArrowLeft, RotateCcw, ChevronDown } from "lucide-react";
 import { CHARACTER_TYPES, groupName, elementStyle, typeByStem, type CharacterType } from "@/data/types";
 import { TYPE_DETAILS } from "@/data/type-details";
 import type { DiagnosisResult } from "@/lib/diagnosis";
@@ -18,11 +18,6 @@ const COMPATIBILITY_LABELS: Record<CompatibilityLevel, { label: string; note: st
   attracted: { label: "惹かれやすい相手", note: "つい気になって、世話を焼きたくなる相手。あなたの応援が、相手の力になります。" },
   caution: { label: "ちょっと注意", note: "考え方がぶつかりやすい相手。違いを知っておけば、うまく付き合えます。" },
 };
-
-function ItemBadge({ tenGod }: { tenGod: TenGod }) {
-  const Icon = ITEM_ICONS[tenGod];
-  return <a className="item-badge" href="#item" aria-label={`あなたのアイテム：${GOD_COPY[tenGod].item}`}><span className="item-badge-icon"><Icon size={26} strokeWidth={1.6} aria-hidden="true" /></span><span className="item-badge-label">{GOD_COPY[tenGod].item}</span></a>;
-}
 
 function ItemCard({ tenGod }: { tenGod: TenGod }) {
   const copy = GOD_COPY[tenGod], Icon = ITEM_ICONS[tenGod];
@@ -71,13 +66,14 @@ export function Profile({ type, result }: { type: CharacterType; result?: Diagno
   return <article className="profile page-width">
     {!result && <Link className="breadcrumb" href="/types/"><ArrowLeft size={15} aria-hidden="true" />ステラタイプ一覧へ</Link>}
     <div className="profile-hero">
-      <ViewTransition name={`character-${type.slug}`}><div className="profile-art" style={elementStyle(type.stem)}><Character type={type} priority />{result && <ItemBadge tenGod={result.tenGod} />}</div></ViewTransition>
+      <ViewTransition name={`character-${type.slug}`}><div className="profile-art" style={elementStyle(type.stem)}><Character type={type} priority /></div></ViewTransition>
       <div className="profile-title">
         <p className="profile-meta"><span className="profile-no">No.{number}<small>/ 10</small></span><span className="element-chip" style={elementStyle(type.stem)}><span className="element-orb" aria-hidden="true" />{groupName(type.stem)}</span></p>
         {result && <p className="result-lead">あなたのステラタイプは</p>}
         <h1><Bx>{type.displayName}</Bx></h1>
         <p className="profile-catch"><Bx>{type.shortCatch}</Bx></p>
         <ul className="keywords">{type.keywords.map(word => <li key={word}>{word}</li>)}</ul>
+        {result && <a className="item-hint" href="#item"><Bx>下にスクロールすると、あなたのアイテムがわかります</Bx><ChevronDown size={16} aria-hidden="true" /></a>}
         {result ? <ShareActions type={type} mode="result" /> : <div className="profile-cta">
           <p className="profile-cta-lead">あなたは何タイプ？</p>
           <Link className="button primary" href="/#diagnose">生年月日で診断する <ArrowRight size={18} aria-hidden="true" /></Link>
