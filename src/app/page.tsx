@@ -20,15 +20,6 @@ export default function Home() {
         <p className="hero-description"><Bx>生年月日を入れるだけ。質問はありません。</Bx><br /><Bx>性格・恋愛・仕事・相性と、あなたの「アイテム」がわかります。</Bx></p>
         <div id="diagnose" className="hero-form"><BirthForm /><p className="micro hero-note">約10秒・無料・登録なし。生年月日はどこにも送信されません</p></div>
       </div>
-      <div className="constellation" aria-label="10のステラタイプ">
-        <div className="constellation-ring" aria-hidden="true" />
-        <div className="constellation-core" aria-hidden="true"><span className="core-num">10</span><span className="core-label">のタイプ</span></div>
-        <ul className="constellation-orbit">
-          {CHARACTER_TYPES.map((type, i) => <li key={type.slug} style={{ "--a": `${i * 36 - 90}deg` } as React.CSSProperties}>
-            <Link href={`/types/${type.slug}/`} className="constellation-star" style={elementStyle(type.stem)} aria-label={type.displayName}><Character type={type} priority /></Link>
-          </li>)}
-        </ul>
-      </div>
     </section>
     <section className="section page-width home-types" aria-labelledby="home-types-title">
       <div className="section-heading"><div className="sec-head"><h2 id="home-types-title" className="sec-title">10のステラタイプ</h2><p className="sec-lead"><Bx>あるあるを読んで、自分っぽいタイプを予想してから診断してみてください。</Bx></p></div><Link className="text-link" href="/types/">図鑑で見る <ArrowRight size={16} aria-hidden="true" /></Link></div>
