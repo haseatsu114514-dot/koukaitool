@@ -64,7 +64,7 @@ src/
     result-store.ts     生年月日を含まない端末内保存（localStorage）と消去
     paths.ts            GitHub Pagesのサブパス対応、OG用の絶対URL
     site.ts             サイト名・キャッチ、ページごとのメタ情報（OG/Xカード）
-public/characters/      10体のPNG原本・画面用WebPと従来の仮SVG
+public/characters/      正式採用した10体のPNG原本・画面用WebP
 public/og/              OG画像（scripts/og-images.mjs で生成）
 scripts/                OG画像と節入り時刻表の生成スクリプト
 tests/                  計算・データ・ブラウザ操作テスト
@@ -99,7 +99,7 @@ PNG保存はCanvasによる1080×1350（サイトのWebフォント、ロゴ、�
 
 ## イラスト
 
-提供されたグリズリー画像をもとに、残り9体を大きな丸い頭、小さな体、太いこげ茶の線、優しい色のPNGに揃えました。小さな一覧で見分けられるよう、カピバラは薄い灰茶色の体と横長の口元、アルパカはバターイエロー、妖狐は雪のような白、ハリネズミはラベンダーを主な色にしています。妖狐の朱色は耳の内側・隈取り・しっぽの先に小さく添え、半目の観察眼と考える仕草を保っています。画面のグループ色は維持しています。グリズリーは提供画像から背景を透過する編集を行い、元の画像は `docs/character-art/bear-style-reference.png` に保存しています。全10体の1254×1254透過PNG（`public/characters/*-soft.png`）を保存画像・OG画像で使用し、画面には同じ絵の可逆圧縮WebP（`*-soft.webp`）を使います。`pnpm characters:web` でWebPを再生成できます。従来の仮SVGは残しています。生成APIは未接続。`generationRequest(type)` で、共通絵柄＋固有プロンプト＋negative prompt＋サイズを取得できます。
+提供されたグリズリー画像をもとに、残り9体を大きな丸い頭、小さな体、太いこげ茶の線、優しい色のPNGに揃えました。小さな一覧で見分けられるよう、カピバラは薄い灰茶色の体と横長の口元、アルパカはバターイエロー、妖狐は雪のような白、ハリネズミはラベンダーを主な色にしています。妖狐の朱色は耳の内側・隈取り・しっぽの先に小さく添え、半目の観察眼と考える仕草を保っています。画面のグループ色は維持しています。グリズリーは提供画像から背景を透過する編集を行い、元の画像は `docs/character-art/bear-style-reference.png` に保存しています。全10体の1254×1254透過PNG（`public/characters/*-soft.png`）を保存画像・OG画像で使用し、画面には同じ絵の可逆圧縮WebP（`*-soft.webp`）を使います。`pnpm characters:web` でWebPを再生成できます。過去のキャラクターSVGは削除し、今回の10体を正式版として使用しています。生成APIは未接続。`generationRequest(type)` で、共通絵柄＋固有プロンプト＋negative prompt＋サイズを取得できます。
 
 `CharacterAsset` に状態（placeholder / provided / generated / approved）、実画像のサイズ、alt、絵柄版、生成元を持たせています。2026年10月2日に表情付きの10種を正式採用し、全10体を `approved` としています。詳細は [アセット設計](docs/art-direction.md)。
 
