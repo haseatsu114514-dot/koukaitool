@@ -7,7 +7,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { chromium } from "@playwright/test";
 
 register("./lib/ts-paths.mjs", import.meta.url);
-const { CHARACTER_TYPES, elementColors, groupName } = await import("../src/data/types.ts");
+const { CHARACTER_TYPES, characterAsset, elementColors, groupName } = await import("../src/data/types.ts");
 const { SITE_NAME, SITE_TAGLINE } = await import("../src/lib/site.ts");
 const { LOGO_PATH } = await import("../src/lib/logo-path.ts");
 
@@ -62,12 +62,12 @@ h1 { font-family: "Shippori Mincho B1", serif; font-weight: 700; line-height: 1.
 .orbit10 .star img { width: 90%; }
 `;
 const brand = (tagline = true) => `<p class="brand"><svg viewBox="9 16 46 39"><path fill="#e3b45a" fill-rule="evenodd" d="${LOGO_PATH}"/></svg>${SITE_NAME}${tagline ? `<small>${SITE_TAGLINE}</small>` : ""}</p>`;
-const art = async slug => `data:image/svg+xml;base64,${(await readFile(new URL(`public/characters/${slug}.svg`, root))).toString("base64")}`;
+const art = async type => `data:image/png;base64,${(await readFile(new URL(`public${characterAsset(type).src}`, root))).toString("base64")}`;
 
 async function typeCard(type, index) {
   const { color, tint } = elementColors(type.stem);
   return { name: type.slug, style: `--el:${color};--tint:${tint}`, html: `${sky(type.slug)}
-    <div class="disc" style="left:110px;top:105px;width:420px;height:420px"><img src="${await art(type.slug)}"></div>
+    <div class="disc" style="left:110px;top:105px;width:420px;height:420px"><img src="${await art(type)}"></div>
     <div class="copy" style="left:612px;right:64px">
       <p class="no">No.${String(index + 1).padStart(2, "0")}<span>${groupName(type.stem)}</span></p>
       <h1 style="margin-top:12px;font-size:56px">${type.displayName}</h1>
@@ -79,7 +79,7 @@ async function typeCard(type, index) {
 async function homeCard() {
   const stars = await Promise.all(CHARACTER_TYPES.map(async (type, i) => {
     const a = (i * 36 - 90) * Math.PI / 180, { color, tint } = elementColors(type.stem);
-    return `<div class="star" style="--el:${color};--tint:${tint};left:${260 + Math.cos(a) * 205 - 48}px;top:${260 + Math.sin(a) * 205 - 48}px"><img src="${await art(type.slug)}"></div>`;
+    return `<div class="star" style="--el:${color};--tint:${tint};left:${260 + Math.cos(a) * 205 - 48}px;top:${260 + Math.sin(a) * 205 - 48}px"><img src="${await art(type)}"></div>`;
   }));
   return { name: "default", style: "", html: `${sky("stella-file")}
     <div class="copy" style="left:84px;right:560px">

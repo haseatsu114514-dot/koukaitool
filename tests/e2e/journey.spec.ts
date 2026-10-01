@@ -47,7 +47,13 @@ test("direct result access and all ten permanent profile routes", async ({ page 
   await page.goto("./types/"); const links = await page.locator(".type-card").evaluateAll(nodes => nodes.map(n => (n as HTMLAnchorElement).href));
   for (const href of links) {
     await page.goto(href); await expect(page.locator("h1")).not.toBeEmpty();
-    expect(await page.locator(".profile-art img").evaluate(img => (img as HTMLImageElement).naturalWidth)).toBe(320);
+    const image = page.locator(".profile-art img");
+    await expect(image).toHaveAttribute("src", /\/characters\/[a-z]+-soft\.webp$/);
+    await image.scrollIntoViewIfNeeded();
+    await expect.poll(() => image.evaluate(img => (img as HTMLImageElement).complete && (img as HTMLImageElement).naturalWidth > 0)).toBe(true);
+    const size = await image.evaluate(img => ({ width: (img as HTMLImageElement).naturalWidth, height: (img as HTMLImageElement).naturalHeight }));
+    expect(size.height).toBe(size.width);
+    await expect(image).toHaveAttribute("width", String(size.width)); await expect(image).toHaveAttribute("height", String(size.height));
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
 });

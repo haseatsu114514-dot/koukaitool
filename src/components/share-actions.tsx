@@ -18,7 +18,7 @@ function random(seed: string) {
 }
 
 /** Dedicated 1080×1350 export. No birthday, hidden-stem or item data in shared text/image.
- * Canvas uses same-origin SVG assets; future API assets must be served with CORS. */
+ * Canvas uses same-origin character assets; future API assets must be served with CORS. */
 async function exportCard(type: CharacterType) {
   const W = 1080, H = 1350, cx = 540, cy = 500;
   const canvas = document.createElement("canvas"); canvas.width = W; canvas.height = H;

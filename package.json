@@ -9,6 +9,7 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "og": "node scripts/og-images.mjs",
+    "characters:web": "node scripts/character-web-images.mjs",
     "generate:setsuiri": "node scripts/generate-setsuiri.mjs"
   },
   "dependencies": {

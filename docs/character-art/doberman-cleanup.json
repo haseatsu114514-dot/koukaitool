@@ -1,0 +1,7 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-10-01",
+  "slug": "doberman",
+  "prompt": "Use case: precise-object-edit\nInput image 1: exact edit target, finished doberman with silver breastplate and silver shield.\nPrimary request: CLEAN ONE SMALL UNINTENDED DARK SMUDGE IN THE CENTER OF THE FOREHEAD. There is a faint dark gray/black spiral/blot around the upper central forehead between the ears, well above the tan brow patches. Remove this stray blot completely and replace it with smooth uninterrupted matching gray fur fill and gentle existing shading.\nPreserve absolutely everything else exactly: huge head silhouette, ear positions, tan brow patches, brown expressive brows and eyes, cream muzzle/nose/smile, silver chest armor, silver shield, collar/gold badge, paws/tail, proportions, square composition, original thick dark-brown contours and transparent background. Do not draw any new forehead markings, symbols, hair, third eye or shine. Only repair the unintended dirty-looking blot on forehead; forehead should be clean matte gray. No other changes. Genuine transparent background.",
+  "transparent_background": true
+}
