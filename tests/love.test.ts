@@ -25,7 +25,8 @@ describe("love page copy", () => {
     // The motifs are metaphors of their own, never the app's everyday items.
     const motifs = Object.values(LOVE_GIFTS).map(gift => gift.motif);
     expect(new Set(motifs).size).toBe(motifs.length);
-    for (const god of TEN_GODS) expect(LOVE_GIFTS[god].motif).not.toBe(GOD_COPY[god].item);
+    for (const god of TEN_GODS) { expect(LOVE_GIFTS[god].motif).not.toContain(GOD_COPY[god].item); expect([...LOVE_GIFTS[god].motif].length, god).toBeLessThanOrEqual(12); }
+    expect(JSON.stringify(LOVE_GIFTS)).not.toContain("ラッキー");
   });
   it("names every compatibility level positively", () => {
     for (const { label } of Object.values(LOVE_COMPAT)) expect(label).toMatch(/相性$/);

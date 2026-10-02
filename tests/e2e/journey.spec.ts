@@ -93,7 +93,7 @@ test("love page: intro → birth date → love result → official LINE", async 
   await expect(page.getByRole("heading", { name: "うまくいく法則", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "やりがちなNG", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "あなたのギフト", exact: true })).toBeVisible();
   // The gift is named as a talent, drawn with a metaphor of its own (not the app's item).
-  await expect(page.getByRole("heading", { name: "積み重ねる才能", exact: true })).toBeVisible(); await expect(page.locator(".lv-gift-motif")).toHaveText("モチーフ：レンガ");
+  await expect(page.getByRole("heading", { name: "積み重ねる才能", exact: true })).toBeVisible(); await expect(page.locator(".lv-gift-motif")).toHaveText("たとえるなら、ひとつずつ積むレンガ");
   // All three compatibility levels are shown openly, and both LINE buttons use the love page's own friend-add URL.
   await expect(page.locator(".is-best")).toContainText("ほっとけないアルパカ"); await expect(page.locator(".is-foe")).toContainText("正々堂々ドーベルマン"); await expect(page.locator(".is-foe")).toContainText("ひと工夫で深まる相性");
   await expect(page.locator(".lv-line .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love"); await expect(page.locator(".lv-bar .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love");

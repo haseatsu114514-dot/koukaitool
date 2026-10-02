@@ -91,7 +91,7 @@ export default function LovePage() {
         <div className="lv-pair lv-stagger">
           <div className="lv-pair-card" style={order(0)}><p className="lv-pair-label"><b>キャラ</b>＝あなたの本質</p><p><Phrases>生まれた日で決まる、10タイプのキャラ。性格の根っこと、恋の進め方がわかります。</Phrases></p><ul className="lv-item-icons lv-chara-icons" aria-label={`10タイプのキャラ：${CHARACTER_TYPES.map(type => type.displayName).join("、")}`}>{CHARACTER_TYPES.map(type => <li key={type.slug} style={elementStyle(type.stem)}><Character type={type} /></li>)}</ul></div>
           <span className="lv-pair-x" aria-hidden="true" style={order(1)}>×</span>
-          <div className="lv-pair-card" style={order(2)}><p className="lv-pair-label"><b>ギフト</b>＝生まれ持った強みと個性</p><p><Phrases>生まれた月でわかる、10種類の才能。アイコンは、その才能のモチーフです。</Phrases></p><ul className="lv-item-icons" aria-label={`10種類のギフト：${TEN_GODS.map(god => LOVE_GIFTS[god].name).join("、")}`}>{TEN_GODS.map(god => { const Icon = GIFT_ICONS[god]; return <li key={god} title={`${LOVE_GIFTS[god].name}（モチーフ：${LOVE_GIFTS[god].motif}）`}><Icon size={16} strokeWidth={1.8} aria-hidden="true" /></li>; })}</ul></div>
+          <div className="lv-pair-card" style={order(2)}><p className="lv-pair-label"><b>ギフト</b>＝生まれ持った強みと個性</p><p><Phrases>生まれた月でわかる、10種類の才能。アイコンは、その才能のイメージです。</Phrases></p><ul className="lv-item-icons" aria-label={`10種類のギフト：${TEN_GODS.map(god => LOVE_GIFTS[god].name).join("、")}`}>{TEN_GODS.map(god => { const Icon = GIFT_ICONS[god]; return <li key={god} title={`${LOVE_GIFTS[god].name}（${LOVE_GIFTS[god].motif}）`}><Icon size={16} strokeWidth={1.8} aria-hidden="true" /></li>; })}</ul></div>
         </div>
       </div>
     </section>

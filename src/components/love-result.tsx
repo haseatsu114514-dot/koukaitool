@@ -78,7 +78,7 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
       </Section>
 
       <Section id="lv-r-gift" title="あなたのギフト" lead="ギフトは、生まれたときに受け取った才能。キャラ（本質）とは別の、もうひとつの持ち味です。同じキャラでも、ここが人によって違います。">
-        <div className="lv-gift"><div className="lv-gift-head"><span className="lv-gift-icon"><GiftIcon size={28} strokeWidth={1.6} aria-hidden="true" /></span><div><p className="lv-gift-motif">モチーフ：{gift.motif}</p><h3 className="lv-gift-name">{gift.name}</h3><p className="lv-gift-title"><Phrases>{gift.title}</Phrases></p></div></div><p className="lv-gift-text">{gift.text}</p></div>
+        <div className="lv-gift"><div className="lv-gift-head"><span className="lv-gift-icon"><GiftIcon size={28} strokeWidth={1.6} aria-hidden="true" /></span><div><p className="lv-gift-motif"><Phrases>{`たとえるなら、${gift.motif}`}</Phrases></p><h3 className="lv-gift-name">{gift.name}</h3><p className="lv-gift-title"><Phrases>{gift.title}</Phrases></p></div></div><p className="lv-gift-text">{gift.text}</p></div>
       </Section>
 
       <Section id="lv-r-hint" title="恋愛運を引き寄せるヒント">
