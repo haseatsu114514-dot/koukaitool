@@ -27,13 +27,14 @@ function Partners({ stems }: { stems: CharacterType["stem"][] }) {
 
 /** The love result: キャラ (the type), her tendencies in love, charm, what works and the usual misstep, ギフト (the item, read for love), one hint, compatibility, then the official LINE.
  * Running text is plain (print-style breaks); headings and short items break between phrases.
- * A bar with the LINE button follows the reader once the type card scrolls away, and steps aside while the full invitation is on screen. */
+ * A bar with the LINE button follows the reader once the type card scrolls away, and steps aside while the full invitation is on screen.
+ * Until a friend-add URL is configured, the invitation and buttons are still shown; pressing one says the official LINE is being prepared. */
 export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRetry: () => void }) {
   const type = typeByStem(result.pillar.stem), love = LOVE_COPY[type.slug];
   const gift = LOVE_GIFTS[result.tenGod], GiftIcon = ITEM_ICONS[result.tenGod];
   const groups = stellaCompatibility(type.stem), url = loveLineUrlFor(type.slug);
   const card = useRef<HTMLDivElement>(null), panel = useRef<HTMLElement>(null);
-  const [cardGone, setCardGone] = useState(false), [panelIn, setPanelIn] = useState(false);
+  const [cardGone, setCardGone] = useState(false), [panelIn, setPanelIn] = useState(false), [pending, setPending] = useState(false);
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
     if (card.current) { const o = new IntersectionObserver(([entry]) => setCardGone(!entry.isIntersecting && entry.boundingClientRect.top < 0)); o.observe(card.current); observers.push(o); }
@@ -44,8 +45,10 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
     }
     return () => observers.forEach(o => o.disconnect());
   }, [type.slug]);
-  const barShown = !!url && cardGone && !panelIn;
-  const lineLink = (placement: "panel" | "bar") => ({ href: url, target: "_blank", rel: "noopener noreferrer", onClick: () => track({ name: "line_click", stella_type: type.slug, placement }) });
+  const barShown = cardGone && !panelIn;
+  const lineLink = (placement: "panel" | "bar") => url
+    ? { href: url, target: "_blank", rel: "noopener noreferrer", onClick: () => track({ name: "line_click", stella_type: type.slug, placement }) }
+    : { href: "#line", onClick: (event: React.MouseEvent) => { event.preventDefault(); track({ name: "line_click", stella_type: type.slug, placement }); setPending(true); panel.current?.scrollIntoView({ block: "center" }); } };
   return <article className="lv-result">
     <div className="lv-wrap">
       <div ref={card} className="lv-type-card lv-dark" style={elementStyle(type.stem)}>
@@ -84,31 +87,28 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
         <div className="lv-compat">
           <div className="lv-compat-row is-best"><span className="lv-compat-label">{LOVE_COMPAT.best.label}</span><div><Partners stems={groups.best} /><p className="lv-compat-note">{LOVE_COMPAT.best.note}</p></div></div>
           <div className="lv-compat-row is-good"><span className="lv-compat-label">{LOVE_COMPAT.good.label}</span><div><Partners stems={groups.good} /><p className="lv-compat-note">{LOVE_COMPAT.good.note}</p></div></div>
-          <div className="lv-compat-row is-foe"><span className="lv-compat-label">{LOVE_COMPAT.foe.label}</span><div>{url
-            ? <p className="lv-compat-lock"><span className="lv-compat-q" aria-hidden="true">?</span><Lock size={14} aria-hidden="true" /><span>どのキャラかは<a href="#line">LINEで見られます</a></span></p>
-            : <><Partners stems={groups.foe} /><p className="lv-compat-note">{LOVE_COMPAT.foe.note}</p></>}</div></div>
+          <div className="lv-compat-row is-foe"><span className="lv-compat-label">{LOVE_COMPAT.foe.label}</span><div><p className="lv-compat-lock"><span className="lv-compat-q" aria-hidden="true">?</span><Lock size={14} aria-hidden="true" /><span>どのキャラかは<a href="#line">LINEで見られます</a></span></p></div></div>
         </div>
       </Section>
 
-      {url && <section ref={panel} id="line" className="lv-line lv-dark" aria-labelledby="lv-line-title">
+      <section ref={panel} id="line" className="lv-line lv-dark" aria-labelledby="lv-line-title">
         <p className="lv-line-kicker">公式LINE限定</p>
         <h2 id="lv-line-title" className="lv-line-title"><Phrases>あなたの恋愛運、続きはLINEで</Phrases></h2>
         <p className="lv-line-lead"><Phrases>ここまでは、まだ入り口。公式LINEでは、あなたの今の状況や悩みをうかがって、あなた一人のための鑑定をお届けします。</Phrases></p>
         <ul className="lv-line-list">{LOVE_LINE_BENEFITS.map(text => <li key={text}><Lock size={15} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
         <ol className="lv-steps" aria-label="受け取り方">{LOVE_LINE_STEPS.map(text => <li key={text}><Phrases>{text}</Phrases></li>)}</ol>
         <a className="lv-line-button" {...lineLink("panel")}>LINEで詳しく見る</a>
+        <p className="lv-line-pending" role="status">{pending ? "公式LINEは準備中です。まもなく、ここから友だち追加できるようになります。" : ""}</p>
         <p className="lv-line-note"><Phrases>友だち追加は無料です。入力した生年月日が、このサイトからLINEに送られることはありません。</Phrases></p>
-      </section>}
+      </section>
 
       {/* No share box or outbound links here: after the result, the only way forward is the official LINE. */}
       <button type="button" className="lv-retry" onClick={onRetry}><RotateCcw size={14} aria-hidden="true" />生年月日を入れ直す</button>
       <p className="micro lv-disclaimer">※ステラファイルは、占いをもとにしたコンテンツです。</p>
     </div>
-    {url && <>
-      <div className="lv-bar-space" aria-hidden="true" />
-      <div className={`lv-bar${barShown ? " is-shown" : ""}`} inert={!barShown}>
-        <div className="lv-bar-inner"><p><Phrases>恋愛運の続きは、公式LINEで</Phrases></p><a className="lv-line-button" {...lineLink("bar")}>LINEで詳しく見る</a></div>
-      </div>
-    </>}
+    <div className="lv-bar-space" aria-hidden="true" />
+    <div className={`lv-bar${barShown ? " is-shown" : ""}`} inert={!barShown}>
+      <div className="lv-bar-inner"><p><Phrases>恋愛運の続きは、公式LINEで</Phrases></p><a className="lv-line-button" {...lineLink("bar")}>LINEで詳しく見る</a></div>
+    </div>
   </article>;
 }

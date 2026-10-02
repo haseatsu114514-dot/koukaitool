@@ -74,7 +74,7 @@ test("love page: intro → birth date → love result → official LINE", async 
   await page.goto("./love/");
   // A landing page with its own frame: no app header or tab bar, the form in the hero, all ten characters, its own OG card.
   await expect(page.locator(".site-header")).toHaveCount(0); await expect(page.locator(".tab-bar")).toHaveCount(0);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("モテ方");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("恋の正解");
   await expect(page.locator(".lv-type")).toHaveCount(10);
   // The first page only leads to the diagnosis: no word of the official LINE, no Q&A.
   expect(await page.locator(".love").innerText()).not.toContain("LINE"); await expect(page.locator("details")).toHaveCount(0);
