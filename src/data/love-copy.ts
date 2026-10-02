@@ -115,21 +115,20 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
 };
 
 /** The item (月支の本気 → 通変星), called ギフト on this page and read for love: a second, personal layer on top of the type, so two people of the same type still get different results.
- * Each gift is named as a talent (name, "〜才能") and pictured by a short image that says what it does ("言葉のキャッチボール", "自分を鍛えるダンベル"),
- * shown after "たとえるなら、". Some keep the app's item (ダンベル, 王冠, トゲのあるバラ, 合鍵); the rest use an image that fits the talent better
- * (観覧車, 言葉のキャッチボール, レンガ, ロケット, 電球, 陽だまりの図書室). A bare object name is never shown, so it never reads like a lucky item.
- * The motif's icon is in love-gift-icon.tsx. */
+ * Each gift is named as a talent (name, "〜才能") and pictured after "たとえるなら、" by a short image that says what it does ("言葉が行き交うスマホ").
+ * Most keep the app's item (ダンベル, 王冠, トゲのあるバラ, スマホ, 合鍵, 本); four use an image that fits the talent better (観覧車, レンガ, ロケット, 電球).
+ * A bare object name is never shown, so it never reads like a lucky item. The motif's icon is in love-gift-icon.tsx. */
 export const LOVE_GIFTS: Record<TenGod, { name: string; motif: string; title: string; text: string }> = {
   比肩: { name: "自分を磨く才能", motif: "自分を鍛えるダンベル", title: "自分を磨くほど、恋が近づく", text: "誰かに頼るより、自分を高めることで魅力が増していく人。仕事や趣味に打ち込む姿に、人は惹かれます。恋に迷ったら、まず自分を磨く時間をとることが近道です。" },
   劫財: { name: "仲間に恵まれる才能", motif: "みんなの真ん中で輝く王冠", title: "仲間の輪が、恋を連れてくる", text: "ひとりより、仲間と一緒にいるときにいちばん輝ける人。友だちの集まりやグループの中で、出会いが生まれやすいタイプです。信頼できる友だちに恋の相談をすると、思わぬ縁がつながります。" },
   食神: { name: "楽しむ才能", motif: "心がはずむ観覧車", title: "「一緒にいて楽しい」が｜最大の魅力", text: "楽しいことを見つけるのが上手で、そばにいる人を自然と笑顔にできる人。おいしいものや楽しい場所を一緒に味わう時間が、恋を育てます。デートは、あなたが心から楽しめるプランがいちばんです。" },
   傷官: { name: "感性で魅せる才能", motif: "凛と咲くトゲのあるバラ", title: "鋭いセンスと、繊細さのギャップ", text: "感性が鋭く、ほかの人にはない独特の魅力を持つ人。はっきり本音を言える強さの裏にある繊細さが、相手の心をつかみます。言いすぎたと思ったら、素直なひと言を添えるだけで印象が変わります。" },
-  偏財: { name: "つながる才能", motif: "言葉のキャッチボール", title: "人とのつながりが、出会いを運ぶ", text: "フットワークが軽く、いろいろな人とすぐに打ち解けられる人。出会いの数が多く、思わぬところから恋が始まりやすいタイプです。気になる人には、あなたから軽く声をかけてみてください。" },
+  偏財: { name: "つながる才能", motif: "言葉が行き交うスマホ", title: "人とのつながりが、出会いを運ぶ", text: "フットワークが軽く、いろいろな人とすぐに打ち解けられる人。出会いの数が多く、思わぬところから恋が始まりやすいタイプです。気になる人には、あなたから軽く声をかけてみてください。" },
   正財: { name: "積み重ねる才能", motif: "ひとつずつ積むレンガ", title: "誠実さで、じわじわ心をつかむ", text: "約束を守り、相手と誠実に向き合える人。派手さより誠実さで、少しずつ相手の信頼を集めていきます。将来を一緒に考えられる、安定した恋で力を発揮するタイプです。" },
   偏官: { name: "動き出す才能", motif: "迷わず飛び立つロケット", title: "動いた分だけ、恋が動き出す", text: "思い立ったらすぐに動ける行動派。待つより自分から動くほうが、恋はうまくいきます。迷っている時間があるなら、まず一歩。その行動力が、相手には頼もしく映ります。" },
   正官: { name: "信頼される才能", motif: "大切な人に託される合鍵", title: "まじめさが、深い信頼に変わる", text: "約束やルールを大切にする誠実さが、相手の安心につながる人。軽いノリの恋より、お互いを信頼し合える真剣な関係で輝きます。「この人なら大丈夫」と思わせる力が、あなたの強みです。" },
   偏印: { name: "ひらめく才能", motif: "ぱっと灯る電球", title: "人と違う感性が、特別な魅力に", text: "ほかの人とは違う視点を持つ、少しミステリアスな人。趣味や好きなことを通して、価値観の合う相手と深くつながれます。あなたの「好き」を語るほど、それに惹かれる人が現れます。" },
-  印綬: { name: "知性で包み込む才能", motif: "陽だまりの図書室", title: "知性とやさしさで、心をつかむ", text: "学ぶことが好きな、物知りの努力家。相手の話を深く理解して、やさしく受け止められる包容力があります。「もっと話していたい」と思わせる、落ち着いた知的な魅力の持ち主。学びの場や趣味の講座など、好奇心が満たされる場所に出会いがあります。" },
+  印綬: { name: "知性で包み込む才能", motif: "やさしい知恵が詰まった本", title: "知性とやさしさで、心をつかむ", text: "学ぶことが好きな、物知りの努力家。相手の話を深く理解して、やさしく受け止められる包容力があります。「もっと話していたい」と思わせる、落ち着いた知的な魅力の持ち主。学びの場や趣味の講座など、好奇心が満たされる場所に出会いがあります。" },
 };
 
 /** The three levels the love page shows, all named positively ("〜相性"). "そこそこ" is left out to keep the result short.
