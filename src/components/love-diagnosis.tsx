@@ -4,7 +4,7 @@ import type { DiagnosisResult } from "@/lib/diagnosis";
 import { typeByStem } from "@/data/types";
 import { track } from "@/lib/analytics";
 import { BirthForm } from "./birth-form";
-import { Bx } from "./bx";
+import { Phrases } from "./phrases";
 import { BookReveal } from "./book-reveal";
 import { LoveResult } from "./love-result";
 
@@ -51,7 +51,7 @@ export function LoveDiagnosis({ hero, intro }: { hero: React.ReactNode; intro: R
     </section>
     {intro}
     <div className={`lv-bar${formGone && !finalIn ? " is-shown" : ""}`} inert={!formGone || finalIn}>
-      <div className="lv-bar-inner"><p><Bx>生年月日を入れるだけ。約10秒・無料</Bx></p><a className="lv-cta" href="#diagnose">無料で診断する</a></div>
+      <div className="lv-bar-inner"><p><Phrases>生年月日を入れるだけ。約10秒・無料</Phrases></p><a className="lv-cta" href="#diagnose">無料で診断する</a></div>
     </div>
   </>;
 }
