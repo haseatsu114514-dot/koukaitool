@@ -10,6 +10,7 @@ import { track } from "@/lib/analytics";
 import { Phrases } from "./phrases";
 import { Character } from "./character";
 import { GIFT_ICONS } from "./love-gift-icon";
+import { ReaderIcon } from "./love-reader-icon";
 import { TypeName } from "./type-name";
 
 function Section({ id, title, lead, children }: { id: string; title: string; lead?: string; children: React.ReactNode }) {
@@ -116,7 +117,7 @@ export function LoveResult({ result }: { result: DiagnosisResult }) {
         </div>
         {/* Who will read for her: the supervising fortune teller's record, in plain text. */}
         <div className="lv-reader">
-          <p className="lv-reader-title"><Phrases>{LOVE_READER.title}</Phrases></p>
+          <div className="lv-reader-head"><ReaderIcon size={64} /><p><span className="lv-reader-lead">鑑定するのは</span><b className="lv-reader-name">占い師 {LOVE_READER.name}</b><span className="lv-reader-role">{LOVE_READER.role}</span></p></div>
           <ul className="lv-reader-stats">{LOVE_READER.stats.map(([value, label]) => <li key={value}><b>{value}</b><span><Phrases>{label}</Phrases></span></li>)}</ul>
           <p className="lv-reader-note"><Phrases>{LOVE_READER.note}</Phrases></p>
         </div>

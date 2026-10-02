@@ -99,7 +99,8 @@ test("love page: intro → birth date → love result → official LINE", async 
   await expect(page.locator(".is-best")).toContainText("ほっとけないアルパカ"); await expect(page.locator(".is-foe")).toContainText("正々堂々ドーベルマン"); await expect(page.locator(".is-foe")).toContainText("ひと工夫で深まる相性");
   await expect(page.locator(".is-locked")).toHaveAttribute("href", "#line");
   // Just above the button, who will read for her: the supervising fortune teller's record in plain text.
-  await expect(page.locator(".lv-line .lv-reader")).toContainText("1,000件以上");
+  await expect(page.locator(".lv-line .lv-reader")).toContainText("ホシヨミ"); await expect(page.locator(".lv-line .lv-reader")).toContainText("1,000件以上");
+  await expect(page.locator(".lv-reader-icon")).toHaveAttribute("src", /\/hoshiyomi\.webp$/);
   await expect(page.locator(".lv-mid .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love"); await expect(page.locator(".lv-line .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love"); await expect(page.locator(".lv-bar .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love");
   // Nothing is kept: no birth date in the URL, nothing in storage.
   expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);

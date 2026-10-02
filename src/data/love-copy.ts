@@ -155,11 +155,14 @@ export const LOVE_TEASERS = {
   partner: { label: "鑑定でわかる", title: "本当に結ばれやすい相手の特徴", note: "強く惹かれる相手と、幸せになりやすい相手は、同じとは限りません。生まれた年・月・日のすべてから、あなたと本当に結ばれやすい相手の特徴を読み解きます。" },
 };
 
-/** The fortune teller who supervised this page and writes the LINE reading, shown above the LINE button so the reader knows who will read for them.
- * Plain text, never a seal or badge. The facts are as the fortune teller gave them (the 占い館 itself is not named); update them here and in
- * the reasons on the page if they change. */
+/** The fortune teller who supervised this page and writes the LINE reading: ホシヨミ, with their icon (public/hoshiyomi.webp, 320px, from the approved artwork).
+ * Shown in the LINE invitation so the reader knows who will read for them, and as the icon of reason 2 and in the footer on the landing page.
+ * Plain text and the icon, never a seal or badge. The facts are as the fortune teller gave them (the 占い館 itself is not named);
+ * update them here and in the reasons on the page if they change. */
 export const LOVE_READER = {
-  title: "鑑定するのは、｜この診断を監修した占い師です",
+  name: "ホシヨミ",
+  icon: "/hoshiyomi.webp",
+  role: "この診断の監修者",
   stats: [["10年", "東洋の占術"], ["1,000件以上", "個人鑑定"], ["売上1位", "名古屋・栄の｜占い館"]] as [value: string, label: string][],
   note: "テレビ出演や政財界の顧客をもつ｜占い師に師事。｜売上1位は、チェーン展開する占い館での｜2024年8月の実績です。",
 };
