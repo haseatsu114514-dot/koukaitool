@@ -181,9 +181,9 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-type-card::after { inset: 13px; border: 1px solid #e3b45a38; border-radius: 12px; }
 .lv-cert-head { display: flex; justify-content: space-between; gap: 8px; margin: 0 0 12px; padding: 0 6px; font-size: 10.5px; font-weight: 700; letter-spacing: .12em; color: var(--muted); font-variant-numeric: tabular-nums; }
 .lv-result-label { font-size: 11px; font-weight: 700; letter-spacing: .3em; color: var(--lv-gold); }
-.lv-type-card-art { position: relative; display: grid; place-items: center; width: 172px; aspect-ratio: 1; margin: 14px auto 14px; border-radius: 50%; border: 3px solid var(--el); background: var(--tint); box-shadow: 0 0 0 6px #ffffff10; }
-.lv-type-card-art .character { border-radius: 50%; }
-.lv-type-card-art .character { width: 88%; height: 88%; }
+/* Only the round frame clips, never the picture itself, so ears and wings at the corners of the artwork stay whole. */
+.lv-type-card-art { display: grid; place-items: center; width: 172px; aspect-ratio: 1; margin: 14px auto 14px; overflow: hidden; border-radius: 50%; border: 3px solid var(--el); background: var(--tint); box-shadow: 0 0 0 6px #ffffff10; }
+.lv-type-card-art .character { width: 84%; height: 84%; }
 .lv-result-lead { font-size: 13px; color: var(--muted); }
 .lv-type-card h1 { margin-top: 2px; font-size: clamp(25px, 7vw, 34px); line-height: 1.4; }
 .lv-type-card-catch { display: inline-block; max-width: 100%; margin-top: 12px; padding: 6px 18px; border-radius: 999px; border: 1px solid #e3b45a73; background: #e3b45a14; font-size: 14.5px; font-weight: 700; line-height: 1.7; color: #f1d9a6; }
