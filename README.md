@@ -31,16 +31,19 @@ Next.js App Router / React / TypeScript / Zod。CSSの共通トークンとセ�
 | URL | 役割 |
 | --- | --- |
 | `/` | サービス説明、生年月日フォーム（`#diagnose`。実在日・未来日チェック）、10タイプのプレビュー |
+| `/love/` | 恋愛運診断のランディングページ（30〜40代女性向け）。生年月日を入れると同じページで恋愛向けの結果を出し、公式LINEへ案内する。下記「恋愛運診断ページ」 |
 | `/result/` | マイファイル（本を開く演出 → タイプ詳細・相性・友だちとの相性チェック・アイテム・LINE案内・結果シェア）。結果がなければ診断を案内 |
 | `/types/` | 10タイプ一覧と、枠の色（緑・赤・黄・白・青のグループ）の説明 |
 | `/types/[slug]/` | 生年月日を含まない共有可能なタイプ紹介。シェアで来た人向けに診断導線を上部に置く |
 | `/privacy/` | 入力・端末内保存・共有・Webフォント・公式LINE（・アクセス解析）の説明 |
 
-iPhoneアプリの見本を兼ねるため、PCでもスマホと同じレイアウトで表示します。画面の広い端末では幅440pxの列を中央に置き、外側を暗くします。ナビゲーションは下部タブバー（ホーム／図鑑／マイファイル）です。
+iPhoneアプリの見本を兼ねるため、PCでもスマホと同じレイアウトで表示します（`/love/` だけは独立したランディングページで、画面幅いっぱいに表示します）。画面の広い端末では幅440pxの列を中央に置き、外側を暗くします。ナビゲーションは下部タブバー（ホーム／図鑑／マイファイル）です。
 
 ```text
 src/
-  app/                  各ページ、レイアウト、共通CSS
+  app/                  ルートレイアウト（html/body・フォント・解析）、共通CSS、sitemap/robots
+    (site)/             アプリ部分（ホーム・結果・図鑑・プライバシー）。layout.tsx がヘッダー・タブバー・フッターを付ける
+    love/               恋愛運診断ページ（page.tsx）と専用CSS（love.css、.love の中だけに効く）
   components/
     birth-form.tsx      入力と検証
     profile.tsx         結果と公開タイプ詳細に共通の表示（結果かどうかで導線を切り替え）
@@ -50,10 +53,14 @@ src/
     type-card.tsx       一覧カード
     result-view.tsx     端末内保存からの結果復元
     tab-bar.tsx         スマホ用の下部タブ
+    site-chrome.tsx     アプリ部分のヘッダー・タブバー・フッター（404でも使用）
+    love-diagnosis.tsx  恋愛運診断：フォーム⇔結果の切り替え、診断へ戻すバー
+    love-result.tsx     恋愛運診断の結果とLINE案内（追従バーつき）
     bx.tsx              BudouXによる文節単位の改行
   data/
     types.ts            10タイプの名前・キャッチ・要約・強み、グループの色、画像プロンプト
     type-details.ts     タイプ詳細ページの長文（性格・あるある・恋愛・仕事など）
+    love-copy.ts        恋愛運診断の文章（10タイプ・10アイテム・相性・LINEで届く内容）
     art-direction.ts    共通絵柄、asset schema、生成provider interface
   lib/
     diagnosis/
@@ -113,6 +120,17 @@ URLは `NEXT_PUBLIC_LINE_URL`（GitHub Actionsでは **Settings → Secrets and 
 
 タイプごとに別の友だち追加URLを使うこともできます。`NEXT_PUBLIC_LINE_URLS`（Actionsの変数 `LINE_FRIEND_URLS`）に `{"grizzly":"https://…","rabbit":"https://…"}` のようなJSONを入れると、そのタイプの人にはそのURLを、書いていないタイプには共通URLを出します。Lステップやエルメなどで「流入経路」ごとのURLを発行すれば、友だち追加の時点でタイプ別のタグが付き、タイプ別の配信ができます。JSONの誤り・存在しないタイプ名・https以外のURLはビルドを失敗させます。
 
+## 恋愛運診断ページ（/love/）
+
+30〜40代の女性に向けた、公式LINEへの入口になるページです。「恋愛運を引き寄せる」を入口に、実際には自分の恋の勝ち方（勝ちパターン・負けパターン）と魅力の引き出し方がわかる見せ方にしています。診断の計算はアプリと同じ `diagnose()` です。このページでは、タイプを「キャラ（本質）」、アイテムを「生まれ持ったギフト（強み・個性）」と呼びます。
+
+- **最初の画面**：生年月日フォームを一画面目に置き、ほかの部品はすべてフォームへ戻す役。悩みのチェック → わかること → キャラとアイテムの説明と10キャラ（スマホでは横スクロール）→ 当たる理由（四柱推命ベース・プロ占い師監修・質問なし）→ よくある質問 → 締めのボタン。フォームが画面から外れると、下に「無料で診断する」バーが出ます。
+- **結果**：同じURLのまま切り替わります（本を開く演出つき）。キャラ、当たってる？恋のあるある、魅力と引き出し方、勝ちパターン・負けパターン、アイテム、恋愛運を引き寄せるヒント、恋の相性（最高・いい。すれ違いやすい相手はLINEで）、公式LINEの案内、シェア。結果は保存せず、再読み込みで最初に戻ります。
+- **LINE**：「LINEで詳しく見る」ボタンは案内の中と、読み進める間ずっと下に出るバーの2か所（案内が画面にあるときはバーを隠します）。友だち追加 → フォーム回答 → 詳しい恋愛鑑定、の流れを3ステップで見せます。LINEで届く内容の文言は `src/data/love-copy.ts` の `LOVE_LINE_BENEFITS` / `LOVE_LINE_STEPS` です。LINE・フォーム側で実際に届ける内容と合わせてください。
+- **URL**：`NEXT_PUBLIC_LOVE_LINE_URL`（Actionsの変数 `LOVE_LINE_FRIEND_URL`）を設定すると、このページだけその友だち追加URLを使います。Lステップやエルメで恋愛ページ用の流入経路URLを発行して入れると、恋愛ページから来た人にだけフォームを送る、といった配信ができます。未設定ならアプリと同じURL（タイプ別→共通）を使い、どれも未設定ならLINEの案内は出ません（すれ違いやすい相手もサイトに表示）。
+- **解析**：アプリと同じイベント（`diagnosis_complete`・`line_view`・`line_click`・`share`）を送ります。恋愛運診断からのものは、GA4のページのURL（`/love/`）で見分けられます。
+- **文章**：タイプごとの恋愛の文章は `LOVE_COPY`、アイテムの恋愛向けの文章は `LOVE_GIFTS`。相手の性別を決めつけない書き方（「相手」「好きな人」）にしています。
+
 ## アクセス解析（任意）
 
 `NEXT_PUBLIC_GA_ID`（Actionsの変数 `GA_MEASUREMENT_ID`、`G-` で始まるGA4の測定ID）を設定したときだけGoogle アナリティクスを読み込み、プライバシーページにも説明が出ます。未設定なら何も送りません。導線を見るために次のイベントを送ります（生年月日とアイテムは送りません）。
@@ -121,9 +139,9 @@ URLは `NEXT_PUBLIC_LINE_URL`（GitHub Actionsでは **Settings → Secrets and 
 |---|---|---|
 | `diagnosis_complete` | 診断した（再読み込みでは数えない） | `stella_type` |
 | `line_view` | LINEの案内が画面に半分以上入った | `stella_type` |
-| `line_click` | 「LINEで友だち追加」を押した | `stella_type` |
+| `line_click` | LINEのボタンを押した | `stella_type`、`placement`（恋愛運診断のみ：panel＝案内の中 / bar＝追従バー） |
 | `friend_check` | 友だちとの相性を調べた | `stella_type`、`friend_type` |
-| `share` | 画像保存・シェア・コピー | `method`（image / native / copy）、`content_type`（result / type）、`item_id` |
+| `share` | 画像保存・シェア・コピー | `method`（image / native / copy / x）、`content_type`（result / type / love）、`item_id` |
 
 `sitemap.xml` と `robots.txt` も書き出します。GitHub Pagesのプロジェクトサイト（`/koukaitool/`）では `robots.txt` は検索エンジンに読まれないので、Search Consoleに `sitemap.xml` を直接登録してください。独自ドメインに移すと `robots.txt` も有効になります。
 
@@ -149,9 +167,10 @@ Next.jsの静的エクスポートを使用。GitHubの **Settings → Pages →
 
 ## OG画像
 
-`public/og/default.jpg`（トップ・一覧など）と `public/og/{slug}.jpg`（タイプ紹介）は、`scripts/og-images.mjs` がPlaywrightで描画した1200×630のJPEGです。使う文字だけをGoogle Fontsから取得して埋め込むため、ブラウザ側のネットワークは不要です。
+`public/og/default.jpg`（トップ・一覧など）、`public/og/love.jpg`（恋愛運診断）と `public/og/{slug}.jpg`（タイプ紹介）は、`scripts/og-images.mjs` がPlaywrightで描画した1200×630のJPEGです。使う文字だけをGoogle Fontsから取得して埋め込むため、ブラウザ側のネットワークは不要です。
 
 ```sh
 pnpm og                                   # playwright install 済みのChromiumを使用
+pnpm og love                              # 指定したカードだけ作り直す（default / love / タイプのslug）
 CHROMIUM_PATH=/path/to/chromium pnpm og   # 既存のChromiumを使う場合
 ```

@@ -69,3 +69,31 @@ test("a shared type page leads visitors to their own diagnosis", async ({ page }
   await page.locator(".profile-cta").getByRole("link", { name: "生年月日で診断する" }).click();
   await expect(page.getByLabel("年", { exact: true })).toBeVisible();
 });
+test("love page: intro → birth date → love result → official LINE", async ({ page }) => {
+  const errors: string[] = []; page.on("pageerror", error => errors.push(error.message));
+  await page.goto("./love/");
+  // A landing page with its own frame: no app header or tab bar, the form in the hero, all ten characters, its own OG card.
+  await expect(page.locator(".site-header")).toHaveCount(0); await expect(page.locator(".tab-bar")).toHaveCount(0);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("勝ち方");
+  await expect(page.locator(".lv-type")).toHaveCount(10);
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /\/og\/love\.jpg$/);
+  await page.getByRole("button", { name: "恋愛運を診断する" }).click(); await expect(page.locator(".form-error")).toContainText("すべて入力");
+  // Every other part leads back to the form: here, the closing call at the bottom.
+  await page.locator(".lv-final .lv-cta").click(); await expect(page.getByLabel("年", { exact: true })).toBeInViewport();
+  await page.getByLabel("年", { exact: true }).fill("2000"); await page.getByRole("combobox", { name: "月", exact: true }).selectOption("1"); await page.getByRole("combobox", { name: "日", exact: true }).selectOption("7");
+  await page.getByRole("button", { name: "恋愛運を診断する" }).click();
+  await expect(page.locator(".book-reveal")).toBeVisible(); await expect(page.locator(".book-reveal")).toBeHidden({ timeout: 8000 });
+  // The result opens on the same page: キャラ, four あるある, win/lose patterns and the item read as a gift.
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
+  await expect(page.locator(".lv-aruaru li")).toHaveCount(4);
+  await expect(page.getByRole("heading", { name: "勝ちパターン", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "負けパターン", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "あなたのアイテム", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "スケジュール帳", exact: true })).toBeVisible();
+  // With LINE set up, the caution row waits on LINE, and both LINE buttons use the love page's own friend-add URL.
+  await expect(page.locator(".is-best")).toContainText("ほっとけないアルパカ"); await expect(page.locator(".is-foe")).not.toContainText("ドーベルマン"); await expect(page.locator(".lv-compat-lock")).toBeVisible();
+  await expect(page.locator(".lv-line .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love"); await expect(page.locator(".lv-bar .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love");
+  // Nothing is kept: no birth date in the URL, nothing in storage.
+  expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.getByRole("button", { name: "別の生年月日で診断する" }).click(); await expect(page.getByLabel("年", { exact: true })).toBeVisible();
+  expect(errors).toEqual([]);
+});

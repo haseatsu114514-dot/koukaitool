@@ -26,3 +26,9 @@ const PER_TYPE = parseLineUrls(PER_TYPE_JSON, CHARACTER_TYPES.map(type => type.s
 
 /** The friend-add URL for a type: its own URL if configured, otherwise the common one ("" hides the invitation). */
 export const lineUrlFor = (slug: string) => PER_TYPE[slug] || COMMON_URL;
+
+/** Optional friend-add URL for the love landing page (/love/), so its visitors arrive through their own source
+ * (e.g. a Lステップ/エルメ inflow URL that tags them and sends the love form). Falls back to the type's URL above. */
+const LOVE_URL = process.env.NEXT_PUBLIC_LOVE_LINE_URL || "";
+if (LOVE_URL && !LOVE_URL.startsWith("https://")) throw new Error("NEXT_PUBLIC_LOVE_LINE_URL must start with https://.");
+export const loveLineUrlFor = (slug: string) => LOVE_URL || lineUrlFor(slug);

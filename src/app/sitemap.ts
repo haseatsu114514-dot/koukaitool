@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const url = (path: string) => new URL(path, siteUrl).href;
   return [
     { url: url("./"), priority: 1 },
+    { url: url("love/"), priority: 0.9 },
     { url: url("types/"), priority: 0.8 },
     ...CHARACTER_TYPES.map(type => ({ url: url(`types/${type.slug}/`), priority: 0.7 })),
     { url: url("privacy/"), priority: 0.2 },
