@@ -81,17 +81,21 @@ test("love page: intro → birth date → love result → official LINE", async 
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /\/og\/love\.jpg$/);
   await page.getByRole("button", { name: "恋愛運を診断する" }).click(); await expect(page.locator(".form-error")).toContainText("すべて入力");
   // Every other part leads back to the form: here, the closing call at the bottom.
-  await page.locator(".lv-final .lv-cta").click(); await expect(page.getByLabel("年", { exact: true })).toBeInViewport();
-  await page.getByLabel("年", { exact: true }).fill("2000"); await page.getByRole("combobox", { name: "月", exact: true }).selectOption("1"); await page.getByRole("combobox", { name: "日", exact: true }).selectOption("7");
+  await page.locator(".lv-final .lv-cta").click(); await expect(page.getByRole("combobox", { name: "年", exact: true })).toBeInViewport();
+  // The year is picked from a list too, newest first.
+  await expect(page.getByRole("combobox", { name: "年", exact: true }).locator("option").nth(1)).toHaveText(`${new Date(Date.now() + 9 * 3600_000).getUTCFullYear()}年`);
+  await page.getByRole("combobox", { name: "年", exact: true }).selectOption("2000"); await page.getByRole("combobox", { name: "月", exact: true }).selectOption("1"); await page.getByRole("combobox", { name: "日", exact: true }).selectOption("7");
   await page.getByRole("button", { name: "恋愛運を診断する" }).click();
   await expect(page.locator(".book-reveal")).toBeVisible(); await expect(page.locator(".book-reveal")).toBeHidden({ timeout: 8000 });
   // The result opens on the same page: キャラ, four tendencies, what works and the usual misstep, and the ギフト.
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
   await expect(page.locator(".lv-traits li")).toHaveCount(4);
   await expect(page.getByRole("heading", { name: "うまくいく法則", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "やりがちなNG", exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "あなたのギフト", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "スケジュール帳", exact: true })).toBeVisible();
-  // With LINE set up, the caution row waits on LINE, and both LINE buttons use the love page's own friend-add URL.
-  await expect(page.locator(".is-best")).toContainText("ほっとけないアルパカ"); await expect(page.locator(".is-foe")).not.toContainText("ドーベルマン"); await expect(page.locator(".lv-compat-lock")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "あなたのギフト", exact: true })).toBeVisible();
+  // The gift is named as a talent; its object is only the motif.
+  await expect(page.getByRole("heading", { name: "積み重ねる才能", exact: true })).toBeVisible(); await expect(page.locator(".lv-gift-motif")).toHaveText("モチーフ：レンガ");
+  // All three compatibility levels are shown openly, and both LINE buttons use the love page's own friend-add URL.
+  await expect(page.locator(".is-best")).toContainText("ほっとけないアルパカ"); await expect(page.locator(".is-foe")).toContainText("正々堂々ドーベルマン"); await expect(page.locator(".is-foe")).toContainText("ひと工夫で深まる相性");
   await expect(page.locator(".lv-line .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love"); await expect(page.locator(".lv-bar .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love");
   // Nothing is kept: no birth date in the URL, nothing in storage.
   expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);
@@ -99,6 +103,6 @@ test("love page: intro → birth date → love result → official LINE", async 
   // No way out but LINE: every link is in-page, the LINE friend add, or the privacy page.
   const hrefs = await page.locator(".love a").evaluateAll(links => links.map(a => a.getAttribute("href") || ""));
   expect(hrefs.filter(href => !href.startsWith("#") && href !== "https://lin.ee/e2e-love" && !href.endsWith("/privacy/"))).toEqual([]);
-  await page.getByRole("button", { name: "生年月日を入れ直す" }).click(); await expect(page.getByLabel("年", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "生年月日を入れ直す" }).click(); await expect(page.getByRole("combobox", { name: "年", exact: true })).toBeVisible();
   expect(errors).toEqual([]);
 });

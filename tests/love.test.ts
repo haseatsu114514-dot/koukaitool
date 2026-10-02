@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, it, expect } from "vitest";
-import { CHARACTER_TYPES } from "../src/data/types";
+import { CHARACTER_TYPES, groupName } from "../src/data/types";
 import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS } from "../src/data/love-copy";
 import { TEN_GODS } from "../src/lib/diagnosis/ten-gods";
 import { NAME_ANIMALS } from "../src/components/type-name";
@@ -17,6 +17,21 @@ describe("love page copy", () => {
   it("reads every item as a gift for love", () => {
     expect(Object.keys(LOVE_GIFTS).sort()).toEqual([...TEN_GODS].sort());
     for (const gift of Object.values(LOVE_GIFTS)) { expect(gift.title).not.toBe(""); expect(gift.text).not.toBe(""); }
+  });
+  it("names every gift as a talent, so the app's item reads as its motif and not as a lucky item", () => {
+    const names = Object.values(LOVE_GIFTS).map(gift => gift.name);
+    expect(new Set(names).size).toBe(names.length);
+    for (const name of names) { expect(name).toMatch(/才能$/); expect([...name].length, name).toBeLessThanOrEqual(10); }
+    // The motif is a short object name shown small ("モチーフ：〇〇"); the talent's name carries the meaning.
+    const motifs = Object.values(LOVE_GIFTS).map(gift => gift.motif);
+    expect(new Set(motifs).size).toBe(motifs.length);
+    for (const motif of motifs) expect([...motif].length, motif).toBeLessThanOrEqual(6);
+    expect(JSON.stringify(LOVE_GIFTS)).not.toContain("ラッキー");
+  });
+  it("names every compatibility level positively", () => {
+    for (const { label } of Object.values(LOVE_COMPAT)) expect(label).toMatch(/相性$/);
+    const all = JSON.stringify([LOVE_COMPAT, LOVE_LINE_BENEFITS]);
+    for (const word of ["すれ違", "悪い", "苦手", "注意"]) expect(all, word).not.toContain(word);
   });
   it("never assumes the partner's gender and uses plain words", () => {
     const all = JSON.stringify([LOVE_COPY, LOVE_GIFTS, LOVE_COMPAT, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS]);
@@ -37,5 +52,10 @@ describe("love page line breaks", () => {
     expect(phraseSegments("見た目より、生き方を尊敬できる人に惹かれる")).toEqual(["見た目より、", "生き方を尊敬できる人に惹かれる"]);
     expect(phraseSegments("その恋、ほかの誰かの正解を｜なぞっていませんか？")).toEqual(["その恋、", "ほかの誰かの正解を", "なぞっていませんか？"]);
     expect(phraseSegments("「一緒にいて楽しい。」が魅力")).toEqual(["「一緒にいて楽しい。」", "が魅力"]);
+  });
+});
+describe("character order", () => {
+  it("lists the ten characters in five-element order: green, red, yellow, white, blue (every row of faces follows it)", () => {
+    expect(CHARACTER_TYPES.map(type => groupName(type.stem).replace("グループ", "")).join("")).toBe("緑緑赤赤黄黄白白青青");
   });
 });

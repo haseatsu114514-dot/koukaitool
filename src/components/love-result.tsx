@@ -1,20 +1,19 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Check, Heart, Lock, RotateCcw, ThumbsDown, ThumbsUp } from "lucide-react";
-import { elementStyle, typeByStem, type CharacterType } from "@/data/types";
+import { Check, Heart, RotateCcw, ThumbsDown, ThumbsUp } from "lucide-react";
+import { CHARACTER_TYPES, elementStyle, typeByStem, type CharacterType } from "@/data/types";
 import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS } from "@/data/love-copy";
 import type { DiagnosisResult } from "@/lib/diagnosis";
 import { stellaCompatibility } from "@/lib/diagnosis/compatibility";
-import { GOD_COPY } from "@/lib/diagnosis/ten-gods";
 import { loveLineUrlFor } from "@/lib/line";
 import { track } from "@/lib/analytics";
 import { Phrases } from "./phrases";
 import { Character } from "./character";
-import { ITEM_ICONS } from "./item-icon";
+import { GIFT_ICONS } from "./love-gift-icon";
 import { TypeName } from "./type-name";
 
 function Section({ id, title, lead, children }: { id: string; title: string; lead?: string; children: React.ReactNode }) {
-  return <section className="lv-r-sec" aria-labelledby={id}>
+  return <section className="lv-r-sec lv-reveal" aria-labelledby={id}>
     <h2 id={id} className="lv-r-title"><Phrases>{title}</Phrases></h2>
     {lead && <p className="lv-r-lead">{lead}</p>}
     {children}
@@ -25,16 +24,18 @@ function Partners({ stems }: { stems: CharacterType["stem"][] }) {
   return <ul className="lv-compat-types">{stems.map(stem => { const partner = typeByStem(stem); return <li key={stem}><span className="lv-mini-art" style={elementStyle(stem)}><Character type={partner} /></span><TypeName name={partner.displayName} /></li>; })}</ul>;
 }
 
-/** The love result: キャラ (the type), her tendencies in love, charm, what works and the usual misstep, ギフト (the item, read for love), one hint, compatibility, then the official LINE.
+/** The love result: キャラ (the type), her tendencies in love, charm, what works and the usual misstep, ギフト (the item, named as a talent and read for love), one hint, compatibility (all three levels shown, named positively), then the official LINE.
  * Running text is plain (print-style breaks); headings and short items break between phrases.
  * A bar with the LINE button follows the reader once the type card scrolls away, and steps aside while the full invitation is on screen.
- * Until a friend-add URL is configured, the invitation and buttons are still shown; pressing one says the official LINE is being prepared. */
+ * The invitation is always shown; the buttons open the friend add once its URL is configured. */
 export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRetry: () => void }) {
   const type = typeByStem(result.pillar.stem), love = LOVE_COPY[type.slug];
-  const gift = LOVE_GIFTS[result.tenGod], GiftIcon = ITEM_ICONS[result.tenGod];
+  const gift = LOVE_GIFTS[result.tenGod], GiftIcon = GIFT_ICONS[result.tenGod];
   const groups = stellaCompatibility(type.stem), url = loveLineUrlFor(type.slug);
   const card = useRef<HTMLDivElement>(null), panel = useRef<HTMLElement>(null);
-  const [cardGone, setCardGone] = useState(false), [panelIn, setPanelIn] = useState(false), [pending, setPending] = useState(false);
+  const number = String(CHARACTER_TYPES.indexOf(type) + 1).padStart(2, "0"), today = new Date();
+  const diagnosedOn = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")}`;
+  const [cardGone, setCardGone] = useState(false), [panelIn, setPanelIn] = useState(false);
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
     if (card.current) { const o = new IntersectionObserver(([entry]) => setCardGone(!entry.isIntersecting && entry.boundingClientRect.top < 0)); o.observe(card.current); observers.push(o); }
@@ -46,12 +47,13 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
     return () => observers.forEach(o => o.disconnect());
   }, [type.slug]);
   const barShown = cardGone && !panelIn;
-  const lineLink = (placement: "panel" | "bar") => url
-    ? { href: url, target: "_blank", rel: "noopener noreferrer", onClick: () => track({ name: "line_click", stella_type: type.slug, placement }) }
-    : { href: "#line", onClick: (event: React.MouseEvent) => { event.preventDefault(); track({ name: "line_click", stella_type: type.slug, placement }); setPending(true); panel.current?.scrollIntoView({ block: "center" }); } };
+  // The friend-add URL comes from the build environment; until it is set, the buttons only lead to the invitation.
+  const lineLink = (placement: "panel" | "bar") => ({ href: url || "#line", ...(url ? { target: "_blank", rel: "noopener noreferrer" } : {}), onClick: () => track({ name: "line_click", stella_type: type.slug, placement }) });
   return <article className="lv-result">
     <div className="lv-wrap">
+      {/* Set like a certificate: double gold rule, file number and date. */}
       <div ref={card} className="lv-type-card lv-dark" style={elementStyle(type.stem)}>
+        <p className="lv-cert-head"><span>STELLA FILE No.{number}</span><span>診断日 {diagnosedOn}</span></p>
         <p className="lv-result-label" aria-hidden="true">YOUR CHARACTER</p>
         <div className="lv-type-card-art"><Character type={type} priority /></div>
         <p className="lv-result-lead">あなたのキャラは</p>
@@ -61,7 +63,7 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
       </div>
 
       <Section id="lv-r-traits" title="ステラファイルが見抜く、あなたの恋の傾向">
-        <ul className="lv-traits">{love.traits.map(text => <li key={text}><Check size={16} strokeWidth={3} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
+        <ul className="lv-traits lv-stagger">{love.traits.map((text, i) => <li key={text} style={{ "--i": i } as React.CSSProperties}><Check size={16} strokeWidth={3} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
       </Section>
 
       <Section id="lv-r-charm" title="あなたの魅力と、その引き出し方">
@@ -75,8 +77,8 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
         </div>
       </Section>
 
-      <Section id="lv-r-gift" title="あなたのギフト" lead="ギフトは、生まれたときに受け取った強みや個性。キャラ（本質）とは別の、もうひとつの持ち味です。同じキャラでも、ここが人によって違います。">
-        <div className="lv-gift"><div className="lv-gift-head"><span className="lv-gift-icon"><GiftIcon size={28} strokeWidth={1.6} aria-hidden="true" /></span><div><h3 className="lv-gift-name">{GOD_COPY[result.tenGod].item}</h3><p className="lv-gift-title"><Phrases>{gift.title}</Phrases></p></div></div><p className="lv-gift-text">{gift.text}</p></div>
+      <Section id="lv-r-gift" title="あなたのギフト" lead="ギフトは、生まれたときに受け取った才能。キャラ（本質）とは別の、もうひとつの持ち味です。同じキャラでも、ここが人によって違います。">
+        <div className="lv-gift"><div className="lv-gift-head"><span className="lv-gift-icon"><GiftIcon size={28} strokeWidth={1.6} aria-hidden="true" /></span><div><p className="lv-gift-motif">モチーフ：{gift.motif}</p><h3 className="lv-gift-name">{gift.name}</h3><p className="lv-gift-title"><Phrases>{gift.title}</Phrases></p></div></div><p className="lv-gift-text">{gift.text}</p></div>
       </Section>
 
       <Section id="lv-r-hint" title="恋愛運を引き寄せるヒント">
@@ -87,28 +89,29 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
         <div className="lv-compat">
           <div className="lv-compat-row is-best"><span className="lv-compat-label">{LOVE_COMPAT.best.label}</span><div><Partners stems={groups.best} /><p className="lv-compat-note">{LOVE_COMPAT.best.note}</p></div></div>
           <div className="lv-compat-row is-good"><span className="lv-compat-label">{LOVE_COMPAT.good.label}</span><div><Partners stems={groups.good} /><p className="lv-compat-note">{LOVE_COMPAT.good.note}</p></div></div>
-          <div className="lv-compat-row is-foe"><span className="lv-compat-label">{LOVE_COMPAT.foe.label}</span><div><p className="lv-compat-lock"><span className="lv-compat-q" aria-hidden="true">?</span><Lock size={14} aria-hidden="true" /><span>どのキャラかは<a href="#line">LINEで見られます</a></span></p></div></div>
+          <div className="lv-compat-row is-foe"><span className="lv-compat-label">{LOVE_COMPAT.foe.label}</span><div><Partners stems={groups.foe} /><p className="lv-compat-note">{LOVE_COMPAT.foe.note}</p></div></div>
         </div>
       </Section>
 
-      <section ref={panel} id="line" className="lv-line lv-dark" aria-labelledby="lv-line-title">
+      <section ref={panel} id="line" className="lv-line lv-dark lv-sky lv-reveal" aria-labelledby="lv-line-title">
         <p className="lv-line-kicker">公式LINE限定</p>
-        <h2 id="lv-line-title" className="lv-line-title"><Phrases>あなたの恋愛運、続きはLINEで</Phrases></h2>
-        <p className="lv-line-lead"><Phrases>ここまでは、まだ入り口。公式LINEでは、あなたの今の状況や悩みをうかがって、あなた一人のための鑑定をお届けします。</Phrases></p>
-        <ul className="lv-line-list">{LOVE_LINE_BENEFITS.map(text => <li key={text}><Lock size={15} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
+        <h2 id="lv-line-title" className="lv-line-title"><span className="lv-chunk">あなただけの恋愛鑑定を、</span><span className="lv-chunk"><em>無料</em>でお届けします</span></h2>
+        <p className="lv-line-lead"><Phrases>ここまでは、まだ入り口。公式LINEで3分ほどの質問に答えると、今の状況や悩みに合わせて、あなた一人のための鑑定をお届けします。</Phrases></p>
+        <div className="lv-line-box">
+          <p className="lv-line-box-title">鑑定でわかること</p>
+          <ul className="lv-line-list">{LOVE_LINE_BENEFITS.map(text => <li key={text}><Check size={16} strokeWidth={2.6} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
+        </div>
         <ol className="lv-steps" aria-label="受け取り方">{LOVE_LINE_STEPS.map(text => <li key={text}><Phrases>{text}</Phrases></li>)}</ol>
-        <a className="lv-line-button" {...lineLink("panel")}>LINEで詳しく見る</a>
-        <p className="lv-line-pending" role="status">{pending ? "公式LINEは準備中です。まもなく、ここから友だち追加できるようになります。" : ""}</p>
-        <p className="lv-line-note"><Phrases>友だち追加は無料です。入力した生年月日が、このサイトからLINEに送られることはありません。</Phrases></p>
+        <a className="lv-line-button" {...lineLink("panel")}>LINEで友だち追加</a>
+        <p className="lv-line-note"><Phrases>いつでもブロックできます。｜入力した生年月日が、このサイトからLINEに送られることはありません。</Phrases></p>
       </section>
 
       {/* No share box or outbound links here: after the result, the only way forward is the official LINE. */}
       <button type="button" className="lv-retry" onClick={onRetry}><RotateCcw size={14} aria-hidden="true" />生年月日を入れ直す</button>
-      <p className="micro lv-disclaimer">※ステラファイルは、占いをもとにしたコンテンツです。</p>
     </div>
     <div className="lv-bar-space" aria-hidden="true" />
     <div className={`lv-bar${barShown ? " is-shown" : ""}`} inert={!barShown}>
-      <div className="lv-bar-inner"><p><Phrases>恋愛運の続きは、公式LINEで</Phrases></p><a className="lv-line-button" {...lineLink("bar")}>LINEで詳しく見る</a></div>
+      <div className="lv-bar-inner"><p><Phrases>あなただけの鑑定を、｜無料でお届け</Phrases></p><a className="lv-line-button" {...lineLink("bar")}>LINEで友だち追加</a></div>
     </div>
   </article>;
 }

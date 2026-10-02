@@ -1,11 +1,12 @@
 import { STEMS, type Stem } from "@/lib/diagnosis/calendar";
 import { ART_STYLE, type CharacterAsset, type ImageGenerationRequest } from "./art-direction";
 /** Five-element colours: wood=green, fire=red, earth=yellow, metal=silver on pearl, water=blue.
- * `tint` is the light card background behind a character; `color` is the vivid accent. */
+ * `tint` is the light card background behind a character; `color` is the vivid accent.
+ * The yellow tint is a pale cream so the butter-yellow alpaca stands out from it while still reading as yellow next to the white group. */
 export const ELEMENT_COLORS = [
   { color: "#4cbb5e", tint: "#d3ecca" },
   { color: "#e5484d", tint: "#f8d0cb" },
-  { color: "#f2c230", tint: "#f7e6a4" },
+  { color: "#f2c230", tint: "#fcf2d2" },
   { color: "#c3ccd8", tint: "#ece7df" },
   { color: "#3b8fe6", tint: "#c9def6" },
 ] as const;

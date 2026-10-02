@@ -4,6 +4,8 @@
    it uses the full window width and a light page for long reading.
    Every rule is scoped to .love (or lv-*), because Next.js keeps a route's
    stylesheet loaded after navigating away and the app must stay untouched.
+   Unlike the app, this page allows a little motion and a richer finish (gold
+   ornaments, soft shadows, a certificate-style result card): see "Motion & finish" below.
    ========================================================================== */
 
 /* The app frames body as a phone column; this page takes the whole window. */
@@ -16,8 +18,8 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
   --lv-cream: #faf6ee;
   --lv-blush: #f8efe9;
   --lv-ink: #1b2538;
-  --lv-body: #3d4859;
-  --lv-muted: #697283;
+  --lv-body: #333e4f;
+  --lv-muted: #5e6777;
   --lv-gold: #e3b45a;
   --lv-gold-ink: #8a6216;
   --lv-rose: #b4566a;
@@ -26,6 +28,8 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
   /* Shared tokens read by the birth form and the book-opening intro, pointed at the light page. */
   --paper: #fff; --surface: #fff; --surface-2: #f4eee2; --ink: var(--lv-ink); --body: var(--lv-body); --muted: var(--lv-muted); --line: var(--lv-line); --line-strong: var(--lv-line-strong); --accent: var(--lv-gold); --accent-hover: #edc478; --on-accent: var(--lv-ink);
   overflow-x: clip;
+  /* Zen Kaku Gothic New is light at 400; running text is set at 500 so it stays easy to read on a phone. */
+  font-weight: 500;
 }
 /* Night-blue bands (header, hero, cards, closing call). */
 .lv-dark { --ink: #f4ecdc; --body: #d3dae4; --muted: #a5b1c3; --line: #2b4266; --line-strong: #3b5880; color: var(--ink); background: var(--lv-navy); }
@@ -39,8 +43,9 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
      Phrases: they break only after 、。！？ or at a ｜ hint in the copy, and balance their lines.
    - Type names break only between the modifier and the animal (TypeName). */
 .love p, .love li { word-break: normal; line-break: strict; overflow-wrap: break-word; text-wrap: pretty; }
-.lv-prose p, .lv-learn p, .lv-reasons p, .lv-pair-card p:not(.lv-pair-label), .lv-text, .lv-win p, .lv-lose p, .lv-gift-text, .lv-hint p, .lv-r-lead, .lv-compat-note { text-align: justify; text-justify: inter-character; }
-.love :is(h1, h2, h3, h4), .lv-lead, .lv-checks li, .lv-checks-note, .lv-traits li, .lv-type p, .lv-type-card-catch, .lv-statement p, .lv-final-text, .lv-line-lead, .lv-line-list li, .lv-line-note, .lv-steps li, .lv-form-note, .lv-bar p { text-wrap: balance; }
+.love .phrase { display: inline-block; max-width: 100%; }
+.lv-prose p, .lv-reasons p, .lv-text, .lv-win p, .lv-lose p, .lv-gift-text, .lv-hint p, .lv-r-lead, .lv-compat-note { text-align: justify; text-justify: inter-character; }
+.love :is(h1, h2, h3, h4), .lv-lead, .lv-learn p, .lv-pair-card p, .lv-stanza p, .lv-footer p, .lv-checks li, .lv-checks-note, .lv-traits li, .lv-type p, .lv-type-card-catch, .lv-statement p, .lv-final-text, .lv-line-lead, .lv-line-list li, .lv-line-note, .lv-steps li, .lv-form-note, .lv-bar p { text-wrap: balance; }
 
 .lv-wrap { width: min(100% - 40px, 680px); margin-inline: auto; }
 .lv-wrap-wide { width: min(100% - 40px, 1040px); margin-inline: auto; }
@@ -50,17 +55,34 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-header-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; }
 .lv-brand { display: inline-flex; align-items: center; gap: 8px; font-family: var(--serif); font-size: 17px; font-weight: 700; letter-spacing: .08em; }
 .lv-brand svg { color: var(--lv-gold); }
+.lv-official { margin-left: 2px; padding: 1px 6px; border-radius: 4px; background: var(--lv-gold); font-family: var(--sans); font-size: 10.5px; font-weight: 700; line-height: 1.5; letter-spacing: .1em; color: var(--lv-navy); }
 .lv-tag { padding: 2px 12px; border-radius: 999px; border: 1px solid #e3b45a8c; font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--lv-gold); }
 .lv-footer { padding: 36px 0 calc(32px + env(safe-area-inset-bottom)); border-top: 1px solid var(--lv-line); text-align: center; }
 .lv-footer .lv-brand { color: var(--lv-ink); }
 .lv-footer .lv-brand svg { color: var(--lv-gold-ink); }
 .lv-footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 22px; margin: 12px 0 10px; font-size: 13.5px; color: var(--lv-body); }
+.lv-footer-note { margin-bottom: 4px; font-size: 12.5px; font-weight: 700; color: var(--lv-gold-ink); }
 .lv-footer nav a:hover { color: var(--lv-gold-ink); text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- Hero ---------- */
-.lv-hero { position: relative; padding: 24px 0 44px; text-align: center; isolation: isolate; }
-.lv-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .45; background-image: radial-gradient(1px 1px at 20px 30px, #fff 50%, transparent), radial-gradient(1px 1px at 140px 80px, #cfe7ff 50%, transparent), radial-gradient(1px 1px at 90px 190px, #fff 50%, transparent), radial-gradient(1px 1px at 260px 250px, #fff 50%, transparent); background-size: 300px 300px; }
-.lv-hero .lv-wrap > * { animation: rise .6s var(--ease) both; }
+/* Night sky behind the dark bands: a still layer of stars and a sparser one that slowly twinkles. */
+.lv-sky { position: relative; isolation: isolate; overflow: hidden; }
+.lv-sky::before, .lv-sky::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.lv-sky::before { opacity: .45; background-image: radial-gradient(1px 1px at 20px 30px, #fff 50%, transparent), radial-gradient(1px 1px at 140px 80px, #cfe7ff 50%, transparent), radial-gradient(1px 1px at 90px 190px, #fff 50%, transparent), radial-gradient(1px 1px at 260px 250px, #fff 50%, transparent); background-size: 300px 300px; }
+.lv-sky::after { background-image: radial-gradient(1.6px 1.6px at 60px 120px, #fff 50%, transparent), radial-gradient(1.2px 1.2px at 210px 40px, #ffe9b8 50%, transparent), radial-gradient(1.6px 1.6px at 290px 190px, #fff 50%, transparent), radial-gradient(1.2px 1.2px at 30px 260px, #cfe7ff 50%, transparent); background-size: 330px 310px; animation: lv-twinkle 4.8s ease-in-out infinite alternate; }
+
+.lv-hero { padding: 24px 0 44px; text-align: center; }
+/* Opening sequence: the characters pop in one by one, then kicker, headline, lead, chips and the form follow. */
+.lv-hero .lv-wrap > * { animation: rise .7s var(--ease) both; }
+.lv-hero .lv-wrap > .lv-faces { animation: none; }
+.lv-hero .lv-wrap > :nth-child(2) { animation-delay: .35s; }
+.lv-hero .lv-wrap > :nth-child(3) { animation-delay: .45s; }
+.lv-hero .lv-wrap > :nth-child(4) { animation-delay: .6s; }
+.lv-hero .lv-wrap > :nth-child(5) { animation-delay: .7s; }
+.lv-hero .lv-wrap > :nth-child(6) { animation-delay: .8s; }
+.lv-faces .lv-face { animation: lv-pop .55s var(--ease) both; animation-delay: calc(var(--i, 0) * 45ms); }
+.lv-faces.is-still { margin-bottom: 18px; }
+.lv-faces.is-still .lv-face { animation: none; }
 .lv-faces { display: flex; justify-content: center; margin-bottom: 14px; padding-left: 8px; }
 .lv-face { display: grid; place-items: center; width: 38px; height: 38px; margin-left: -8px; overflow: hidden; border-radius: 50%; border: 2px solid var(--el); background: var(--tint); box-shadow: 0 0 0 2px var(--lv-navy); }
 .lv-face .character { width: 90%; height: 90%; }
@@ -76,7 +98,8 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-form-card { max-width: 480px; margin: 22px auto 0; padding: 22px 20px 16px; border-radius: 18px; background: #fff; color: var(--lv-ink); text-align: left; box-shadow: 0 18px 40px -18px #000a; scroll-margin-top: 24px;
   --ink: var(--lv-ink); --body: var(--lv-body); --muted: var(--lv-muted); --line: var(--lv-line); --line-strong: var(--lv-line-strong); }
 .lv-form-title { margin-bottom: 14px; font-size: 18px; line-height: 1.5; text-align: center; }
-.lv-form-card .date-fields label { font-weight: 700; color: var(--lv-body); }
+/* The selects already read 年・月・日, so the labels stay for screen readers only. */
+.lv-form-card .date-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .lv-form-card .date-fields input, .lv-form-card .date-fields select { height: 52px; border-color: var(--lv-line-strong); background: #fffdf8; color: var(--lv-ink); }
 .lv-form-card .date-fields input::placeholder { color: #9aa1ad; }
 .lv-form-card .date-fields input:focus, .lv-form-card .date-fields select:focus { border-color: #c99a3f; box-shadow: 0 0 0 3px #e3b45a40; }
@@ -91,10 +114,15 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-head { margin-bottom: 30px; text-align: center; }
 .lv-head-en { display: block; font-size: 11px; font-weight: 700; letter-spacing: .28em; color: var(--lv-gold-ink); }
 .lv-head h2 { margin-top: 6px; font-size: clamp(22px, 5.6vw, 30px); line-height: 1.55; color: var(--lv-ink); }
-.lv-head h2::after { content: ""; display: block; width: 36px; height: 2px; margin: 14px auto 0; background: var(--lv-gold); }
+/* Gold rule with the brand's star in the middle. */
+.lv-head h2::after { content: ""; display: block; width: 96px; height: 12px; margin: 14px auto 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 12'%3E%3Cpath d='M0 6.5h38M58 6.5h38' stroke='%23e3b45a' stroke-width='1'/%3E%3Cpath d='M48 .5l1.7 4.4 4.7.2-3.7 2.9 1.3 4.5L48 9.9l-4 2.6 1.3-4.5-3.7-2.9 4.7-.2z' fill='%23e3b45a'/%3E%3C/svg%3E") center / contain no-repeat; }
 .lv-head p { max-width: 34em; margin: 14px auto 0; font-size: 15px; color: var(--lv-body); }
 .lv-prose p { font-size: 15.5px; line-height: 2; color: var(--lv-body); }
 .lv-prose p + p { margin-top: 1em; }
+/* A short stanza after the prose: centred lines in mincho, the last one carries the point. */
+.lv-stanza { display: grid; gap: 10px; margin-top: 26px; padding: 22px 8px; border-block: 1px solid var(--lv-line); text-align: center; }
+.lv-stanza p { font-family: var(--serif); font-size: 16px; font-weight: 700; line-height: 1.9; color: var(--lv-body); }
+.lv-stanza .lv-stanza-key { margin-top: 6px; font-size: 17px; color: var(--lv-ink); }
 
 .lv-checks { margin: 28px 0 0; padding: 8px 20px; border-radius: 16px; border: 1px solid var(--lv-line); background: #fff; list-style: none; }
 .lv-checks li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-top: 1px dashed var(--lv-line); font-size: 15px; font-weight: 700; line-height: 1.7; }
@@ -103,13 +131,14 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-checks-note { margin-top: 18px; font-size: 15px; font-weight: 700; text-align: center; color: var(--lv-ink); }
 
 .lv-learn { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.lv-learn li { display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; border-radius: 14px; border: 1px solid var(--lv-line); background: var(--lv-cream); }
-.lv-learn-no { flex-shrink: 0; font-family: var(--serif); font-size: 22px; font-weight: 700; line-height: 1.3; color: var(--lv-gold); }
-.lv-learn h3 { font-family: var(--serif); font-size: 17px; line-height: 1.5; color: var(--lv-ink); }
+.lv-learn li { display: flex; align-items: flex-start; gap: 14px; padding: 18px 18px 16px; border-radius: 14px; border: 1px solid var(--lv-line); background: var(--lv-cream); }
+.lv-learn-icon, .lv-reason-icon { display: grid; place-items: center; flex-shrink: 0; width: 46px; height: 46px; border-radius: 50%; background: var(--lv-navy); color: var(--lv-gold); box-shadow: 0 0 0 3px #fff, 0 0 0 4px #e3b45a80; }
+.lv-learn-no { display: block; font-family: var(--serif); font-size: 13px; font-weight: 700; line-height: 1.3; letter-spacing: .12em; color: var(--lv-gold-ink); }
+.lv-learn h3 { margin-top: 2px; font-family: var(--serif); font-size: 17px; line-height: 1.5; color: var(--lv-ink); }
 .lv-learn p { margin-top: 2px; font-size: 13.5px; line-height: 1.8; color: var(--lv-body); }
 
 .lv-reasons { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
-.lv-reasons li { position: relative; padding: 22px 22px 20px 22px; border-radius: 16px; border: 1px solid var(--lv-line); border-left: 4px solid var(--lv-gold); background: #fff; }
+.lv-reasons li { display: flex; align-items: flex-start; gap: 16px; padding: 22px 20px 20px; border-radius: 16px; border: 1px solid var(--lv-line); background: #fff; }
 .lv-reason-no { font-size: 12px; font-weight: 700; letter-spacing: .14em; color: var(--lv-gold-ink); }
 .lv-reasons h3 { margin-top: 4px; font-family: var(--serif); font-size: 19px; line-height: 1.5; color: var(--lv-ink); }
 .lv-reasons p { margin-top: 6px; font-size: 14.5px; line-height: 1.9; color: var(--lv-body); }
@@ -124,33 +153,52 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-pair-label b { margin-right: 6px; font-family: var(--serif); font-size: 20px; color: var(--lv-ink); }
 .lv-pair-card p:not(.lv-pair-label) { margin-top: 4px; font-size: 14px; line-height: 1.85; color: var(--lv-body); }
 .lv-pair-x { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--lv-navy); font-size: 15px; font-weight: 700; line-height: 1; color: var(--lv-gold); }
-.lv-item-icons { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
-.lv-item-icons li { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 1px solid #e3b45a80; color: var(--lv-gold-ink); }
+/* The ten gifts in one even row, whatever the card's width. */
+.lv-item-icons { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; margin: 14px 0 0; padding: 0; list-style: none; }
+.lv-item-icons li { display: grid; place-items: center; width: 100%; max-width: 32px; aspect-ratio: 1; justify-self: center; border-radius: 50%; border: 1px solid #e3b45a80; color: var(--lv-gold-ink); }
+.lv-item-icons svg { width: 58%; height: 58%; }
+/* The same row for the ten characters, each on its group colour (in five-element order). */
+.lv-chara-icons li { overflow: hidden; border: 1.5px solid var(--el); background: var(--tint); }
+.lv-chara-icons .character { width: 92%; height: 92%; object-fit: contain; }
 
-/* The ten characters: a swipeable strip on phones, one row of five per line on wide screens. */
-.lv-strip-title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; max-width: 680px; margin: 30px auto 12px; font-family: var(--serif); font-size: 18px; color: var(--lv-ink); }
-.lv-strip-hint { font-family: var(--sans); font-size: 12px; font-weight: 400; color: var(--lv-muted); }
-.lv-types { display: flex; gap: 10px; margin: 0 -20px; padding: 2px 20px 10px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 20px; scrollbar-width: none; list-style: none; }
+/* The ten characters (their own section, after キャラ×ギフト): a swipeable strip on phones, two rows of five on wide screens.
+   On a phone two cards and a good part of the third are in view, so the row plainly continues; TypeStrip adds a one-time slide
+   and the progress line with "スワイプ" underneath. The cards are just wide enough for the longest catch phrase (11 characters, no tracking). */
+.lv-types { display: flex; gap: 10px; margin: 0 -20px; padding: 2px 20px 6px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 20px; scrollbar-width: none; list-style: none; }
 .lv-types::-webkit-scrollbar { display: none; }
-.lv-type { flex: 0 0 164px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 10px 16px; border-radius: 14px; border: 1px solid var(--lv-line); background: #fff; text-align: center; scroll-snap-align: start; }
-.lv-type-art { display: grid; place-items: center; width: 80px; aspect-ratio: 1; overflow: hidden; border-radius: 50%; border: 2px solid var(--el); background: var(--tint); }
+.lv-type { flex: 0 0 150px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 8px 16px; border-radius: 14px; border: 1px solid var(--lv-line); background: var(--lv-cream); text-align: center; scroll-snap-align: start; }
+.lv-type-art { display: grid; place-items: center; width: 76px; aspect-ratio: 1; overflow: hidden; border-radius: 50%; border: 2px solid var(--el); background: var(--tint); }
 .lv-type-art .character { width: 88%; height: 88%; }
-.lv-type h4 { margin: 0; font-family: var(--serif); font-size: 14px; line-height: 1.45; color: var(--lv-ink); }
-.lv-type p { font-size: 12px; line-height: 1.7; color: var(--lv-body); }
+.lv-type h3 { margin: 0; font-family: var(--serif); font-size: 14px; line-height: 1.45; color: var(--lv-ink); }
+.lv-types.is-peeking > li { animation: lv-peek 1.3s var(--ease) .35s; }
+.lv-types-hint { display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 12px; font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--lv-gold-ink); }
+.lv-types-track { position: relative; width: 56px; height: 3px; margin-right: 8px; overflow: hidden; border-radius: 3px; background: var(--lv-line); }
+.lv-types-track span { position: absolute; top: 0; bottom: 0; left: 0; width: 40%; border-radius: 3px; background: var(--lv-gold); }
+.lv-types-hint svg { animation: lv-nudge 1.6s var(--ease) infinite; }
+.lv-type p { font-size: 12px; line-height: 1.7; letter-spacing: 0; color: var(--lv-body); }
+.lv-type p .phrase { white-space: nowrap; }
 
 
 .lv-final { padding: 56px 0 60px; text-align: center; }
 .lv-final-title { font-size: clamp(21px, 5.4vw, 28px); line-height: 1.6; }
 .lv-final-text { margin-top: 12px; font-size: 14.5px; color: var(--body); }
-.lv-cta { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 360px; min-height: 58px; margin-top: 24px; padding: 12px 28px; border-radius: 999px; background: var(--lv-gold); color: var(--lv-ink); font-size: 16px; font-weight: 700; letter-spacing: .06em; transition: background .15s; }
-.lv-cta:hover { background: #edc478; }
+.lv-cta { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 360px; min-height: 58px; margin-top: 24px; padding: 12px 28px; border-radius: 999px; background: linear-gradient(180deg, #efca7c, #dda849); box-shadow: 0 10px 22px -12px #b8862e; color: var(--lv-ink); font-size: 16px; font-weight: 700; letter-spacing: .06em; transition: filter .15s, transform .15s; }
+.lv-cta:hover, .lv-form-card .button.primary:hover { filter: brightness(1.05); }
+.lv-cta:active, .lv-form-card .button.primary:active { transform: translateY(1px); }
+.lv-form-card .button.primary { background: linear-gradient(180deg, #efca7c, #dda849); box-shadow: 0 10px 22px -12px #b8862e; transition: filter .15s, transform .15s; }
 
 /* ---------- Result ---------- */
 .lv-result { padding: 24px 0 8px; }
-.lv-type-card { padding: 22px 20px 26px; border-radius: 22px; text-align: center; animation: rise .6s var(--ease) both; }
+.lv-type-card { position: relative; padding: 22px 22px 28px; border-radius: 22px; text-align: center; box-shadow: 0 24px 50px -28px #10213bcc; animation: rise .6s var(--ease) both; }
+/* Certificate frame: two gold rules inside the card. */
+.lv-type-card::before, .lv-type-card::after { content: ""; position: absolute; pointer-events: none; }
+.lv-type-card::before { inset: 9px; border: 1px solid #e3b45a99; border-radius: 15px; }
+.lv-type-card::after { inset: 13px; border: 1px solid #e3b45a38; border-radius: 12px; }
+.lv-cert-head { display: flex; justify-content: space-between; gap: 8px; margin: 0 0 12px; padding: 0 6px; font-size: 10.5px; font-weight: 700; letter-spacing: .12em; color: var(--muted); font-variant-numeric: tabular-nums; }
 .lv-result-label { font-size: 11px; font-weight: 700; letter-spacing: .3em; color: var(--lv-gold); }
-.lv-type-card-art { display: grid; place-items: center; width: 172px; aspect-ratio: 1; margin: 14px auto 14px; overflow: hidden; border-radius: 50%; border: 3px solid var(--el); background: var(--tint); }
-.lv-type-card-art .character { width: 88%; height: 88%; }
+/* Only the round frame clips, never the picture itself, so ears and wings at the corners of the artwork stay whole. */
+.lv-type-card-art { display: grid; place-items: center; width: 172px; aspect-ratio: 1; margin: 14px auto 14px; overflow: hidden; border-radius: 50%; border: 3px solid var(--el); background: var(--tint); box-shadow: 0 0 0 6px #ffffff10; }
+.lv-type-card-art .character { width: 84%; height: 84%; }
 .lv-result-lead { font-size: 13px; color: var(--muted); }
 .lv-type-card h1 { margin-top: 2px; font-size: clamp(25px, 7vw, 34px); line-height: 1.4; }
 .lv-type-card-catch { display: inline-block; max-width: 100%; margin-top: 12px; padding: 6px 18px; border-radius: 999px; border: 1px solid #e3b45a73; background: #e3b45a14; font-size: 14.5px; font-weight: 700; line-height: 1.7; color: #f1d9a6; }
@@ -180,6 +228,9 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-gift { padding: 20px; border-radius: 16px; border: 1px solid var(--lv-line); background: #fff; }
 .lv-gift-head { display: flex; align-items: center; gap: 14px; }
 .lv-gift-icon { display: grid; place-items: center; flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: var(--lv-navy); color: var(--lv-gold); }
+.lv-gift-motif { font-size: 12px; font-weight: 700; line-height: 1.6; letter-spacing: .06em; color: var(--lv-muted); }
+/* Lucide draws the dumbbell on a slant, which at icon size reads as a blob; level, it is plainly a dumbbell. */
+.love .lucide-dumbbell { rotate: 45deg; }
 .lv-gift-name { font-family: var(--serif); font-size: 22px; line-height: 1.35; color: var(--lv-ink); }
 .lv-gift-title { margin-top: 2px; font-size: 14.5px; font-weight: 700; line-height: 1.6; color: var(--lv-gold-ink); }
 .lv-gift-text { margin-top: 12px; font-size: 14.5px; line-height: 1.9; color: var(--lv-body); }
@@ -200,32 +251,32 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-mini-art { display: grid; place-items: center; flex-shrink: 0; width: 42px; height: 42px; overflow: hidden; border-radius: 50%; border: 2px solid var(--el); background: var(--tint); }
 .lv-mini-art .character { width: 90%; height: 90%; }
 .lv-compat-note { margin-top: 6px; font-size: 13px; line-height: 1.8; color: var(--lv-muted); }
-.lv-compat-lock { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 13.5px; color: var(--lv-body); }
-.lv-compat-lock svg { color: var(--lv-muted); }
-.lv-compat-lock a { font-weight: 700; color: var(--lv-gold-ink); text-decoration: underline; text-underline-offset: 3px; }
-.lv-compat-q { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; border: 1.5px dashed var(--lv-line-strong); font-weight: 700; color: var(--lv-muted); }
 
 /* Official LINE. LINE green is theirs: used only on the button and the small label. */
 .lv-line { margin-top: 52px; padding: 30px 20px 24px; border-radius: 22px; text-align: center; scroll-margin-top: 24px; }
 .lv-line-kicker { display: inline-block; padding: 2px 14px; border-radius: 999px; background: #06c755; font-size: 12px; font-weight: 700; letter-spacing: .08em; color: #fff; }
 .lv-line-title { margin-top: 12px; font-size: clamp(21px, 5.8vw, 28px); line-height: 1.55; }
+.lv-chunk { display: inline-block; }
+.lv-line-title em { font-style: normal; color: var(--lv-gold); }
 .lv-line-lead { max-width: 30em; margin: 10px auto 0; font-size: 14.5px; line-height: 1.85; color: var(--body); }
-.lv-line-list { margin: 20px 0 0; padding: 4px 16px; border-radius: 14px; background: #fff; list-style: none; text-align: left; }
+.lv-line-box { margin-top: 20px; padding: 16px 16px 6px; border-radius: 14px; background: #fff; text-align: left; }
+.lv-line-box-title { font-family: var(--serif); font-size: 15px; font-weight: 700; text-align: center; color: var(--lv-gold-ink); }
+.lv-line-list { margin: 6px 0 0; padding: 0; list-style: none; }
 .lv-line-list li { display: flex; align-items: flex-start; gap: 10px; padding: 11px 0; border-top: 1px solid var(--lv-line); font-size: 14.5px; font-weight: 700; line-height: 1.7; color: var(--lv-ink); }
 .lv-line-list li:first-child { border-top: 0; }
 .lv-line-list svg { flex-shrink: 0; margin-top: 4px; color: var(--lv-gold-ink); }
 .lv-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; counter-reset: step; }
 .lv-steps li { counter-increment: step; padding: 10px 6px 9px; border-radius: 10px; border: 1px solid var(--line-strong); font-size: 12px; font-weight: 700; line-height: 1.55; color: var(--body); }
 .lv-steps li::before { content: counter(step); display: grid; place-items: center; width: 22px; height: 22px; margin: 0 auto 6px; border-radius: 50%; background: var(--lv-gold); font-size: 12px; color: var(--lv-ink); }
-.lv-line-button { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 360px; min-height: 60px; margin: 22px auto 0; padding: 10px 24px; border-radius: 999px; background: #06c755; font-size: 17px; font-weight: 700; letter-spacing: .06em; color: #fff; transition: background .15s; }
+.lv-line-button { position: relative; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 360px; min-height: 60px; margin: 24px auto 0; padding: 10px 24px; border-radius: 999px; background: #06c755; box-shadow: 0 10px 22px -12px #06c755; font-size: 17px; font-weight: 700; letter-spacing: .06em; color: #fff; transition: background .15s, transform .15s; }
 .lv-line-button:hover { background: #05b34c; }
-.lv-line-pending { max-width: 30em; margin: 12px auto 0; padding: 8px 14px; border-radius: 10px; background: #ffffff14; font-size: 13px; line-height: 1.7; color: var(--ink); }
-.lv-line-pending:empty { display: none; }
+.lv-line-button:active { transform: translateY(1px); }
+/* A soft ring that keeps drawing the eye to the one action that matters. */
+.lv-line-button::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; animation: lv-ping 2.4s ease-out infinite; }
 .lv-line-note { max-width: 30em; margin: 12px auto 0; font-size: 12px; line-height: 1.8; color: var(--muted); }
 
-.lv-retry { display: flex; align-items: center; gap: 6px; margin: 32px auto 0; padding: 6px; background: none; font-size: 14px; color: var(--lv-muted); text-decoration: underline; text-underline-offset: 4px; }
+.lv-retry { display: flex; align-items: center; gap: 6px; margin: 32px auto 40px; padding: 6px; background: none; font-size: 14px; color: var(--lv-muted); text-decoration: underline; text-underline-offset: 4px; }
 .lv-retry:hover { color: var(--lv-ink); }
-.lv-disclaimer { margin: 18px 0 40px; text-align: center; }
 
 /* A bar with the LINE button that follows the reader through the result. */
 .lv-bar-space { height: 76px; }
@@ -235,6 +286,28 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-bar p { flex: 1; min-width: 0; font-size: 13px; font-weight: 700; line-height: 1.5; color: var(--lv-ink); }
 .lv-bar .lv-line-button, .lv-bar .lv-cta { flex-shrink: 0; width: auto; min-height: 48px; margin: 0; padding: 8px 22px; font-size: 15px; }
 
+/* ---------- Motion & finish ----------
+   One-time entrances (the hero sequence above, blocks rising as they scroll in) and two quiet loops
+   (twinkling stars, the ring on the LINE button). All of it stops under prefers-reduced-motion (globals.css),
+   and the scroll reveal holds back only blocks that start below the first screen (useReveal). */
+.lv-reveal { transition: opacity .8s var(--ease), translate .8s var(--ease); }
+.lv-reveal.is-waiting { opacity: 0; translate: 0 22px; }
+.lv-stagger > * { transition: opacity .7s var(--ease), translate .7s var(--ease); transition-delay: calc(var(--i, 0) * 80ms); }
+.lv-stagger.is-waiting > * { opacity: 0; translate: 0 16px; }
+/* Cards: soft depth, and on pointer devices a small lift (transform, so it never fights the reveal's translate). */
+.lv-checks, .lv-learn li, .lv-reasons li, .lv-pair-card, .lv-type, .lv-traits, .lv-win, .lv-gift, .lv-compat { box-shadow: 0 12px 30px -24px #10213b59; }
+.lv-learn li, .lv-reasons li, .lv-pair-card, .lv-type { transition: opacity .7s var(--ease), translate .7s var(--ease), transform .25s var(--ease), box-shadow .25s, border-color .25s; transition-delay: calc(var(--i, 0) * 80ms), calc(var(--i, 0) * 80ms), 0s, 0s, 0s; }
+@media (hover: hover) {
+  .lv-learn li:hover, .lv-reasons li:hover, .lv-pair-card:hover, .lv-type:hover { transform: translateY(-3px); border-color: #e3b45a99; box-shadow: 0 18px 34px -22px #10213b73; }
+  .lv-type:hover .lv-type-art .character { animation: lv-hop .5s var(--ease); }
+}
+@keyframes lv-twinkle { from { opacity: .15; } to { opacity: .85; } }
+@keyframes lv-pop { from { opacity: 0; scale: .4; } 70% { scale: 1.08; } to { opacity: 1; scale: 1; } }
+@keyframes lv-hop { 40% { translate: 0 -6px; } }
+@keyframes lv-peek { 45% { transform: translateX(-56px); } }
+@keyframes lv-nudge { 0%, 60%, 100% { transform: none; } 30% { transform: translateX(3px); } }
+@keyframes lv-ping { 0% { box-shadow: 0 0 0 0 #06c75573; } 70%, 100% { box-shadow: 0 0 0 14px #06c75500; } }
+
 /* The book-opening intro keeps its night colours and covers the whole window here. */
 .love .book-reveal { --paper: #0b1729; --ink: #f1e9d8; --muted: #9aa8bc; left: 0; right: 0; width: auto; translate: none; }
 
@@ -242,9 +315,18 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
   .lv-bar p { display: none; }
   .lv-bar .lv-line-button, .lv-bar .lv-cta { flex: 1; }
 }
+/* On a phone the reason text runs under the icon at full width, instead of in a narrow column beside it. */
+@media (max-width: 639px) {
+  .lv-reasons li { display: grid; grid-template-columns: 46px minmax(0, 1fr); column-gap: 14px; }
+  .lv-reasons li > div { display: contents; }
+  .lv-reason-icon { grid-row: 1 / 3; align-self: center; }
+  .lv-reason-no { align-self: end; }
+  .lv-reasons h3 { margin-top: 0; }
+  .lv-reasons p { grid-column: 1 / -1; margin-top: 12px; }
+}
 @media (min-width: 640px) {
   .lv-learn, .lv-winlose { grid-template-columns: 1fr 1fr; }
-  .lv-compat-row { grid-template-columns: 8em minmax(0, 1fr); align-items: start; gap: 14px; }
+  .lv-compat-row { grid-template-columns: 11em minmax(0, 1fr); align-items: start; gap: 14px; }
   .lv-compat-label { margin-top: 9px; }
   .lv-pair { grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
   .lv-pair-card { height: 100%; }
@@ -256,7 +338,6 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
   .lv-line { padding: 40px 40px 30px; }
 }
 @media (min-width: 880px) {
-  .lv-strip-title { max-width: none; }
-  .lv-strip-hint { display: none; }
+  .lv-types-hint { display: none; }
   .lv-types { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; overflow: visible; }
 }
