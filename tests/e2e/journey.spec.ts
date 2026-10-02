@@ -74,7 +74,7 @@ test("love page: intro → birth date → love result → official LINE", async 
   await page.goto("./love/");
   // A landing page with its own frame: no app header or tab bar, the form in the hero, all ten characters, its own OG card.
   await expect(page.locator(".site-header")).toHaveCount(0); await expect(page.locator(".tab-bar")).toHaveCount(0);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("恋の正解");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("恋の正解"); await expect(page.locator(".lv-badge")).toContainText("ホシヨミ");
   await expect(page.locator(".lv-type")).toHaveCount(10);
   // The first page only leads to the diagnosis: no word of the official LINE, no Q&A.
   expect(await page.locator(".love").innerText()).not.toContain("LINE"); await expect(page.locator("details")).toHaveCount(0);
@@ -100,7 +100,9 @@ test("love page: intro → birth date → love result → official LINE", async 
   await expect(page.locator(".is-locked")).toHaveAttribute("href", "#line");
   // Just above the button, who will read for her: the supervising fortune teller's record in plain text.
   await expect(page.locator(".lv-line .lv-reader")).toContainText("ホシヨミ"); await expect(page.locator(".lv-line .lv-reader")).toContainText("1,000件以上");
-  await expect(page.locator(".lv-reader-icon")).toHaveAttribute("src", /\/hoshiyomi\.webp$/);
+  await expect(page.locator(".lv-line .lv-reader-icon")).toHaveAttribute("src", /\/hoshiyomi\.webp$/);
+  // The result card is signed by the creator of Stella File.
+  await expect(page.locator(".lv-cert-sign")).toContainText("ステラファイル考案者");
   await expect(page.locator(".lv-mid .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love"); await expect(page.locator(".lv-line .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love"); await expect(page.locator(".lv-bar .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love");
   // Nothing is kept: no birth date in the URL, nothing in storage.
   expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);

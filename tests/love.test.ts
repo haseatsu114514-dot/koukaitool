@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, it, expect } from "vitest";
 import { CHARACTER_TYPES, groupName } from "../src/data/types";
-import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS, LOVE_TEASERS } from "../src/data/love-copy";
+import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS, LOVE_READER, LOVE_TEASERS } from "../src/data/love-copy";
 import { TEN_GODS } from "../src/lib/diagnosis/ten-gods";
 import { NAME_ANIMALS } from "../src/components/type-name";
 
@@ -54,11 +54,32 @@ describe("love page copy", () => {
   });
 });
 describe("love page line breaks", () => {
-  it("breaks short lines after punctuation and at ｜ hints, keeping closing brackets with their punctuation", async () => {
+  it("breaks between phrases (so lines can be balanced), after punctuation and at ｜ hints, and keeps the text whole", async () => {
     const { phraseSegments } = await import("../src/components/phrases");
-    expect(phraseSegments("見た目より、生き方を尊敬できる人に惹かれる")).toEqual(["見た目より、", "生き方を尊敬できる人に惹かれる"]);
-    expect(phraseSegments("その恋、ほかの誰かの正解を｜なぞっていませんか？")).toEqual(["その恋、", "ほかの誰かの正解を", "なぞっていませんか？"]);
-    expect(phraseSegments("「一緒にいて楽しい。」が魅力")).toEqual(["「一緒にいて楽しい。」", "が魅力"]);
+    const segments = phraseSegments("見た目より、生き方を尊敬できる人に惹かれる");
+    expect(segments.join("")).toBe("見た目より、生き方を尊敬できる人に惹かれる");
+    expect(segments[0]).toBe("見た目より、");
+    expect(segments.length).toBeGreaterThan(2);
+    expect(phraseSegments("その恋、ほかの誰かの正解を｜なぞっていませんか？").join("")).toBe("その恋、ほかの誰かの正解をなぞっていませんか？");
+    expect(phraseSegments("その恋、ほかの誰かの正解を｜なぞっていませんか？").at(-1)).toBe("なぞっていませんか？");
+    expect(phraseSegments("「一緒にいて楽しい。」が魅力").some(part => part.startsWith("」"))).toBe(false);
+  });
+  it("never breaks inside a kept word or a short quote, before closing punctuation, or into a one-character piece, anywhere in the copy", async () => {
+    const { phraseSegments, KEEP_WHOLE } = await import("../src/components/phrases");
+    const copy = [
+      ...Object.values(LOVE_COPY).flatMap(c => [c.catch, c.charm, c.win, c.lose, c.hint, ...c.traits]),
+      ...Object.values(LOVE_GIFTS).flatMap(g => [g.title, g.text]), ...Object.values(LOVE_COMPAT).map(c => c.note),
+      ...LOVE_LINE_BENEFITS, ...LOVE_LINE_STEPS, ...Object.values(LOVE_TEASERS).flatMap(t => Object.values(t)), LOVE_READER.note,
+    ];
+    for (const text of copy) {
+      const segments = phraseSegments(text), plain = text.replaceAll("｜", "");
+      expect(segments.join(""), text).toBe(plain);
+      const cuts = new Set<number>(); let at = 0;
+      for (const part of segments.slice(0, -1)) cuts.add(at += part.length);
+      for (const word of [...KEEP_WHOLE, "「恋の正解」"]) for (let i = plain.indexOf(word); i >= 0; i = plain.indexOf(word, i + 1))
+        for (let c = i + 1; c < i + word.length; c++) expect(cuts.has(c), `${text}: ${word}`).toBe(false);
+      for (const part of segments) { expect("、。！？」』）ー".includes(part[0]), `${text}: ${part}`).toBe(false); expect([...part].length > 1 || segments.length === 1, `${text}: ${part}`).toBe(true); }
+    }
   });
 });
 describe("character order", () => {

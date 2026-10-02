@@ -146,7 +146,8 @@ export const LOVE_COMPAT: Record<Exclude<StellaLevel, "mid">, { label: string; n
  * The first two benefits are the hook: the form does not ask about them, and the site never shows them, so the reading must always cover them
  * (they are also teased in the result: LOVE_TEASERS). The last two come from the form. It does not promise timing. */
 export const LOVE_LINE_BENEFITS = ["本当に結ばれやすい｜相手の特徴", "あなたが気づいていない、恋のブレーキ", "今の状況と悩みに合わせた、恋の進め方", "いちばん知りたいことへの、あなただけの答え"];
-export const LOVE_LINE_STEPS = ["LINEで｜友だち追加", "今の状況を｜3分で伝える", "鑑定を｜無料でお届け"];
+/** The form asks for the situation in her own words and the reading is written in full, so no step promises a few minutes. */
+export const LOVE_LINE_STEPS = ["LINEで｜友だち追加", "今の状況を｜詳しく伝える", "本格鑑定を｜無料でお届け"];
 
 /** Where the result points to what only the reading can tell: after the usual misstep (the call in the middle of the result)
  * and at the end of the compatibility card. Each names one of the first two LINE benefits, at the moment she wants it most. */
@@ -155,14 +156,14 @@ export const LOVE_TEASERS = {
   partner: { label: "鑑定でわかる", title: "本当に結ばれやすい相手の特徴", note: "強く惹かれる相手と、幸せになりやすい相手は、同じとは限りません。生まれた年・月・日のすべてから、あなたと本当に結ばれやすい相手の特徴を読み解きます。" },
 };
 
-/** The fortune teller who supervised this page and writes the LINE reading: ホシヨミ, with their icon (public/hoshiyomi.webp, 320px, from the approved artwork).
- * Shown in the LINE invitation so the reader knows who will read for them, and as the icon of reason 2 and in the footer on the landing page.
- * Plain text and the icon, never a seal or badge. The facts are as the fortune teller gave them (the 占い館 itself is not named);
- * update them here and in the reasons on the page if they change. */
+/** The fortune teller who devised Stella File and writes the LINE reading: ホシヨミ, with their icon (public/hoshiyomi.webp, 320px, from the approved artwork).
+ * Called the creator (考案者) of Stella File, not a supervisor. Shown as a small badge in the hero, as a signature on the result card, in the LINE invitation,
+ * in reason 2 and in the footer. The facts are as the fortune teller gave them: no calendar years, and the 占い館 itself is not named.
+ * Update them here and in the reasons on the page if they change. */
 export const LOVE_READER = {
   name: "ホシヨミ",
   icon: "/hoshiyomi.webp",
-  role: "この診断の監修者",
-  stats: [["10年", "東洋の占術"], ["1,000件以上", "個人鑑定"], ["売上1位", "名古屋・栄の｜占い館"]] as [value: string, label: string][],
-  note: "テレビ出演や政財界の顧客をもつ｜占い師に師事。｜売上1位は、チェーン展開する占い館での｜2024年8月の実績です。",
+  role: "ステラファイル考案者",
+  stats: [["10年", "東洋の占術"], ["1,000件以上", "個人鑑定"], ["月間1位", "占い館の売上"]] as [value: string, label: string][],
+  note: "テレビ出演や政財界の顧客をもつ占い師に師事。名古屋・栄の占い館で、月間売上1位になりました。",
 };

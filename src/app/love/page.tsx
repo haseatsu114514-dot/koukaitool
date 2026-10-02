@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { Check, Clock, Compass, Crown, Fingerprint, Gem, Gift, type LucideIcon } from "lucide-react";
+import { Check, Clock, Compass, Crown, Fingerprint, Gem, Gift, MoonStar, type LucideIcon } from "lucide-react";
 import { CHARACTER_TYPES, elementStyle } from "@/data/types";
 import { LOVE_COPY, LOVE_READER } from "@/data/love-copy";
 import { pageMetadata, SITE_NAME } from "@/lib/site";
@@ -15,7 +15,7 @@ import "./love.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "恋愛運を引き寄せる診断",
-  description: "恋を引き寄せる人は、自分だけの「恋の正解」を知っている。プロの占い師が監修した、生年月日でわかる恋愛運診断。あなたのキャラ（本質）とギフト（生まれ持った強み）から、魅力の引き出し方、恋がうまくいく法則とやりがちなNG、相性のいい相手がわかります。質問なし・約10秒・無料。",
+  description: "恋を引き寄せる人は、自分だけの「恋の正解」を知っている。鑑定1,000件以上の占い師ホシヨミが考案した、生年月日でわかる恋愛運診断。あなたのキャラ（本質）とギフト（生まれ持った強み）から、魅力の引き出し方、恋がうまくいく法則とやりがちなNG、相性のいい相手がわかります。質問なし・約10秒・無料。",
   path: "/love/",
   image: "/og/love.jpg",
 });
@@ -29,10 +29,9 @@ const LEARN: [title: string, text: string, icon: LucideIcon][] = [
   ["恋がうまくいく法則とNG", "あなたの恋がうまくいく進め方と、ついやってしまうNGパターン。", Compass],
   ["ギフトと恋のヒント", "生まれ持った強みの生かし方と、今日からできること。相性のいいキャラもわかります。", Gift],
 ];
-/** Reason 2 shows ホシヨミ's own icon instead of a line icon ("reader"). */
-const REASONS: [title: string, text: string, icon: LucideIcon | "reader"][] = [
-  ["東洋の「占いの帝王」がベース", "古くから「占いの帝王」と呼ばれ、長い歴史の中で体系化されてきた東洋の占術がベース。霊感や「なんとなく」ではなく、決まった理論から読み解きます。そこに数々の占いや運命学、統計を組み合わせて作りました。", Crown],
-  [`鑑定1,000件以上の｜占い師${LOVE_READER.name}が監修`, "テレビ出演や政財界の顧客をもつ占い師に師事し、東洋の占術を学んで10年。名古屋・栄の占い館では、月間売上1位（2024年8月）にもなりました。キャラの読み解きから、ひとつひとつの文章まで監修しています。", "reader"],
+const REASONS: [title: string, text: string, icon: LucideIcon][] = [
+  ["「占いの帝王」と呼ばれる｜東洋の占術がベース", "長い歴史の中で受け継がれ、体系化されてきた東洋の占術がベース。霊感や「なんとなく」ではなく、決まった理論から読み解きます。そこに数々の占いや運命学、統計を組み合わせて作りました。", Crown],
+  [`鑑定1,000件以上の占い師${LOVE_READER.name}が考案`, `ステラファイルを考えたのは、占い師${LOVE_READER.name}。テレビ出演や政財界の顧客をもつ占い師に師事し、東洋の占術を学んで10年。名古屋・栄の占い館では、月間売上1位にもなりました。キャラの読み解きから、ひとつひとつの文章まで手がけています。`, MoonStar],
   ["気分や答え方で、結果がぶれない", "質問に答える性格診断は、その日の気分や答え方で結果が変わってしまいます。ステラファイルは生年月日だけで読み解くから、何度診断しても同じ。素のあなたが、そのまま出ます。", Clock],
 ];
 
@@ -55,12 +54,13 @@ function Head({ id, en, title, lead }: { id: string; en: string; title: string; 
  * and no "enter another date" (it would only lead away from LINE).
  * Sections alternate cream and white: worries → what you get → the ten characters → why it works → the closing call.
  * On this page the type is called キャラ (her essence) and the item is her ギフト (strengths and individuality).
- * Line breaks: headings, catches, labels and short list items go through Phrases (breaks after 、。！？ or at a ｜ hint);
- * running text is plain, justified and breaks like print (see love.css). */
+ * ホシヨミ, who devised Stella File, appears as a small badge in the hero (with their icon), in reason 2 and in the footer.
+ * Line breaks: headings, short items and notes of up to about three lines go through Phrases (they break only between phrases and are balanced);
+ * longer running text breaks by character like print, left-aligned, with no lonely last word (see love.css). */
 export default function LovePage() {
   const hero = <>
     <Faces />
-    <p className="lv-kicker">生年月日でわかる 10タイプ恋愛運診断</p>
+    <p className="lv-kicker"><span className="lv-badge"><ReaderIcon size={24} priority />{`占い師${LOVE_READER.name}考案`}</span><span>10タイプ恋愛運診断</span></p>
     <h1 className="lv-title"><span className="lv-title-line">恋を引き寄せる人は、</span><span className="lv-title-line">自分だけの<em>「恋の正解」</em>を</span><span className="lv-title-line">知っている。</span></h1>
     <p className="lv-lead"><Phrases>魅力の引き出し方と、恋がうまくいく法則が、生年月日だけでわかります。</Phrases></p>
     <ul className="lv-meta"><li>質問なし・約10秒</li><li>10タイプで本質がわかる</li><li>無料・登録なし</li></ul>
@@ -96,7 +96,7 @@ export default function LovePage() {
     <section className="lv-section is-white" aria-labelledby="lv-why-title">
       <div className="lv-wrap">
         <Head id="lv-why-title" en="WHY STELLA FILE" title="ステラファイルが当たる理由" />
-        <ol className="lv-reasons lv-stagger">{REASONS.map(([title, text, Icon], i) => <li key={title} style={order(i)}><span className={`lv-reason-icon${Icon === "reader" ? " is-reader" : ""}`}>{Icon === "reader" ? <ReaderIcon size={46} /> : <Icon size={22} strokeWidth={1.7} aria-hidden="true" />}</span><div><span className="lv-reason-no">{`理由 ${i + 1}`}</span><h3><Phrases>{title}</Phrases></h3><p>{text}</p></div></li>)}</ol>
+        <ol className="lv-reasons lv-stagger">{REASONS.map(([title, text, Icon], i) => <li key={title} style={order(i)}><span className="lv-reason-icon"><Icon size={22} strokeWidth={1.7} aria-hidden="true" /></span><div><span className="lv-reason-no">{`理由 ${i + 1}`}</span><h3><Phrases>{title}</Phrases></h3><p>{text}</p></div></li>)}</ol>
         <div className="lv-statement lv-reveal">
           <p className="lv-statement-lead"><Phrases>自分を知り、魅力を引き出して、恋愛運を引き寄せる。</Phrases></p>
           <p><Phrases>ステラファイルは、東洋の占術の知恵を、｜今のあなたの恋に生かすために生まれました。</Phrases></p>
@@ -119,7 +119,7 @@ export default function LovePage() {
       <div className="lv-wrap">
         <span className="lv-brand"><LogoMark size={16} /><span>{SITE_NAME}</span></span>
         <nav aria-label="フッター"><Link href="/privacy/">プライバシー</Link></nav>
-        <p className="lv-footer-note"><Phrases>{`キャラの読み解きと文章は、｜占い師${LOVE_READER.name}が監修しています。`}</Phrases></p>
+        <p className="lv-footer-note"><Phrases>{`ステラファイルは、占い師${LOVE_READER.name}が考案した診断です。`}</Phrases></p>
         <p className="micro">© ステラファイル</p>
       </div>
     </footer>

@@ -54,15 +54,15 @@ export function LoveDiagnosis({ hero, intro }: { hero: React.ReactNode; intro: R
       <div className="lv-wrap">
         {hero}
         <div id="diagnose" className="lv-form-card">
-          <h2 className="lv-form-title">生年月日を入れて、診断スタート</h2>
+          <h2 className="lv-form-title"><Phrases>生年月日を入れて、診断スタート</Phrases></h2>
           <BirthForm idPrefix="love-" submitLabel="恋愛運を診断する" onDiagnose={show} autoFill yearSelect />
-          <p className="micro lv-form-note">生年月日は、どこにも送信・保存されません。</p>
+          <p className="micro lv-form-note"><Phrases>生年月日は、どこにも送信・保存されません。</Phrases></p>
         </div>
       </div>
     </section>
     {intro}
     <div className={`lv-bar${formGone && !finalIn ? " is-shown" : ""}`} inert={!formGone || finalIn}>
-      <div className="lv-bar-inner"><p><Phrases>生年月日を入れるだけ。約10秒・無料</Phrases></p><a className="lv-cta" href="#diagnose">無料で診断する</a></div>
+      <div className="lv-bar-inner"><p><span>生年月日を入れるだけ。</span><span>約10秒・無料</span></p><a className="lv-cta" href="#diagnose">無料で診断する</a></div>
     </div>
   </>;
 }

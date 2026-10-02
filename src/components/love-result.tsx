@@ -16,7 +16,7 @@ import { TypeName } from "./type-name";
 function Section({ id, title, lead, children }: { id: string; title: string; lead?: string; children: React.ReactNode }) {
   return <section className="lv-r-sec lv-reveal" aria-labelledby={id}>
     <h2 id={id} className="lv-r-title"><Phrases>{title}</Phrases></h2>
-    {lead && <p className="lv-r-lead">{lead}</p>}
+    {lead && <p className="lv-r-lead"><Phrases>{lead}</Phrases></p>}
     {children}
   </section>;
 }
@@ -64,6 +64,8 @@ export function LoveResult({ result }: { result: DiagnosisResult }) {
         <h1><TypeName name={type.displayName} /></h1>
         <p className="lv-type-card-catch"><Phrases>{love.catch}</Phrases></p>
         <ul className="lv-keywords">{love.keywords.map(word => <li key={word}>{word}</li>)}</ul>
+        {/* Signed by the creator of Stella File, like a certificate. */}
+        <p className="lv-cert-sign"><ReaderIcon size={30} priority /><span><small>{LOVE_READER.role}</small>{`占い師 ${LOVE_READER.name}`}</span></p>
       </div>
 
       <Section id="lv-r-traits" title="ステラファイルが見抜く、あなたの恋の傾向">
@@ -99,10 +101,10 @@ export function LoveResult({ result }: { result: DiagnosisResult }) {
 
       <Section id="lv-r-compat" title="恋の相性">
         <div className="lv-compat">
-          <div className="lv-compat-row is-best"><span className="lv-compat-label">{LOVE_COMPAT.best.label}</span><div><Partners stems={groups.best} /><p className="lv-compat-note">{LOVE_COMPAT.best.note}</p></div></div>
-          <div className="lv-compat-row is-good"><span className="lv-compat-label">{LOVE_COMPAT.good.label}</span><div><Partners stems={groups.good} /><p className="lv-compat-note">{LOVE_COMPAT.good.note}</p></div></div>
-          <div className="lv-compat-row is-foe"><span className="lv-compat-label">{LOVE_COMPAT.foe.label}</span><div><Partners stems={groups.foe} /><p className="lv-compat-note">{LOVE_COMPAT.foe.note}</p></div></div>
-          <a className="lv-compat-row is-locked" href="#line"><span className="lv-compat-label"><Lock size={12} strokeWidth={2.4} aria-hidden="true" />{LOVE_TEASERS.partner.label}</span><div><p className="lv-locked-title">{LOVE_TEASERS.partner.title}</p><p className="lv-compat-note">{LOVE_TEASERS.partner.note}</p><span className="lv-locked-more">受け取り方を見る<ChevronDown size={14} aria-hidden="true" /></span></div></a>
+          <div className="lv-compat-row is-best"><span className="lv-compat-label">{LOVE_COMPAT.best.label}</span><div><Partners stems={groups.best} /><p className="lv-compat-note"><Phrases>{LOVE_COMPAT.best.note}</Phrases></p></div></div>
+          <div className="lv-compat-row is-good"><span className="lv-compat-label">{LOVE_COMPAT.good.label}</span><div><Partners stems={groups.good} /><p className="lv-compat-note"><Phrases>{LOVE_COMPAT.good.note}</Phrases></p></div></div>
+          <div className="lv-compat-row is-foe"><span className="lv-compat-label">{LOVE_COMPAT.foe.label}</span><div><Partners stems={groups.foe} /><p className="lv-compat-note"><Phrases>{LOVE_COMPAT.foe.note}</Phrases></p></div></div>
+          <a className="lv-compat-row is-locked" href="#line"><span className="lv-compat-label"><Lock size={12} strokeWidth={2.4} aria-hidden="true" />{LOVE_TEASERS.partner.label}</span><div><p className="lv-locked-title"><Phrases>{LOVE_TEASERS.partner.title}</Phrases></p><p className="lv-compat-note"><Phrases>{LOVE_TEASERS.partner.note}</Phrases></p><span className="lv-locked-more">受け取り方を見る<ChevronDown size={14} aria-hidden="true" /></span></div></a>
         </div>
       </Section>
 
@@ -110,14 +112,14 @@ export function LoveResult({ result }: { result: DiagnosisResult }) {
         <p className="lv-line-kicker">公式LINE限定</p>
         <p className="lv-line-for"><TypeName name={type.displayName} />のあなたへ</p>
         <h2 id="lv-line-title" className="lv-line-title"><span className="lv-chunk">あなただけの恋愛鑑定を、</span><span className="lv-chunk"><em>無料</em>でお届けします</span></h2>
-        <p className="lv-line-lead"><Phrases>ここまでは、同じキャラの人に共通する恋の傾向。公式LINEでは、生年月日と今の状況から、あなた一人のための鑑定をお届けします。</Phrases></p>
+        <p className="lv-line-lead"><Phrases>ここまでは、同じキャラの人に共通する恋の傾向。公式LINEでは、生年月日と今の状況をもとに、あなた一人のために、じっくり鑑定します。</Phrases></p>
         <div className="lv-line-box">
           <p className="lv-line-box-title">鑑定でわかること</p>
           <ul className="lv-line-list">{LOVE_LINE_BENEFITS.map(text => <li key={text}><Check size={16} strokeWidth={2.6} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
         </div>
         {/* Who will read for her: the supervising fortune teller's record, in plain text. */}
         <div className="lv-reader">
-          <div className="lv-reader-head"><ReaderIcon size={64} /><p><span className="lv-reader-lead">鑑定するのは</span><b className="lv-reader-name">占い師 {LOVE_READER.name}</b><span className="lv-reader-role">{LOVE_READER.role}</span></p></div>
+          <div className="lv-reader-head"><ReaderIcon size={64} /><p><span className="lv-reader-lead">鑑定するのは</span><b className="lv-reader-name">{`占い師 ${LOVE_READER.name}`}</b><span className="lv-reader-role">{LOVE_READER.role}</span></p></div>
           <ul className="lv-reader-stats">{LOVE_READER.stats.map(([value, label]) => <li key={value}><b>{value}</b><span><Phrases>{label}</Phrases></span></li>)}</ul>
           <p className="lv-reader-note"><Phrases>{LOVE_READER.note}</Phrases></p>
         </div>
@@ -130,7 +132,7 @@ export function LoveResult({ result }: { result: DiagnosisResult }) {
     </div>
     <div className="lv-bar-space" aria-hidden="true" />
     <div className={`lv-bar${barShown ? " is-shown" : ""}`} inert={!barShown}>
-      <div className="lv-bar-inner"><p><Phrases>あなただけの鑑定を、｜無料でお届け</Phrases></p><a className="lv-line-button" {...lineLink("bar")}>LINEで友だち追加</a></div>
+      <div className="lv-bar-inner"><p><span>あなただけの鑑定を、</span><span>無料でお届け</span></p><a className="lv-line-button" {...lineLink("bar")}>LINEで友だち追加</a></div>
     </div>
   </article>;
 }
