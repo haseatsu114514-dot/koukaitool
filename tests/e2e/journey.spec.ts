@@ -83,9 +83,9 @@ test("love page: intro → birth date → love result → official LINE", async 
   await page.getByLabel("年", { exact: true }).fill("2000"); await page.getByRole("combobox", { name: "月", exact: true }).selectOption("1"); await page.getByRole("combobox", { name: "日", exact: true }).selectOption("7");
   await page.getByRole("button", { name: "恋愛運を診断する" }).click();
   await expect(page.locator(".book-reveal")).toBeVisible(); await expect(page.locator(".book-reveal")).toBeHidden({ timeout: 8000 });
-  // The result opens on the same page: キャラ, four あるある, win/lose patterns and the item read as a gift.
+  // The result opens on the same page: キャラ, four tendencies, win/lose patterns and the item read as a gift.
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
-  await expect(page.locator(".lv-aruaru li")).toHaveCount(4);
+  await expect(page.locator(".lv-traits li")).toHaveCount(4);
   await expect(page.getByRole("heading", { name: "勝ちパターン", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "負けパターン", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "あなたのアイテム", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "スケジュール帳", exact: true })).toBeVisible();
   // With LINE set up, the caution row waits on LINE, and both LINE buttons use the love page's own friend-add URL.
@@ -94,6 +94,9 @@ test("love page: intro → birth date → love result → official LINE", async 
   // Nothing is kept: no birth date in the URL, nothing in storage.
   expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.getByRole("button", { name: "別の生年月日で診断する" }).click(); await expect(page.getByLabel("年", { exact: true })).toBeVisible();
+  // No way out but LINE: every link is in-page, the LINE friend add, or the privacy page.
+  const hrefs = await page.locator(".love a").evaluateAll(links => links.map(a => a.getAttribute("href") || ""));
+  expect(hrefs.filter(href => !href.startsWith("#") && href !== "https://lin.ee/e2e-love" && !href.endsWith("/privacy/"))).toEqual([]);
+  await page.getByRole("button", { name: "生年月日を入れ直す" }).click(); await expect(page.getByLabel("年", { exact: true })).toBeVisible();
   expect(errors).toEqual([]);
 });

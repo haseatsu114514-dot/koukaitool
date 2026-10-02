@@ -163,10 +163,10 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-r-lead { margin: -4px 0 14px; font-size: 13.5px; line-height: 1.8; color: var(--lv-muted); }
 .lv-text { font-size: 15.5px; line-height: 2; color: var(--lv-body); }
 
-.lv-aruaru { margin: 0; padding: 4px 18px; border-radius: 16px; border: 1px solid var(--lv-line); background: #fff; list-style: none; }
-.lv-aruaru li { display: flex; align-items: flex-start; gap: 12px; padding: 13px 0; border-top: 1px solid var(--lv-line); font-size: 15px; font-weight: 700; line-height: 1.75; color: var(--lv-ink); }
-.lv-aruaru li:first-child { border-top: 0; }
-.lv-aruaru svg { flex-shrink: 0; width: 22px; height: 22px; margin-top: 2px; padding: 3px; border-radius: 6px; background: var(--lv-rose); color: #fff; }
+.lv-traits { margin: 0; padding: 4px 18px; border-radius: 16px; border: 1px solid var(--lv-line); background: #fff; list-style: none; }
+.lv-traits li { display: flex; align-items: flex-start; gap: 12px; padding: 13px 0; border-top: 1px solid var(--lv-line); font-size: 15px; font-weight: 700; line-height: 1.75; color: var(--lv-ink); }
+.lv-traits li:first-child { border-top: 0; }
+.lv-traits svg { flex-shrink: 0; width: 22px; height: 22px; margin-top: 2px; padding: 3px; border-radius: 6px; background: var(--lv-rose); color: #fff; }
 
 .lv-winlose { display: grid; gap: 12px; }
 .lv-win, .lv-lose { padding: 20px 20px 18px; border-radius: 16px; }
@@ -221,13 +221,7 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-line-button:hover { background: #05b34c; }
 .lv-line-note { max-width: 30em; margin: 12px auto 0; font-size: 12px; line-height: 1.8; color: var(--muted); }
 
-.lv-share { margin-top: 36px; padding: 22px 18px 14px; border-radius: 16px; border: 1px solid var(--lv-line); background: #fff; text-align: center; }
-.lv-share-title { font-size: 15px; font-weight: 700; color: var(--lv-ink); }
-.lv-share-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; }
-.lv-chip { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 8px 20px; border-radius: 999px; border: 1px solid var(--lv-line-strong); background: #fff; font-size: 14px; font-weight: 700; color: var(--lv-ink); transition: background .15s; }
-.lv-chip:hover { background: var(--lv-cream); }
-.lv-share-status { min-height: 1.8em; margin-top: 6px; }
-.lv-retry { display: flex; align-items: center; gap: 6px; margin: 26px auto 0; padding: 6px; background: none; font-size: 14px; color: var(--lv-muted); text-decoration: underline; text-underline-offset: 4px; }
+.lv-retry { display: flex; align-items: center; gap: 6px; margin: 32px auto 0; padding: 6px; background: none; font-size: 14px; color: var(--lv-muted); text-decoration: underline; text-underline-offset: 4px; }
 .lv-retry:hover { color: var(--lv-ink); }
 .lv-disclaimer { margin: 18px 0 40px; text-align: center; }
 

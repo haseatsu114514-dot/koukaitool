@@ -23,7 +23,7 @@ export const viewport: Viewport = { themeColor: "#10213b", colorScheme: "light" 
 
 const WORRIES = ["がんばっているのに、なぜか恋が長続きしない", "「いい人」止まりで、恋愛対象として見られにくい", "好きな人の前だと、本当の自分を出せない", "自分に合う相手が、もうわからなくなってきた", "そろそろ本気で、恋愛運を引き寄せたい"];
 const LEARN: [title: string, text: string][] = [
-  ["あなたのキャラ", "10のキャラのうち、どれがあなたの本質か。思わずドキッとする「恋のあるある」つき。"],
+  ["あなたのキャラと恋の傾向", "10のキャラのうち、どれがあなたの本質か。あなたの恋の傾向まで、ズバリわかります。"],
   ["魅力の引き出し方", "自分では気づきにくい「選ばれる理由」と、それを相手に伝える見せ方。"],
   ["恋の勝ちパターン・負けパターン", "あなたがうまくいく恋の進め方と、ついやってしまう失敗。"],
   ["あなたのアイテムと、恋のヒント", "生まれ持ったギフトの生かし方と、今日からできること。相性のいいキャラも。"],
@@ -34,7 +34,7 @@ const REASONS: [title: string, text: string][] = [
   ["長い質問に答えなくていい", "よくある性格診断のように、何十問もの質問に答える必要はありません。生年月日を入れるだけ。気分や答え方で結果がぶれないから、素のあなたがそのまま出ます。"],
 ];
 const FAQ: [question: string, answer: string][] = [
-  ["生年月日だけで、本当にわかるのですか？", "ステラファイルは、占いの帝王と呼ばれる四柱推命をベースに、数々の占いや運命学、統計を組み合わせ、プロの占い師の監修のもとで作った診断です。質問に答える診断と違って、その日の気分や答え方で結果が変わることはありません。占いをもとにした読みものなので、当てはまるところを恋のヒントとして使ってください。"],
+  ["生年月日だけで、本当にわかるのですか？", "ステラファイルは、占いの帝王と呼ばれる四柱推命をベースに、数々の占いや運命学、統計を組み合わせ、プロの占い師の監修のもとで作った診断です。質問に答える診断と違って、その日の気分や答え方で結果が変わることはありません。"],
   ["生まれた時間がわからなくても大丈夫？", "大丈夫です。この診断は生まれた日だけを使い、時刻は使いません。"],
   ["生年月日はどこかに送られますか？", "いいえ。入力した生年月日はお使いのブラウザの中だけで計算に使い、サーバーへの送信や保存はしません。"],
   ["無料ですか？ 登録は必要ですか？", "無料で、会員登録もいりません。公式LINEの友だち追加は、もっと詳しく知りたい方だけで大丈夫です。"],
@@ -47,6 +47,7 @@ function Head({ id, en, title, lead }: { id: string; en: string; title: string; 
 }
 
 /** Landing page for women in their 30s and 40s: 恋愛運 is the hook, and the result shows how she wins in love.
+ * The page has no way out but the official LINE (and the privacy page): no links to the app, no sharing, no friend check.
  * Everything here leads to the birth date form at the top, which opens the result on this same page; the result ends at the official LINE.
  * On this page the type is called キャラ (her essence) and the item is her gift (strengths and individuality). */
 export default function LovePage() {
@@ -113,12 +114,12 @@ export default function LovePage() {
     </section>
   </>;
   return <div className="love">
-    <header className="lv-header lv-dark"><div className="lv-wrap-wide lv-header-inner"><Link className="lv-brand" href="/" aria-label={`${SITE_NAME} トップ`}><LogoMark size={18} /><span>{SITE_NAME}</span></Link><span className="lv-tag">恋愛運診断</span></div></header>
+    <header className="lv-header lv-dark"><div className="lv-wrap-wide lv-header-inner"><span className="lv-brand"><LogoMark size={18} /><span>{SITE_NAME}</span></span><span className="lv-tag">恋愛運診断</span></div></header>
     <main id="main"><LoveDiagnosis hero={hero} intro={intro} /></main>
     <footer className="lv-footer">
       <div className="lv-wrap">
-        <Link className="lv-brand" href="/"><LogoMark size={16} /><span>{SITE_NAME}</span></Link>
-        <nav aria-label="フッター"><Link href="/">ステラタイプ診断</Link><Link href="/types/">タイプ図鑑</Link><Link href="/privacy/">プライバシー</Link></nav>
+        <span className="lv-brand"><LogoMark size={16} /><span>{SITE_NAME}</span></span>
+        <nav aria-label="フッター"><Link href="/privacy/">プライバシー</Link></nav>
         <p className="micro">占いをもとにした、自分を知るためのコンテンツです。© ステラファイル</p>
       </div>
     </footer>

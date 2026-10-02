@@ -8,9 +8,9 @@ describe("love page copy", () => {
   it("covers every type with the same shape", () => {
     expect(Object.keys(LOVE_COPY).sort()).toEqual(CHARACTER_TYPES.map(type => type.slug).sort());
     for (const [slug, copy] of Object.entries(LOVE_COPY)) {
-      expect(copy.aruaru, slug).toHaveLength(4);
+      expect(copy.traits, slug).toHaveLength(4);
       expect(copy.keywords, slug).toHaveLength(3);
-      for (const text of [copy.catch, copy.charm, copy.win, copy.lose, copy.hint, ...copy.aruaru, ...copy.keywords]) expect(text.trim(), slug).not.toBe("");
+      for (const text of [copy.catch, copy.charm, copy.win, copy.lose, copy.hint, ...copy.traits, ...copy.keywords]) expect(text.trim(), slug).not.toBe("");
     }
   });
   it("reads every item as a gift for love", () => {

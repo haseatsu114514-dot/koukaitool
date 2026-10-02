@@ -1,13 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Check, Heart, Lock, RotateCcw, Share2, ThumbsDown, ThumbsUp } from "lucide-react";
+import { Check, Heart, Lock, RotateCcw, ThumbsDown, ThumbsUp } from "lucide-react";
 import { elementStyle, typeByStem, type CharacterType } from "@/data/types";
 import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS } from "@/data/love-copy";
 import type { DiagnosisResult } from "@/lib/diagnosis";
 import { stellaCompatibility } from "@/lib/diagnosis/compatibility";
 import { GOD_COPY } from "@/lib/diagnosis/ten-gods";
 import { loveLineUrlFor } from "@/lib/line";
-import { siteUrl } from "@/lib/paths";
 import { track } from "@/lib/analytics";
 import { Bx } from "./bx";
 import { Character } from "./character";
@@ -25,26 +24,7 @@ function Partners({ stems }: { stems: CharacterType["stem"][] }) {
   return <ul className="lv-compat-types">{stems.map(stem => { const partner = typeByStem(stem); return <li key={stem}><span className="lv-mini-art" style={elementStyle(stem)}><Character type={partner} /></span><Bx>{partner.displayName}</Bx></li>; })}</ul>;
 }
 
-/** Share the love page itself (not the result): the type name goes in the text, never the birth date or the item. */
-function LoveShare({ type }: { type: CharacterType }) {
-  const [message, setMessage] = useState("");
-  const url = new URL("love/", siteUrl).href;
-  const text = `私のキャラは「${type.displayName}」でした。\n${LOVE_COPY[type.slug].catch}\nあなたの恋の勝ち方は？ #ステラファイル #恋愛運診断`;
-  const tracked = (method: "native" | "copy" | "x") => track({ name: "share", method, content_type: "love", item_id: type.slug });
-  async function copy() { try { await navigator.clipboard.writeText(`${text}\n${url}`); setMessage("コピーしました。"); tracked("copy"); } catch { setMessage(`コピーできませんでした。こちらの文を選択してください：${text} ${url}`); } }
-  async function share() { if (!navigator.share) { await copy(); return; } try { await navigator.share({ title: "恋愛運を引き寄せる診断｜ステラファイル", text, url }); tracked("native"); } catch (error) { if (!(error instanceof DOMException && error.name === "AbortError")) await copy(); } }
-  return <div className="lv-share">
-    <p className="lv-share-title">友だちの恋の勝ち方も、のぞいてみる？</p>
-    <div className="lv-share-buttons">
-      <a className="lv-chip" href={`https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`} target="_blank" rel="noopener noreferrer" onClick={() => tracked("x")}>Xでシェア</a>
-      {/* Where the share sheet is missing (most desktop browsers), this copies the text and link instead. */}
-      <button type="button" className="lv-chip" onClick={share}><Share2 size={15} aria-hidden="true" />シェア・コピー</button>
-    </div>
-    <p className="micro lv-share-status" role="status">{message}</p>
-  </div>;
-}
-
-/** The love result: キャラ (the type), あるある, charm, win/lose patterns, アイテム (the item, read as a gift for love), one hint, compatibility, then the official LINE.
+/** The love result: キャラ (the type), her tendencies in love, charm, win/lose patterns, アイテム (the item, read as a gift for love), one hint, compatibility, then the official LINE.
  * A bar with the LINE button follows the reader once the type card scrolls away, and steps aside while the full invitation is on screen. */
 export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRetry: () => void }) {
   const type = typeByStem(result.pillar.stem), love = LOVE_COPY[type.slug];
@@ -75,8 +55,8 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
         <ul className="lv-keywords">{love.keywords.map(word => <li key={word}>{word}</li>)}</ul>
       </div>
 
-      <Section id="lv-r-aruaru" title="当たってる？ あなたの恋のあるある">
-        <ul className="lv-aruaru">{love.aruaru.map(text => <li key={text}><Check size={16} strokeWidth={3} aria-hidden="true" /><Bx>{text}</Bx></li>)}</ul>
+      <Section id="lv-r-traits" title="ステラファイルが見抜く、あなたの恋の傾向">
+        <ul className="lv-traits">{love.traits.map(text => <li key={text}><Check size={16} strokeWidth={3} aria-hidden="true" /><Bx>{text}</Bx></li>)}</ul>
       </Section>
 
       <Section id="lv-r-charm" title="あなたの魅力と、その引き出し方">
@@ -118,9 +98,9 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
         <p className="lv-line-note"><Bx>友だち追加は無料です。入力した生年月日が、このサイトからLINEに送られることはありません。</Bx></p>
       </section>}
 
-      <LoveShare type={type} />
-      <button type="button" className="lv-retry" onClick={onRetry}><RotateCcw size={14} aria-hidden="true" />別の生年月日で診断する</button>
-      <p className="micro lv-disclaimer">占いをもとにした診断です。当てはまるところを、恋のヒントとして使ってください。</p>
+      {/* No share box or outbound links here: after the result, the only way forward is the official LINE. */}
+      <button type="button" className="lv-retry" onClick={onRetry}><RotateCcw size={14} aria-hidden="true" />生年月日を入れ直す</button>
+      <p className="micro lv-disclaimer">※ステラファイルは、占いをもとにしたコンテンツです。</p>
     </div>
     {url && <>
       <div className="lv-bar-space" aria-hidden="true" />

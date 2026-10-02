@@ -11,7 +11,7 @@ export type FunnelEvent =
   | { name: "line_view"; stella_type: string }
   | { name: "line_click"; stella_type: string; placement?: "panel" | "bar" }
   | { name: "friend_check"; stella_type: string; friend_type: string }
-  | { name: "share"; method: "image" | "native" | "copy" | "x"; content_type: "result" | "type" | "love"; item_id: string };
+  | { name: "share"; method: "image" | "native" | "copy"; content_type: "result" | "type"; item_id: string };
 
 export function track({ name, ...params }: FunnelEvent) {
   if (GA_ID && typeof window !== "undefined") window.gtag?.("event", name, params);
