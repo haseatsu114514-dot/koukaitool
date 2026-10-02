@@ -35,7 +35,7 @@ describe("love page line breaks", () => {
   it("breaks short lines after punctuation and at ｜ hints, keeping closing brackets with their punctuation", async () => {
     const { phraseSegments } = await import("../src/components/phrases");
     expect(phraseSegments("見た目より、生き方を尊敬できる人に惹かれる")).toEqual(["見た目より、", "生き方を尊敬できる人に惹かれる"]);
-    expect(phraseSegments("その恋、がんばり方を｜間違えていませんか？")).toEqual(["その恋、", "がんばり方を", "間違えていませんか？"]);
+    expect(phraseSegments("その恋、モテ方を｜間違えていませんか？")).toEqual(["その恋、", "モテ方を", "間違えていませんか？"]);
     expect(phraseSegments("「一緒にいて楽しい。」が魅力")).toEqual(["「一緒にいて楽しい。」", "が魅力"]);
   });
 });

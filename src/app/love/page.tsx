@@ -15,7 +15,7 @@ import "./love.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "恋愛運を引き寄せる診断",
-  description: "恋愛運を引き寄せる人は、自分の「愛され方」を知っている。プロの占い師が監修した、生年月日でわかる恋愛運診断。あなたのキャラ（本質）とギフト（生まれ持った強み）から、魅力の引き出し方、恋がうまくいく法則とやりがちなNG、相性のいい相手がわかります。質問なし・約10秒・無料。",
+  description: "恋愛運を引き寄せる人は、自分の「モテ方」を知っている。プロの占い師が監修した、生年月日でわかる恋愛運診断。あなたのキャラ（本質）とギフト（生まれ持った強み）から、魅力の引き出し方、恋がうまくいく法則とやりがちなNG、相性のいい相手がわかります。質問なし・約10秒・無料。",
   path: "/love/",
   image: "/og/love.jpg",
 });
@@ -40,7 +40,7 @@ function Head({ id, en, title, lead }: { id: string; en: string; title: string; 
   return <header className="lv-head"><span className="lv-head-en" aria-hidden="true">{en}</span><h2 id={id}><Phrases>{title}</Phrases></h2>{lead && <p><Phrases>{lead}</Phrases></p>}</header>;
 }
 
-/** Landing page for women in their 30s and 40s: 恋愛運 is the hook, and the result shows how she is loved and how to bring out her charm.
+/** Landing page for women in their 30s and 40s: 恋愛運 is the hook, and the result shows her way of being loved (モテ方) and how to bring out her charm.
  * Everything here leads to the birth date form at the top, which opens the result on this same page. This first page does not mention
  * the official LINE; the result ends at it. There is no way out besides LINE and the privacy page: no links to the app, no sharing, no friend check.
  * On this page the type is called キャラ (her essence) and the item is her ギフト (strengths and individuality).
@@ -50,20 +50,20 @@ export default function LovePage() {
   const hero = <>
     <div className="lv-faces" aria-hidden="true">{CHARACTER_TYPES.map(type => <span key={type.slug} className="lv-face" style={elementStyle(type.stem)}><Character type={type} priority /></span>)}</div>
     <p className="lv-kicker">生年月日でわかる 恋愛運診断</p>
-    <h1 className="lv-title"><span className="lv-title-line">恋愛運を引き寄せる人は、</span><span className="lv-title-line">自分の<em>「愛され方」</em>を</span><span className="lv-title-line">知っている。</span></h1>
+    <h1 className="lv-title"><span className="lv-title-line">恋愛運を引き寄せる人は、</span><span className="lv-title-line">自分の<em>「モテ方」</em>を</span><span className="lv-title-line">知っている。</span></h1>
     <p className="lv-lead"><Phrases>あなたの魅力の引き出し方と、恋がうまくいく法則。生年月日を入れるだけで、10秒でわかります。</Phrases></p>
     <ul className="lv-meta"><li>プロ占い師監修</li><li>質問なし・約10秒</li><li>無料・登録なし</li></ul>
   </>;
   const intro = <>
     <section className="lv-section" aria-labelledby="lv-worry-title">
       <div className="lv-wrap">
-        <Head id="lv-worry-title" en="YOUR LOVE" title="その恋、がんばり方を｜間違えていませんか？" />
+        <Head id="lv-worry-title" en="YOUR LOVE" title="その恋、モテ方を｜間違えていませんか？" />
         <div className="lv-prose">
-          <p>がんばっているのに、報われない恋。恋愛の本やSNSのテクニックを試しても、しっくりこない。それは魅力が足りないからではなく、あなたに合わないがんばり方をしているだけかもしれません。</p>
-          <p>追いかけて輝く人もいれば、待って選ばれる人もいる。尽くして愛される人もいれば、自分らしさを貫いて愛される人もいる。愛され方は、ひとつではありません。自分の愛され方を知った人から、恋愛運は動き出します。</p>
+          <p>がんばっているのに、報われない恋。恋愛の本やSNSのテクニックを試しても、しっくりこない。それは魅力が足りないからではなく、あなたに合わないモテ方をしようとしているだけかもしれません。</p>
+          <p>追いかけて輝く人もいれば、待って選ばれる人もいる。尽くして愛される人もいれば、自分らしさを貫いて愛される人もいる。モテ方は、ひとつではありません。自分のモテ方を知った人から、恋愛運は動き出します。</p>
         </div>
         <ul className="lv-checks" aria-label="こんな人におすすめ">{WORRIES.map(text => <li key={text}><Check size={18} strokeWidth={2.6} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
-        <p className="lv-checks-note"><Phrases>ひとつでも当てはまったら、あなたの「愛され方」を知るタイミングです。</Phrases></p>
+        <p className="lv-checks-note"><Phrases>ひとつでも当てはまったら、あなたの「モテ方」を知るタイミングです。</Phrases></p>
       </div>
     </section>
     <section className="lv-section is-white" aria-labelledby="lv-learn-title">
@@ -96,7 +96,7 @@ export default function LovePage() {
     </section>
     <section id="lv-final" className="lv-final lv-dark" aria-labelledby="lv-final-title">
       <div className="lv-wrap">
-        <h2 id="lv-final-title" className="lv-final-title"><Phrases>自分の愛され方を知れば、恋はもっとラクになる。</Phrases></h2>
+        <h2 id="lv-final-title" className="lv-final-title"><Phrases>自分のモテ方を知れば、恋はもっとラクになる。</Phrases></h2>
         <p className="lv-final-text"><Phrases>生年月日を入れるだけ。あなたの恋愛運を引き寄せるヒントが、10秒でわかります。</Phrases></p>
         <a className="lv-cta" href="#diagnose">無料で恋愛運を診断する</a>
       </div>
