@@ -153,6 +153,9 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-item-icons { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; margin: 14px 0 0; padding: 0; list-style: none; }
 .lv-item-icons li { display: grid; place-items: center; width: 100%; max-width: 32px; aspect-ratio: 1; justify-self: center; border-radius: 50%; border: 1px solid #e3b45a80; color: var(--lv-gold-ink); }
 .lv-item-icons svg { width: 58%; height: 58%; }
+/* The same row for the ten characters, each on its group colour (in five-element order). */
+.lv-chara-icons li { overflow: hidden; border: 1.5px solid var(--el); background: var(--tint); }
+.lv-chara-icons .character { width: 92%; height: 92%; object-fit: contain; }
 
 /* The ten characters: a swipeable strip on phones, one row of five per line on wide screens. */
 .lv-strip-title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; max-width: 680px; margin: 30px auto 12px; font-family: var(--serif); font-size: 18px; color: var(--lv-ink); }
