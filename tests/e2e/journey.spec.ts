@@ -91,9 +91,11 @@ test("love page: intro → birth date → love result → official LINE", async 
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
   await expect(page.locator(".lv-traits li")).toHaveCount(4);
   await expect(page.getByRole("heading", { name: "うまくいく法則", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "やりがちなNG", exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "あなたのギフト", exact: true })).toBeVisible(); await expect(page.getByRole("heading", { name: "スケジュール帳", exact: true })).toBeVisible();
-  // With LINE set up, the caution row waits on LINE, and both LINE buttons use the love page's own friend-add URL.
-  await expect(page.locator(".is-best")).toContainText("ほっとけないアルパカ"); await expect(page.locator(".is-foe")).not.toContainText("ドーベルマン"); await expect(page.locator(".lv-compat-lock")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "あなたのギフト", exact: true })).toBeVisible();
+  // The gift is named as a talent; the app's item is only its motif.
+  await expect(page.getByRole("heading", { name: "積み重ねる才能", exact: true })).toBeVisible(); await expect(page.locator(".lv-gift-motif")).toHaveText("モチーフ：スケジュール帳");
+  // All three compatibility levels are shown openly, and both LINE buttons use the love page's own friend-add URL.
+  await expect(page.locator(".is-best")).toContainText("ほっとけないアルパカ"); await expect(page.locator(".is-foe")).toContainText("正々堂々ドーベルマン"); await expect(page.locator(".is-foe")).toContainText("ひと工夫で深まる相性");
   await expect(page.locator(".lv-line .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love"); await expect(page.locator(".lv-bar .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love");
   // Nothing is kept: no birth date in the URL, nothing in storage.
   expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);

@@ -18,6 +18,16 @@ describe("love page copy", () => {
     expect(Object.keys(LOVE_GIFTS).sort()).toEqual([...TEN_GODS].sort());
     for (const gift of Object.values(LOVE_GIFTS)) { expect(gift.title).not.toBe(""); expect(gift.text).not.toBe(""); }
   });
+  it("names every gift as a talent, so the app's item reads as its motif and not as a lucky item", () => {
+    const names = Object.values(LOVE_GIFTS).map(gift => gift.name);
+    expect(new Set(names).size).toBe(names.length);
+    for (const name of names) { expect(name).toMatch(/才能$/); expect([...name].length, name).toBeLessThanOrEqual(10); }
+  });
+  it("names every compatibility level positively", () => {
+    for (const { label } of Object.values(LOVE_COMPAT)) expect(label).toMatch(/相性$/);
+    const all = JSON.stringify([LOVE_COMPAT, LOVE_LINE_BENEFITS]);
+    for (const word of ["すれ違", "悪い", "苦手", "注意"]) expect(all, word).not.toContain(word);
+  });
   it("never assumes the partner's gender and uses plain words", () => {
     const all = JSON.stringify([LOVE_COPY, LOVE_GIFTS, LOVE_COMPAT, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS]);
     for (const word of ["彼氏", "彼女", "男性", "女性", "彼が", "彼の", "日干", "通変星", "五行", "エレメント"]) expect(all, word).not.toContain(word);

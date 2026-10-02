@@ -114,29 +114,31 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
   },
 };
 
-/** The item (月支の本気 → 通変星), called ギフト on this page and read for love: a second, personal layer on top of the type, so two people of the same type still get different results. */
-export const LOVE_GIFTS: Record<TenGod, { title: string; text: string }> = {
-  比肩: { title: "自分を磨くほど、恋が近づく", text: "誰かに頼るより、自分を高めることで魅力が増していく人。仕事や趣味に打ち込む姿に、人は惹かれます。恋に迷ったら、まず自分を磨く時間をとることが近道です。" },
-  劫財: { title: "仲間の輪が、恋を連れてくる", text: "ひとりより、仲間と一緒にいるときにいちばん輝ける人。友だちの集まりやグループの中で、出会いが生まれやすいタイプです。信頼できる友だちに恋の相談をすると、思わぬ縁がつながります。" },
-  食神: { title: "「一緒にいて楽しい」が｜最大の魅力", text: "楽しいことを見つけるのが上手で、そばにいる人を自然と笑顔にできる人。おいしいものや楽しい場所を一緒に味わう時間が、恋を育てます。デートは、あなたが心から楽しめるプランがいちばんです。" },
-  傷官: { title: "鋭いセンスと、繊細さのギャップ", text: "感性が鋭く、ほかの人にはない独特の魅力を持つ人。はっきり本音を言える強さの裏にある繊細さが、相手の心をつかみます。言いすぎたと思ったら、素直なひと言を添えるだけで印象が変わります。" },
-  偏財: { title: "人とのつながりが、出会いを運ぶ", text: "フットワークが軽く、いろいろな人とすぐに打ち解けられる人。出会いの数が多く、思わぬところから恋が始まりやすいタイプです。気になる人には、あなたから軽く声をかけてみてください。" },
-  正財: { title: "誠実さで、じわじわ心をつかむ", text: "約束を守り、相手と誠実に向き合える人。派手さより誠実さで、少しずつ相手の信頼を集めていきます。将来を一緒に考えられる、安定した恋で力を発揮するタイプです。" },
-  偏官: { title: "動いた分だけ、恋が動き出す", text: "思い立ったらすぐに動ける行動派。待つより自分から動くほうが、恋はうまくいきます。迷っている時間があるなら、まず一歩。その行動力が、相手には頼もしく映ります。" },
-  正官: { title: "まじめさが、深い信頼に変わる", text: "約束やルールを大切にする誠実さが、相手の安心につながる人。軽いノリの恋より、お互いを信頼し合える真剣な関係で輝きます。「この人なら大丈夫」と思わせる力が、あなたの強みです。" },
-  偏印: { title: "人と違う感性が、特別な魅力に", text: "ほかの人とは違う視点を持つ、少しミステリアスな人。趣味や好きなことを通して、価値観の合う相手と深くつながれます。あなたの「好き」を語るほど、それに惹かれる人が現れます。" },
-  印綬: { title: "知的な会話で、心をつかむ", text: "物知りで、相手の話を深く理解できる人。「もっと話していたい」と思わせる知的な魅力があります。学びの場や趣味の講座など、好奇心が満たされる場所に出会いのチャンスがあります。" },
+/** The item (月支の本気 → 通変星), called ギフト on this page and read for love: a second, personal layer on top of the type, so two people of the same type still get different results.
+ * Each gift is named as a talent (name, "〜才能"); the app's item (スマホ, 本, …) is only its motif, shown small with the icon, so it does not read like a lucky item. */
+export const LOVE_GIFTS: Record<TenGod, { name: string; title: string; text: string }> = {
+  比肩: { name: "自分を磨く才能", title: "自分を磨くほど、恋が近づく", text: "誰かに頼るより、自分を高めることで魅力が増していく人。仕事や趣味に打ち込む姿に、人は惹かれます。恋に迷ったら、まず自分を磨く時間をとることが近道です。" },
+  劫財: { name: "仲間に恵まれる才能", title: "仲間の輪が、恋を連れてくる", text: "ひとりより、仲間と一緒にいるときにいちばん輝ける人。友だちの集まりやグループの中で、出会いが生まれやすいタイプです。信頼できる友だちに恋の相談をすると、思わぬ縁がつながります。" },
+  食神: { name: "楽しむ才能", title: "「一緒にいて楽しい」が｜最大の魅力", text: "楽しいことを見つけるのが上手で、そばにいる人を自然と笑顔にできる人。おいしいものや楽しい場所を一緒に味わう時間が、恋を育てます。デートは、あなたが心から楽しめるプランがいちばんです。" },
+  傷官: { name: "感性で魅せる才能", title: "鋭いセンスと、繊細さのギャップ", text: "感性が鋭く、ほかの人にはない独特の魅力を持つ人。はっきり本音を言える強さの裏にある繊細さが、相手の心をつかみます。言いすぎたと思ったら、素直なひと言を添えるだけで印象が変わります。" },
+  偏財: { name: "つながる才能", title: "人とのつながりが、出会いを運ぶ", text: "フットワークが軽く、いろいろな人とすぐに打ち解けられる人。出会いの数が多く、思わぬところから恋が始まりやすいタイプです。気になる人には、あなたから軽く声をかけてみてください。" },
+  正財: { name: "積み重ねる才能", title: "誠実さで、じわじわ心をつかむ", text: "約束を守り、相手と誠実に向き合える人。派手さより誠実さで、少しずつ相手の信頼を集めていきます。将来を一緒に考えられる、安定した恋で力を発揮するタイプです。" },
+  偏官: { name: "動き出す才能", title: "動いた分だけ、恋が動き出す", text: "思い立ったらすぐに動ける行動派。待つより自分から動くほうが、恋はうまくいきます。迷っている時間があるなら、まず一歩。その行動力が、相手には頼もしく映ります。" },
+  正官: { name: "信頼される才能", title: "まじめさが、深い信頼に変わる", text: "約束やルールを大切にする誠実さが、相手の安心につながる人。軽いノリの恋より、お互いを信頼し合える真剣な関係で輝きます。「この人なら大丈夫」と思わせる力が、あなたの強みです。" },
+  偏印: { name: "ひらめく才能", title: "人と違う感性が、特別な魅力に", text: "ほかの人とは違う視点を持つ、少しミステリアスな人。趣味や好きなことを通して、価値観の合う相手と深くつながれます。あなたの「好き」を語るほど、それに惹かれる人が現れます。" },
+  印綬: { name: "知性で惹きつける才能", title: "知的な会話で、心をつかむ", text: "物知りで、相手の話を深く理解できる人。「もっと話していたい」と思わせる知的な魅力があります。学びの場や趣味の講座など、好奇心が満たされる場所に出会いのチャンスがあります。" },
 };
 
-/** The three levels the love page shows. "そこそこ" is left out to keep the result short; the caution row is kept for LINE. */
+/** The three levels the love page shows, all named positively ("〜相性"). "そこそこ" is left out to keep the result short.
+ * The caution partner (foe) is shown openly as the one who takes a little effort and deepens with it, never as a bad match. */
 export const LOVE_COMPAT: Record<Exclude<StellaLevel, "mid">, { label: string; note: string }> = {
   best: { label: "最高の相性", note: "自然と惹かれ合う組み合わせ。お互いの足りないところを補い合えます。" },
-  good: { label: "相性がいい", note: "あなたを後ろから支えてくれる相手。そばにいると、自然体でいられます。" },
-  foe: { label: "すれ違いやすい", note: "考え方がぶつかりやすい相手。付き合い方のコツを知っておくと安心です。" },
+  good: { label: "心地いい相性", note: "あなたを後ろから支えてくれる相手。そばにいると、自然体でいられます。" },
+  foe: { label: "ひと工夫で深まる相性", note: "ペースや考え方が違うからこそ、刺激をくれる相手。少し歩み寄るだけで、ぐっと深い関係になれます。" },
 };
 
 /** What the official LINE adds. After the friend add, a form (name, birth date, optional birth time, theme, situation and worry,
  * the ideal, what she is doing toward it, the one thing she most wants to know) leads to a free reading written for her alone.
  * Keep this in step with that form; it does not promise timing. */
-export const LOVE_LINE_BENEFITS = ["今の状況と悩みに合わせた、恋の進め方", "理想の恋に近づくために、今できること", "すれ違いやすい相手と、うまく付き合うコツ", "いちばん知りたいことへの、あなただけの答え"];
+export const LOVE_LINE_BENEFITS = ["今の状況と悩みに合わせた、恋の進め方", "理想の恋に近づくために、今できること", "相性を味方につける、付き合い方のコツ", "いちばん知りたいことへの、あなただけの答え"];
 export const LOVE_LINE_STEPS = ["LINEで｜友だち追加", "3分ほどの｜質問に回答", "鑑定を｜無料でお届け"];

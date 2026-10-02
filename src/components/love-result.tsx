@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Check, Heart, Lock, RotateCcw, ThumbsDown, ThumbsUp } from "lucide-react";
+import { Check, Heart, RotateCcw, ThumbsDown, ThumbsUp } from "lucide-react";
 import { CHARACTER_TYPES, elementStyle, typeByStem, type CharacterType } from "@/data/types";
 import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS } from "@/data/love-copy";
 import type { DiagnosisResult } from "@/lib/diagnosis";
@@ -25,7 +25,7 @@ function Partners({ stems }: { stems: CharacterType["stem"][] }) {
   return <ul className="lv-compat-types">{stems.map(stem => { const partner = typeByStem(stem); return <li key={stem}><span className="lv-mini-art" style={elementStyle(stem)}><Character type={partner} /></span><TypeName name={partner.displayName} /></li>; })}</ul>;
 }
 
-/** The love result: キャラ (the type), her tendencies in love, charm, what works and the usual misstep, ギフト (the item, read for love), one hint, compatibility, then the official LINE.
+/** The love result: キャラ (the type), her tendencies in love, charm, what works and the usual misstep, ギフト (the item, named as a talent and read for love), one hint, compatibility (all three levels shown, named positively), then the official LINE.
  * Running text is plain (print-style breaks); headings and short items break between phrases.
  * A bar with the LINE button follows the reader once the type card scrolls away, and steps aside while the full invitation is on screen.
  * The invitation is always shown; the buttons open the friend add once its URL is configured. */
@@ -78,8 +78,8 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
         </div>
       </Section>
 
-      <Section id="lv-r-gift" title="あなたのギフト" lead="ギフトは、生まれたときに受け取った強みや個性。キャラ（本質）とは別の、もうひとつの持ち味です。同じキャラでも、ここが人によって違います。">
-        <div className="lv-gift"><div className="lv-gift-head"><span className="lv-gift-icon"><GiftIcon size={28} strokeWidth={1.6} aria-hidden="true" /></span><div><h3 className="lv-gift-name">{GOD_COPY[result.tenGod].item}</h3><p className="lv-gift-title"><Phrases>{gift.title}</Phrases></p></div></div><p className="lv-gift-text">{gift.text}</p></div>
+      <Section id="lv-r-gift" title="あなたのギフト" lead="ギフトは、生まれたときに受け取った才能。キャラ（本質）とは別の、もうひとつの持ち味です。同じキャラでも、ここが人によって違います。">
+        <div className="lv-gift"><div className="lv-gift-head"><span className="lv-gift-icon"><GiftIcon size={28} strokeWidth={1.6} aria-hidden="true" /></span><div><p className="lv-gift-motif">モチーフ：{GOD_COPY[result.tenGod].item}</p><h3 className="lv-gift-name">{gift.name}</h3><p className="lv-gift-title"><Phrases>{gift.title}</Phrases></p></div></div><p className="lv-gift-text">{gift.text}</p></div>
       </Section>
 
       <Section id="lv-r-hint" title="恋愛運を引き寄せるヒント">
@@ -90,7 +90,7 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
         <div className="lv-compat">
           <div className="lv-compat-row is-best"><span className="lv-compat-label">{LOVE_COMPAT.best.label}</span><div><Partners stems={groups.best} /><p className="lv-compat-note">{LOVE_COMPAT.best.note}</p></div></div>
           <div className="lv-compat-row is-good"><span className="lv-compat-label">{LOVE_COMPAT.good.label}</span><div><Partners stems={groups.good} /><p className="lv-compat-note">{LOVE_COMPAT.good.note}</p></div></div>
-          <div className="lv-compat-row is-foe"><span className="lv-compat-label">{LOVE_COMPAT.foe.label}</span><div><p className="lv-compat-lock"><span className="lv-compat-q" aria-hidden="true">?</span><Lock size={14} aria-hidden="true" /><span>どのキャラかは<a href="#line">LINEで見られます</a></span></p></div></div>
+          <div className="lv-compat-row is-foe"><span className="lv-compat-label">{LOVE_COMPAT.foe.label}</span><div><Partners stems={groups.foe} /><p className="lv-compat-note">{LOVE_COMPAT.foe.note}</p></div></div>
         </div>
       </Section>
 
