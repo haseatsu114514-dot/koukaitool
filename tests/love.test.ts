@@ -22,10 +22,10 @@ describe("love page copy", () => {
     const names = Object.values(LOVE_GIFTS).map(gift => gift.name);
     expect(new Set(names).size).toBe(names.length);
     for (const name of names) { expect(name).toMatch(/才能$/); expect([...name].length, name).toBeLessThanOrEqual(10); }
-    // The motifs are metaphors of their own, never the app's everyday items.
+    // Each image says what it does: never a bare object name (the app's item alone would read like a lucky item).
     const motifs = Object.values(LOVE_GIFTS).map(gift => gift.motif);
     expect(new Set(motifs).size).toBe(motifs.length);
-    for (const god of TEN_GODS) { expect(LOVE_GIFTS[god].motif).not.toContain(GOD_COPY[god].item); expect([...LOVE_GIFTS[god].motif].length, god).toBeLessThanOrEqual(12); }
+    for (const god of TEN_GODS) { expect(LOVE_GIFTS[god].motif).not.toBe(GOD_COPY[god].item); expect([...LOVE_GIFTS[god].motif].length, god).toBeLessThanOrEqual(12); }
     expect(JSON.stringify(LOVE_GIFTS)).not.toContain("ラッキー");
   });
   it("names every compatibility level positively", () => {
