@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, it, expect } from "vitest";
-import { CHARACTER_TYPES } from "../src/data/types";
+import { CHARACTER_TYPES, groupName } from "../src/data/types";
 import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS } from "../src/data/love-copy";
 import { TEN_GODS } from "../src/lib/diagnosis/ten-gods";
 import { NAME_ANIMALS } from "../src/components/type-name";
@@ -37,5 +37,10 @@ describe("love page line breaks", () => {
     expect(phraseSegments("見た目より、生き方を尊敬できる人に惹かれる")).toEqual(["見た目より、", "生き方を尊敬できる人に惹かれる"]);
     expect(phraseSegments("その恋、ほかの誰かの正解を｜なぞっていませんか？")).toEqual(["その恋、", "ほかの誰かの正解を", "なぞっていませんか？"]);
     expect(phraseSegments("「一緒にいて楽しい。」が魅力")).toEqual(["「一緒にいて楽しい。」", "が魅力"]);
+  });
+});
+describe("character order", () => {
+  it("lists the ten characters in five-element order: green, red, yellow, white, blue (every row of faces follows it)", () => {
+    expect(CHARACTER_TYPES.map(type => groupName(type.stem).replace("グループ", "")).join("")).toBe("緑緑赤赤黄黄白白青青");
   });
 });
