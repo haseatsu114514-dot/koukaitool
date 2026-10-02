@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import Link from "next/link";
 import { assetPath, siteUrl } from "@/lib/paths";
 import { pageMetadata, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
-import { TabBar } from "@/components/tab-bar";
-import { LogoMark } from "@/components/logo";
 import { Analytics } from "@/components/analytics";
 import "./globals.css";
 /** Only the weights the stylesheet uses: mincho headings (700) and gothic body (400/700). */
@@ -20,18 +17,10 @@ export const metadata: Metadata = {
 };
 /** App-ready viewport: edge-to-edge under the notch (safe areas handled in CSS), no zoom-on-focus jumps. */
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#0b1729", colorScheme: "dark" };
+/** The document shell only. The app frame (header, tab bar, footer) lives in (site)/layout.tsx; landing pages such as /love/ bring their own. */
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ja" style={{ colorScheme: "dark" }} data-scroll-behavior="smooth"><head><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />{/* Loaded at runtime (not via next/font) so builds never depend on downloading ~200 Japanese font subsets. Disclosed on the privacy page. */}<link rel="stylesheet" href={FONTS_URL} /></head><body><div className="sky" aria-hidden="true" /><a className="skip-link" href="#main">本文へスキップ</a>
-    <header className="site-header"><Link className="brand" href="/" aria-label={`${SITE_NAME} トップ`}><LogoMark className="brand-mark" size={20} /><span>{SITE_NAME}</span></Link>
-      <nav aria-label="メインナビゲーション"><Link href="/types/">タイプ図鑑</Link><Link className="nav-cta" href="/#diagnose">診断する</Link></nav>
-    </header>
-    <main id="main">{children}</main>
-    <TabBar />
-    <footer className="site-footer">
-      <div className="footer-brand"><Link href="/"><LogoMark className="brand-mark" size={16} />{SITE_NAME}</Link><p>{SITE_TAGLINE}</p></div>
-      <nav aria-label="フッター"><Link href="/">ホーム</Link><Link href="/types/">タイプ図鑑</Link><Link href="/privacy/">プライバシー</Link></nav>
-      <p className="footer-note">占いをもとにした、自分を知るためのコンテンツです。<span>© ステラファイル</span></p>
-    </footer>
+  return <html lang="ja" data-scroll-behavior="smooth"><head><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />{/* Loaded at runtime (not via next/font) so builds never depend on downloading ~200 Japanese font subsets. Disclosed on the privacy page. */}<link rel="stylesheet" href={FONTS_URL} /></head><body><a className="skip-link" href="#main">本文へスキップ</a>
+    {children}
     <Analytics />
   </body></html>;
 }

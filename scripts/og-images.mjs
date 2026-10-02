@@ -1,5 +1,5 @@
 // Renders the Open Graph cards (1200×630) into public/og/: one per type plus a default for the other pages.
-// Run after changing type names, copy or illustrations:  pnpm og
+// Run after changing type names, copy or illustrations:  pnpm og   (or only some cards: pnpm og love default)
 // Fonts are fetched once from Google Fonts with only the glyphs used and inlined, so the browser needs no network.
 // Set CHROMIUM_PATH to use a system Chromium instead of the one installed by `playwright install`.
 import { register } from "node:module";
@@ -14,6 +14,7 @@ const { LOGO_PATH } = await import("../src/lib/logo-path.ts");
 const root = new URL("../", import.meta.url);
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36";
 const HOME = { kicker: "生年月日でわかる", kickerStrong: "10のステラタイプ診断", title: ["あなたは、", "どの", "ステラタイプ", "？"], facts: "質問なし・登録なし・無料" };
+const LOVE = { kicker: "生年月日でわかる", kickerStrong: "恋愛運診断", title: ["恋愛運を引き寄せる人は、", "自分の", "「愛され方」", "を知っている。"], facts: "プロ占い師監修・質問なし・約10秒", core: ["恋愛運", "10のキャラで診断"] };
 
 async function inlineFonts(family, axis, text) {
   const cssUrl = `https://fonts.googleapis.com/css2?family=${family.replaceAll(" ", "+")}:${axis}&text=${encodeURIComponent(text)}`;
@@ -91,8 +92,25 @@ async function homeCard() {
     <div class="orbit10"><div class="ring"></div><div class="core"><b>10</b><span>のタイプ</span></div>${stars.join("")}</div>` };
 }
 
-const cards = [await homeCard(), ...await Promise.all(CHARACTER_TYPES.map(typeCard))];
-const text = [SITE_NAME, SITE_TAGLINE, ...Object.values(HOME).flat(), ...CHARACTER_TYPES.flatMap(t => [t.displayName, t.shortCatch, ...t.keywords])].join("");
+/** The love landing page (/love/): the headline on the left, the ten characters around 恋愛運 on the right. */
+async function loveCard() {
+  const stars = await Promise.all(CHARACTER_TYPES.map(async (type, i) => {
+    const a = (i * 36 - 90) * Math.PI / 180, { color, tint } = elementColors(type.stem);
+    return `<div class="star" style="--el:${color};--tint:${tint};left:${260 + Math.cos(a) * 205 - 48}px;top:${260 + Math.sin(a) * 205 - 48}px"><img src="${await art(type)}"></div>`;
+  }));
+  return { name: "love", style: "", html: `${sky("stella-file-love")}
+    <div class="copy" style="left:84px;right:580px">
+      <p style="font-size:20px;letter-spacing:.06em;color:#a3b2c8">${LOVE.kicker}<b style="margin-left:.6em;color:#e3b45a;font-weight:700">${LOVE.kickerStrong}</b></p>
+      <h1 style="margin-top:20px;font-size:42px;line-height:1.5">${LOVE.title[0]}<br>${LOVE.title[1]}<span class="gold">${LOVE.title[2]}</span><br>${LOVE.title[3]}</h1>
+      <p style="margin-top:22px;font-size:20px;letter-spacing:.04em;color:#dde3ec">${LOVE.facts}</p>
+      <div style="margin-top:40px">${brand(false)}</div>
+    </div>
+    <div class="orbit10"><div class="ring"></div><div class="core"><b style="font-family:'Shippori Mincho B1',serif;font-size:56px">${LOVE.core[0]}</b><span>${LOVE.core[1]}</span></div>${stars.join("")}</div>` };
+}
+
+const only = process.argv.slice(2);
+const cards = [await homeCard(), await loveCard(), ...await Promise.all(CHARACTER_TYPES.map(typeCard))].filter(card => !only.length || only.includes(card.name));
+const text = [SITE_NAME, SITE_TAGLINE, ...Object.values(HOME).flat(), ...Object.values(LOVE).flat(), ...CHARACTER_TYPES.flatMap(t => [t.displayName, t.shortCatch, ...t.keywords])].join("");
 const fonts = (await Promise.all([
   inlineFonts("Shippori Mincho B1", "wght@700", text),
   inlineFonts("Zen Kaku Gothic New", "wght@400;700", `${text}No.0123456789緑赤黄白青グループ`),
