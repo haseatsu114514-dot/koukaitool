@@ -134,6 +134,8 @@ export const LOVE_COMPAT: Record<Exclude<StellaLevel, "mid">, { label: string; n
   foe: { label: "すれ違いやすい", note: "考え方がぶつかりやすい相手。付き合い方のコツを知っておくと安心です。" },
 };
 
-/** What the official LINE adds. Keep this in step with what the LINE account and its form actually deliver. */
-export const LOVE_LINE_BENEFITS = ["運命の相手の特徴と、出会いやすい場所", "あなたの恋愛運が高まる時期", "すれ違いやすい相手と、うまく付き合うコツ", "今の恋を前に進めるためのアドバイス"];
-export const LOVE_LINE_STEPS = ["LINEで友だち追加", "かんたんなフォームに回答", "詳しい恋愛鑑定をお届け"];
+/** What the official LINE adds. After the friend add, a form (name, birth date, optional birth time, theme, situation and worry,
+ * the ideal, what she is doing toward it, the one thing she most wants to know) leads to a reading written for her alone.
+ * Keep this in step with that form; it does not promise timing. */
+export const LOVE_LINE_BENEFITS = ["生年月日から読み解く、あなた一人のための鑑定", "今の状況と悩みに合わせた、恋の進め方", "理想の恋に近づくために、今できること", "すれ違いやすい相手と、うまく付き合うコツ"];
+export const LOVE_LINE_STEPS = ["LINEで友だち追加", "3分ほどの質問に回答", "あなただけの鑑定をお届け"];

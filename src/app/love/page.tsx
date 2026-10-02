@@ -31,13 +31,14 @@ const LEARN: [title: string, text: string][] = [
 const REASONS: [title: string, text: string][] = [
   ["占いの帝王「四柱推命」がベース", "古くから「占いの帝王」と呼ばれる東洋の四柱推命をベースに、数々の占いや運命学、統計を組み合わせて作りました。"],
   ["プロの占い師が監修", "キャラの読み解きから一つひとつの文章まで、プロの占い師が監修しています。"],
-  ["長い質問に答えなくていい", "MBTIのように何十問もの質問に答える必要はありません。生年月日を入れるだけ。気分や答え方で結果がぶれないから、素のあなたがそのまま出ます。"],
+  ["長い質問に答えなくていい", "よくある性格診断のように、何十問もの質問に答える必要はありません。生年月日を入れるだけ。気分や答え方で結果がぶれないから、素のあなたがそのまま出ます。"],
 ];
 const FAQ: [question: string, answer: string][] = [
   ["生年月日だけで、本当にわかるのですか？", "ステラファイルは、占いの帝王と呼ばれる四柱推命をベースに、数々の占いや運命学、統計を組み合わせ、プロの占い師の監修のもとで作った診断です。質問に答える診断と違って、その日の気分や答え方で結果が変わることはありません。占いをもとにした読みものなので、当てはまるところを恋のヒントとして使ってください。"],
   ["生まれた時間がわからなくても大丈夫？", "大丈夫です。この診断は生まれた日だけを使い、時刻は使いません。"],
   ["生年月日はどこかに送られますか？", "いいえ。入力した生年月日はお使いのブラウザの中だけで計算に使い、サーバーへの送信や保存はしません。"],
   ["無料ですか？ 登録は必要ですか？", "無料で、会員登録もいりません。公式LINEの友だち追加は、もっと詳しく知りたい方だけで大丈夫です。"],
+  ["公式LINEでは、何が届きますか？", "友だち追加のあと、3分ほどの質問（今の状況や悩み、理想など）に答えていただくと、その内容と生年月日をもとに、あなた一人のための鑑定をお届けします。"],
 ];
 
 /** Section heading: a small gold English label, the mincho title, an optional lead. */
@@ -72,7 +73,7 @@ export default function LovePage() {
       <div className="lv-wrap">
         <Head id="lv-learn-title" en="WHAT YOU GET" title="この診断でわかること" />
         <ol className="lv-learn">{LEARN.map(([title, text], i) => <li key={title}><span className="lv-learn-no">{String(i + 1).padStart(2, "0")}</span><div><h3><Bx>{title}</Bx></h3><p><Bx>{text}</Bx></p></div></li>)}</ol>
-        <p className="lv-learn-more"><Lock size={16} aria-hidden="true" /><Bx>さらに公式LINEでは、運命の相手の特徴や、恋愛運が高まる時期まで詳しくお届けします。</Bx></p>
+        <p className="lv-learn-more"><Lock size={16} aria-hidden="true" /><Bx>さらに公式LINEでは、あなたの今の状況や悩みをうかがって、あなた一人のための鑑定をお届けします。</Bx></p>
       </div>
     </section>
     <section className="lv-section" aria-labelledby="lv-chara-title">

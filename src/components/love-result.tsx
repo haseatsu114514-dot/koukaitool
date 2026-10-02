@@ -111,7 +111,7 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
       {url && <section ref={panel} id="line" className="lv-line lv-dark" aria-labelledby="lv-line-title">
         <p className="lv-line-kicker">公式LINE限定</p>
         <h2 id="lv-line-title" className="lv-line-title"><Bx>あなたの恋愛運、続きはLINEで</Bx></h2>
-        <p className="lv-line-lead"><Bx>ここまでは、まだ入り口。公式LINEでは、あなたの恋愛運をもっと深く読み解きます。</Bx></p>
+        <p className="lv-line-lead"><Bx>ここまでは、まだ入り口。公式LINEでは、あなたの今の状況や悩みをうかがって、あなた一人のための鑑定をお届けします。</Bx></p>
         <ul className="lv-line-list">{LOVE_LINE_BENEFITS.map(text => <li key={text}><Lock size={15} aria-hidden="true" /><Bx>{text}</Bx></li>)}</ul>
         <ol className="lv-steps" aria-label="受け取り方">{LOVE_LINE_STEPS.map(text => <li key={text}><Bx>{text}</Bx></li>)}</ol>
         <a className="lv-line-button" {...lineLink("panel")}>LINEで詳しく見る</a>
