@@ -2,12 +2,10 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { Check, Clock, Compass, Crown, Feather, Fingerprint, Gem, Gift, type LucideIcon } from "lucide-react";
 import { CHARACTER_TYPES, elementStyle } from "@/data/types";
-import { LOVE_COPY, LOVE_GIFTS } from "@/data/love-copy";
-import { TEN_GODS } from "@/lib/diagnosis/ten-gods";
+import { LOVE_COPY } from "@/data/love-copy";
 import { pageMetadata, SITE_NAME } from "@/lib/site";
 import { Phrases } from "@/components/phrases";
 import { Character } from "@/components/character";
-import { GIFT_ICONS } from "@/components/love-gift-icon";
 import { LogoMark } from "@/components/logo";
 import { LoveDiagnosis } from "@/components/love-diagnosis";
 import { TypeStrip } from "@/components/love-type-strip";
@@ -25,15 +23,15 @@ export const viewport: Viewport = { themeColor: "#10213b", colorScheme: "light" 
 
 const WORRIES = ["なぜか、同じような恋をくり返してしまう", "「いい人」止まりで、恋愛対象として見られにくい", "好きな人の前だと、本当の自分を出せない", "自分に合う相手が、もうわからなくなってきた", "そろそろ本気で、恋愛運を引き寄せたい"];
 const LEARN: [title: string, text: string, icon: LucideIcon][] = [
-  ["あなたのキャラと恋の傾向", "10タイプから、あなたの本質を診断。恋の傾向まで、ズバリわかります。", Fingerprint],
+  ["あなたのキャラと恋の傾向", "10タイプから、あなたの本質を診断。恋をしたときの傾向まで、見えてきます。", Fingerprint],
   ["魅力の引き出し方", "あなたが「選ばれる理由」と、それを相手に伝える見せ方。", Gem],
   ["恋がうまくいく法則とNG", "あなたの恋がうまくいく進め方と、ついやってしまうNGパターン。", Compass],
   ["ギフトと恋のヒント", "生まれ持った強みの生かし方と、今日からできること。相性のいいキャラもわかります。", Gift],
 ];
 const REASONS: [title: string, text: string, icon: LucideIcon][] = [
-  ["「占いの帝王」がベース", "古くから「占いの帝王」と呼ばれる東洋の占術をベースに、数々の占いや運命学、統計を組み合わせて作りました。", Crown],
+  ["東洋の「占いの帝王」がベース", "古くから「占いの帝王」と呼ばれる東洋の占術をベースに、数々の占いや運命学、統計を組み合わせて作りました。", Crown],
   ["プロの占い師が監修", "キャラの読み解きからひとつひとつの文章まで、プロの占い師が監修しています。", Feather],
-  ["長い質問に答えなくていい", "よくある性格診断のように、何十問もの質問に答える必要はありません。生年月日を入れるだけ。気分や答え方で結果がぶれないから、素のあなたがそのまま出ます。", Clock],
+  ["気分や答え方で、結果がぶれない", "質問に答える性格診断は、その日の気分や答え方で結果が変わってしまいます。ステラファイルは生年月日だけで読み解くから、何度診断しても同じ。素のあなたが、そのまま出ます。", Clock],
 ];
 
 /** Position in a staggered group: each item rises a moment after the one before (see .lv-stagger). */
@@ -51,7 +49,9 @@ function Head({ id, en, title, lead }: { id: string; en: string; title: string; 
 
 /** Landing page for women in their 30s and 40s: 恋愛運 is the hook, and the result shows her own answer in love (恋の正解) and how to bring out her charm.
  * Everything here leads to the birth date form at the top, which opens the result on this same page. This first page does not mention
- * the official LINE; the result ends at it (with a placeholder button until the friend-add URL is set). There is no way out besides LINE and the privacy page: no links to the app, no sharing, no friend check.
+ * the official LINE; the result ends at it (with a placeholder button until the friend-add URL is set). There is no way out besides LINE and the privacy page: no links to the app, no sharing, no friend check,
+ * and no "enter another date" (it would only lead away from LINE).
+ * Sections alternate cream and white: worries → what you get → the ten characters → why it works → the closing call.
  * On this page the type is called キャラ (her essence) and the item is her ギフト (strengths and individuality).
  * Line breaks: headings, catches, labels and short list items go through Phrases (breaks after 、。！？ or at a ｜ hint);
  * running text is plain, justified and breaks like print (see love.css). */
@@ -60,7 +60,7 @@ export default function LovePage() {
     <Faces />
     <p className="lv-kicker">生年月日でわかる 10タイプ恋愛運診断</p>
     <h1 className="lv-title"><span className="lv-title-line">恋を引き寄せる人は、</span><span className="lv-title-line">自分だけの<em>「恋の正解」</em>を</span><span className="lv-title-line">知っている。</span></h1>
-    <p className="lv-lead"><Phrases>あなたの魅力の引き出し方と、｜恋がうまくいく法則が、｜生年月日だけでわかります。</Phrases></p>
+    <p className="lv-lead"><Phrases>魅力の引き出し方と、恋がうまくいく法則が、生年月日だけでわかります。</Phrases></p>
     <ul className="lv-meta"><li>質問なし・約10秒</li><li>10タイプで本質がわかる</li><li>無料・登録なし</li></ul>
   </>;
   const intro = <>
@@ -85,29 +85,19 @@ export default function LovePage() {
         <ol className="lv-learn lv-stagger">{LEARN.map(([title, text, Icon], i) => <li key={title} style={order(i)}><span className="lv-learn-icon"><Icon size={22} strokeWidth={1.7} aria-hidden="true" /></span><div><span className="lv-learn-no">{String(i + 1).padStart(2, "0")}</span><h3><Phrases>{title}</Phrases></h3><p><Phrases>{text}</Phrases></p></div></li>)}</ol>
       </div>
     </section>
-    <section className="lv-section" aria-labelledby="lv-chara-title">
-      <div className="lv-wrap-wide">
-        <Head id="lv-chara-title" en="CHARACTER × GIFT" title="キャラとギフトで、あなたがわかる" />
-        <div className="lv-pair lv-stagger">
-          <div className="lv-pair-card" style={order(0)}><p className="lv-pair-label"><b>キャラ</b>＝あなたの本質</p><p><Phrases>生まれた日で決まる、10タイプのキャラ。性格の根っこと、恋の進め方がわかります。</Phrases></p><ul className="lv-item-icons lv-chara-icons" aria-label={`10タイプのキャラ：${CHARACTER_TYPES.map(type => type.displayName).join("、")}`}>{CHARACTER_TYPES.map(type => <li key={type.slug} style={elementStyle(type.stem)}><Character type={type} /></li>)}</ul></div>
-          <span className="lv-pair-x" aria-hidden="true" style={order(1)}>×</span>
-          <div className="lv-pair-card" style={order(2)}><p className="lv-pair-label"><b>ギフト</b>＝生まれ持った強みと個性</p><p><Phrases>生まれた月でわかる、10種類の才能。アイコンは、その才能のモチーフです。</Phrases></p><ul className="lv-item-icons" aria-label={`10種類のギフト：${TEN_GODS.map(god => LOVE_GIFTS[god].name).join("、")}`}>{TEN_GODS.map(god => { const Icon = GIFT_ICONS[god]; return <li key={god} title={`${LOVE_GIFTS[god].name}（モチーフ：${LOVE_GIFTS[god].motif}）`}><Icon size={16} strokeWidth={1.8} aria-hidden="true" /></li>; })}</ul></div>
-        </div>
-      </div>
-    </section>
-    <section className="lv-section is-white" aria-labelledby="lv-types-title">
+    <section className="lv-section" aria-labelledby="lv-types-title">
       <div className="lv-wrap-wide">
         <Head id="lv-types-title" en="10 CHARACTERS" title="あなたは、どのキャラ？" lead="恋の進め方も、愛され方も、｜キャラによってまったく違います。" />
         <TypeStrip>{CHARACTER_TYPES.map((type, i) => <li key={type.slug} className="lv-type" style={{ ...elementStyle(type.stem), ...order(i % 5) }}><span className="lv-type-art"><Character type={type} /></span><h3><TypeName name={type.displayName} /></h3><p><Phrases>{LOVE_COPY[type.slug].catch}</Phrases></p></li>)}</TypeStrip>
       </div>
     </section>
-    <section className="lv-section" aria-labelledby="lv-why-title">
+    <section className="lv-section is-white" aria-labelledby="lv-why-title">
       <div className="lv-wrap">
         <Head id="lv-why-title" en="WHY STELLA FILE" title="ステラファイルが当たる理由" />
         <ol className="lv-reasons lv-stagger">{REASONS.map(([title, text, Icon], i) => <li key={title} style={order(i)}><span className="lv-reason-icon"><Icon size={22} strokeWidth={1.7} aria-hidden="true" /></span><div><span className="lv-reason-no">{`理由 ${i + 1}`}</span><h3><Phrases>{title}</Phrases></h3><p>{text}</p></div></li>)}</ol>
         <div className="lv-statement lv-reveal">
           <p className="lv-statement-lead"><Phrases>自分を知り、魅力を引き出して、恋愛運を引き寄せる。</Phrases></p>
-          <p><Phrases>ステラファイルは、そのために生まれたまったく新しい分類学です。</Phrases></p>
+          <p><Phrases>ステラファイルは、東洋の占術の知恵を、｜今のあなたの恋に生かすために生まれました。</Phrases></p>
         </div>
       </div>
     </section>

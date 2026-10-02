@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, it, expect } from "vitest";
 import { CHARACTER_TYPES, groupName } from "../src/data/types";
-import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS } from "../src/data/love-copy";
+import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS, LOVE_TEASERS } from "../src/data/love-copy";
 import { TEN_GODS } from "../src/lib/diagnosis/ten-gods";
 import { NAME_ANIMALS } from "../src/components/type-name";
 
@@ -12,7 +12,13 @@ describe("love page copy", () => {
       expect(copy.traits, slug).toHaveLength(4);
       expect(copy.keywords, slug).toHaveLength(3);
       for (const text of [copy.catch, copy.charm, copy.win, copy.lose, copy.hint, ...copy.traits, ...copy.keywords]) expect(text.trim(), slug).not.toBe("");
+      // The keywords sit right under the catch on the result card, so each one adds something the catch does not already say.
+      for (const keyword of copy.keywords) expect(copy.catch, `${slug}: ${keyword}`).not.toContain(keyword);
     }
+  });
+  it("names in the result what only the LINE reading tells, and promises it in the invitation", () => {
+    expect(LOVE_LINE_BENEFITS).toContain(LOVE_TEASERS.partner.title);
+    expect(LOVE_LINE_BENEFITS).toContain(LOVE_TEASERS.brake.title.replace("｜", ""));
   });
   it("reads every item as a gift for love", () => {
     expect(Object.keys(LOVE_GIFTS).sort()).toEqual([...TEN_GODS].sort());
@@ -30,17 +36,17 @@ describe("love page copy", () => {
   });
   it("names every compatibility level positively", () => {
     for (const { label } of Object.values(LOVE_COMPAT)) expect(label).toMatch(/相性$/);
-    const all = JSON.stringify([LOVE_COMPAT, LOVE_LINE_BENEFITS]);
+    const all = JSON.stringify([LOVE_COMPAT, LOVE_LINE_BENEFITS, LOVE_TEASERS]);
     for (const word of ["すれ違", "悪い", "苦手", "注意"]) expect(all, word).not.toContain(word);
   });
   it("never assumes the partner's gender and uses plain words", () => {
-    const all = JSON.stringify([LOVE_COPY, LOVE_GIFTS, LOVE_COMPAT, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS]);
+    const all = JSON.stringify([LOVE_COPY, LOVE_GIFTS, LOVE_COMPAT, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS, LOVE_TEASERS]);
     for (const word of ["彼氏", "彼女", "男性", "女性", "彼が", "彼の", "日干", "通変星", "五行", "エレメント"]) expect(all, word).not.toContain(word);
   });
   it("keeps to the page's words: ギフト not アイテム, no fighting talk, no school names or other tests, no timing", () => {
     const page = ["src/app/love/page.tsx", "src/components/love-result.tsx", "src/components/love-diagnosis.tsx", "src/data/love-copy.ts"].map(path => readFileSync(new URL(`../${path}`, import.meta.url), "utf8")).join("");
     for (const word of ["MBTI", "四柱推命", "アイテム", "勝ち", "負け", "武器", "戦い"]) expect(page, word).not.toContain(word);
-    expect(LOVE_LINE_BENEFITS.join("")).not.toContain("時期");
+    expect(JSON.stringify([LOVE_LINE_BENEFITS, LOVE_TEASERS])).not.toContain("時期");
   });
   it("can break every type name between its modifier and its animal", () => {
     for (const type of CHARACTER_TYPES) expect(NAME_ANIMALS.some(animal => type.displayName.endsWith(animal) && type.displayName !== animal), type.displayName).toBe(true);
