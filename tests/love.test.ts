@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, it, expect } from "vitest";
 import { CHARACTER_TYPES, groupName } from "../src/data/types";
 import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS } from "../src/data/love-copy";
-import { GOD_COPY, TEN_GODS } from "../src/lib/diagnosis/ten-gods";
+import { TEN_GODS } from "../src/lib/diagnosis/ten-gods";
 import { NAME_ANIMALS } from "../src/components/type-name";
 
 describe("love page copy", () => {
@@ -22,10 +22,10 @@ describe("love page copy", () => {
     const names = Object.values(LOVE_GIFTS).map(gift => gift.name);
     expect(new Set(names).size).toBe(names.length);
     for (const name of names) { expect(name).toMatch(/才能$/); expect([...name].length, name).toBeLessThanOrEqual(10); }
-    // Each image says what it does: never a bare object name (the app's item alone would read like a lucky item).
+    // The motif is a short object name shown small ("モチーフ：〇〇"); the talent's name carries the meaning.
     const motifs = Object.values(LOVE_GIFTS).map(gift => gift.motif);
     expect(new Set(motifs).size).toBe(motifs.length);
-    for (const god of TEN_GODS) { expect(LOVE_GIFTS[god].motif).not.toBe(GOD_COPY[god].item); expect([...LOVE_GIFTS[god].motif].length, god).toBeLessThanOrEqual(12); }
+    for (const motif of motifs) expect([...motif].length, motif).toBeLessThanOrEqual(6);
     expect(JSON.stringify(LOVE_GIFTS)).not.toContain("ラッキー");
   });
   it("names every compatibility level positively", () => {
