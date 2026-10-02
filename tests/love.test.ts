@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, it, expect } from "vitest";
 import { CHARACTER_TYPES, groupName } from "../src/data/types";
 import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS } from "../src/data/love-copy";
-import { TEN_GODS } from "../src/lib/diagnosis/ten-gods";
+import { GOD_COPY, TEN_GODS } from "../src/lib/diagnosis/ten-gods";
 import { NAME_ANIMALS } from "../src/components/type-name";
 
 describe("love page copy", () => {
@@ -22,6 +22,10 @@ describe("love page copy", () => {
     const names = Object.values(LOVE_GIFTS).map(gift => gift.name);
     expect(new Set(names).size).toBe(names.length);
     for (const name of names) { expect(name).toMatch(/才能$/); expect([...name].length, name).toBeLessThanOrEqual(10); }
+    // The motifs are metaphors of their own, never the app's everyday items.
+    const motifs = Object.values(LOVE_GIFTS).map(gift => gift.motif);
+    expect(new Set(motifs).size).toBe(motifs.length);
+    for (const god of TEN_GODS) expect(LOVE_GIFTS[god].motif).not.toBe(GOD_COPY[god].item);
   });
   it("names every compatibility level positively", () => {
     for (const { label } of Object.values(LOVE_COMPAT)) expect(label).toMatch(/相性$/);

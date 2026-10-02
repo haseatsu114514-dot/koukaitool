@@ -18,8 +18,8 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
   --lv-cream: #faf6ee;
   --lv-blush: #f8efe9;
   --lv-ink: #1b2538;
-  --lv-body: #3d4859;
-  --lv-muted: #697283;
+  --lv-body: #333e4f;
+  --lv-muted: #5e6777;
   --lv-gold: #e3b45a;
   --lv-gold-ink: #8a6216;
   --lv-rose: #b4566a;
@@ -28,6 +28,8 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
   /* Shared tokens read by the birth form and the book-opening intro, pointed at the light page. */
   --paper: #fff; --surface: #fff; --surface-2: #f4eee2; --ink: var(--lv-ink); --body: var(--lv-body); --muted: var(--lv-muted); --line: var(--lv-line); --line-strong: var(--lv-line-strong); --accent: var(--lv-gold); --accent-hover: #edc478; --on-accent: var(--lv-ink);
   overflow-x: clip;
+  /* Zen Kaku Gothic New is light at 400; running text is set at 500 so it stays easy to read on a phone. */
+  font-weight: 500;
 }
 /* Night-blue bands (header, hero, cards, closing call). */
 .lv-dark { --ink: #f4ecdc; --body: #d3dae4; --muted: #a5b1c3; --line: #2b4266; --line-strong: #3b5880; color: var(--ink); background: var(--lv-navy); }

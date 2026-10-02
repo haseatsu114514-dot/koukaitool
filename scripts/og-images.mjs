@@ -14,7 +14,7 @@ const { LOGO_PATH } = await import("../src/lib/logo-path.ts");
 const root = new URL("../", import.meta.url);
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36";
 const HOME = { kicker: "生年月日でわかる", kickerStrong: "10のステラタイプ診断", title: ["あなたは、", "どの", "ステラタイプ", "？"], facts: "質問なし・登録なし・無料" };
-const LOVE = { kicker: "生年月日でわかる", kickerStrong: "恋愛運診断", title: ["恋愛運を引き寄せる人は、", "自分だけの", "「恋の正解」", "を知っている。"], facts: "プロ占い師監修・質問なし・約10秒", core: ["恋愛運", "10のキャラで診断"] };
+const LOVE = { kicker: "生年月日でわかる", kickerStrong: "恋愛運診断", title: ["恋を引き寄せる人は、", "自分だけの", "「恋の正解」", "を知っている。"], facts: "プロ占い師監修・質問なし・約10秒", core: ["恋愛運", "10のキャラで診断"] };
 
 async function inlineFonts(family, axis, text) {
   const cssUrl = `https://fonts.googleapis.com/css2?family=${family.replaceAll(" ", "+")}:${axis}&text=${encodeURIComponent(text)}`;

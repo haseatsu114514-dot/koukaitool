@@ -5,12 +5,11 @@ import { CHARACTER_TYPES, elementStyle, typeByStem, type CharacterType } from "@
 import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS } from "@/data/love-copy";
 import type { DiagnosisResult } from "@/lib/diagnosis";
 import { stellaCompatibility } from "@/lib/diagnosis/compatibility";
-import { GOD_COPY } from "@/lib/diagnosis/ten-gods";
 import { loveLineUrlFor } from "@/lib/line";
 import { track } from "@/lib/analytics";
 import { Phrases } from "./phrases";
 import { Character } from "./character";
-import { ITEM_ICONS } from "./item-icon";
+import { GIFT_ICONS } from "./love-gift-icon";
 import { TypeName } from "./type-name";
 
 function Section({ id, title, lead, children }: { id: string; title: string; lead?: string; children: React.ReactNode }) {
@@ -31,7 +30,7 @@ function Partners({ stems }: { stems: CharacterType["stem"][] }) {
  * The invitation is always shown; the buttons open the friend add once its URL is configured. */
 export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRetry: () => void }) {
   const type = typeByStem(result.pillar.stem), love = LOVE_COPY[type.slug];
-  const gift = LOVE_GIFTS[result.tenGod], GiftIcon = ITEM_ICONS[result.tenGod];
+  const gift = LOVE_GIFTS[result.tenGod], GiftIcon = GIFT_ICONS[result.tenGod];
   const groups = stellaCompatibility(type.stem), url = loveLineUrlFor(type.slug);
   const card = useRef<HTMLDivElement>(null), panel = useRef<HTMLElement>(null);
   const number = String(CHARACTER_TYPES.indexOf(type) + 1).padStart(2, "0"), today = new Date();
@@ -79,7 +78,7 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
       </Section>
 
       <Section id="lv-r-gift" title="あなたのギフト" lead="ギフトは、生まれたときに受け取った才能。キャラ（本質）とは別の、もうひとつの持ち味です。同じキャラでも、ここが人によって違います。">
-        <div className="lv-gift"><div className="lv-gift-head"><span className="lv-gift-icon"><GiftIcon size={28} strokeWidth={1.6} aria-hidden="true" /></span><div><p className="lv-gift-motif">モチーフ：{GOD_COPY[result.tenGod].item}</p><h3 className="lv-gift-name">{gift.name}</h3><p className="lv-gift-title"><Phrases>{gift.title}</Phrases></p></div></div><p className="lv-gift-text">{gift.text}</p></div>
+        <div className="lv-gift"><div className="lv-gift-head"><span className="lv-gift-icon"><GiftIcon size={28} strokeWidth={1.6} aria-hidden="true" /></span><div><p className="lv-gift-motif">モチーフ：{gift.motif}</p><h3 className="lv-gift-name">{gift.name}</h3><p className="lv-gift-title"><Phrases>{gift.title}</Phrases></p></div></div><p className="lv-gift-text">{gift.text}</p></div>
       </Section>
 
       <Section id="lv-r-hint" title="恋愛運を引き寄せるヒント">

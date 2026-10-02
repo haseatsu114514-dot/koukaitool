@@ -4,7 +4,7 @@ import { pageMetadata, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
 import { Analytics } from "@/components/analytics";
 import "./globals.css";
 /** Only the weights the stylesheet uses: mincho headings (700) and gothic body (400/700). */
-const FONTS_URL = "https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@700&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap";
+const FONTS_URL = "https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap";
 export const metadata: Metadata = {
   metadataBase: siteUrl,
   title: { default: `${SITE_NAME}｜${SITE_TAGLINE}`, template: `%s｜${SITE_NAME}` },

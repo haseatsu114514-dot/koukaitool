@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Check, Clock, Compass, Crown, Feather, Fingerprint, Gem, Gift, type LucideIcon } from "lucide-react";
 import { CHARACTER_TYPES, elementStyle } from "@/data/types";
 import { LOVE_COPY, LOVE_GIFTS } from "@/data/love-copy";
-import { GOD_COPY, TEN_GODS } from "@/lib/diagnosis/ten-gods";
+import { TEN_GODS } from "@/lib/diagnosis/ten-gods";
 import { pageMetadata, SITE_NAME } from "@/lib/site";
 import { Phrases } from "@/components/phrases";
 import { Character } from "@/components/character";
-import { ITEM_ICONS } from "@/components/item-icon";
+import { GIFT_ICONS } from "@/components/love-gift-icon";
 import { LogoMark } from "@/components/logo";
 import { LoveDiagnosis } from "@/components/love-diagnosis";
 import { TypeStrip } from "@/components/love-type-strip";
@@ -16,7 +16,7 @@ import "./love.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "恋愛運を引き寄せる診断",
-  description: "恋愛運を引き寄せる人は、自分だけの「恋の正解」を知っている。プロの占い師が監修した、生年月日でわかる恋愛運診断。あなたのキャラ（本質）とギフト（生まれ持った強み）から、魅力の引き出し方、恋がうまくいく法則とやりがちなNG、相性のいい相手がわかります。質問なし・約10秒・無料。",
+  description: "恋を引き寄せる人は、自分だけの「恋の正解」を知っている。プロの占い師が監修した、生年月日でわかる恋愛運診断。あなたのキャラ（本質）とギフト（生まれ持った強み）から、魅力の引き出し方、恋がうまくいく法則とやりがちなNG、相性のいい相手がわかります。質問なし・約10秒・無料。",
   path: "/love/",
   image: "/og/love.jpg",
 });
@@ -59,7 +59,7 @@ export default function LovePage() {
   const hero = <>
     <Faces />
     <p className="lv-kicker">生年月日でわかる 10タイプ恋愛運診断</p>
-    <h1 className="lv-title"><span className="lv-title-line">恋愛運を引き寄せる人は、</span><span className="lv-title-line">自分だけの<em>「恋の正解」</em>を</span><span className="lv-title-line">知っている。</span></h1>
+    <h1 className="lv-title"><span className="lv-title-line">恋を引き寄せる人は、</span><span className="lv-title-line">自分だけの<em>「恋の正解」</em>を</span><span className="lv-title-line">知っている。</span></h1>
     <p className="lv-lead"><Phrases>あなたの魅力の引き出し方と、｜恋がうまくいく法則が、｜生年月日だけでわかります。</Phrases></p>
     <ul className="lv-meta"><li>質問なし・約10秒</li><li>10タイプで本質がわかる</li><li>無料・登録なし</li></ul>
   </>;
@@ -91,7 +91,7 @@ export default function LovePage() {
         <div className="lv-pair lv-stagger">
           <div className="lv-pair-card" style={order(0)}><p className="lv-pair-label"><b>キャラ</b>＝あなたの本質</p><p><Phrases>生まれた日で決まる、10タイプのキャラ。性格の根っこと、恋の進め方がわかります。</Phrases></p><ul className="lv-item-icons lv-chara-icons" aria-label={`10タイプのキャラ：${CHARACTER_TYPES.map(type => type.displayName).join("、")}`}>{CHARACTER_TYPES.map(type => <li key={type.slug} style={elementStyle(type.stem)}><Character type={type} /></li>)}</ul></div>
           <span className="lv-pair-x" aria-hidden="true" style={order(1)}>×</span>
-          <div className="lv-pair-card" style={order(2)}><p className="lv-pair-label"><b>ギフト</b>＝生まれ持った強みと個性</p><p><Phrases>生まれた月でわかる、10種類の才能。アイコンは、その才能のモチーフです。</Phrases></p><ul className="lv-item-icons" aria-label={`10種類のギフト：${TEN_GODS.map(god => LOVE_GIFTS[god].name).join("、")}`}>{TEN_GODS.map(god => { const Icon = ITEM_ICONS[god]; return <li key={god} title={`${LOVE_GIFTS[god].name}（モチーフ：${GOD_COPY[god].item}）`}><Icon size={16} strokeWidth={1.8} aria-hidden="true" /></li>; })}</ul></div>
+          <div className="lv-pair-card" style={order(2)}><p className="lv-pair-label"><b>ギフト</b>＝生まれ持った強みと個性</p><p><Phrases>生まれた月でわかる、10種類の才能。アイコンは、その才能のモチーフです。</Phrases></p><ul className="lv-item-icons" aria-label={`10種類のギフト：${TEN_GODS.map(god => LOVE_GIFTS[god].name).join("、")}`}>{TEN_GODS.map(god => { const Icon = GIFT_ICONS[god]; return <li key={god} title={`${LOVE_GIFTS[god].name}（モチーフ：${LOVE_GIFTS[god].motif}）`}><Icon size={16} strokeWidth={1.8} aria-hidden="true" /></li>; })}</ul></div>
         </div>
       </div>
     </section>
