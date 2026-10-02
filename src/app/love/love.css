@@ -219,6 +219,8 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-steps li::before { content: counter(step); display: grid; place-items: center; width: 22px; height: 22px; margin: 0 auto 6px; border-radius: 50%; background: var(--lv-gold); font-size: 12px; color: var(--lv-ink); }
 .lv-line-button { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 360px; min-height: 60px; margin: 22px auto 0; padding: 10px 24px; border-radius: 999px; background: #06c755; font-size: 17px; font-weight: 700; letter-spacing: .06em; color: #fff; transition: background .15s; }
 .lv-line-button:hover { background: #05b34c; }
+.lv-line-pending { max-width: 30em; margin: 12px auto 0; padding: 8px 14px; border-radius: 10px; background: #ffffff14; font-size: 13px; line-height: 1.7; color: var(--ink); }
+.lv-line-pending:empty { display: none; }
 .lv-line-note { max-width: 30em; margin: 12px auto 0; font-size: 12px; line-height: 1.8; color: var(--muted); }
 
 .lv-retry { display: flex; align-items: center; gap: 6px; margin: 32px auto 0; padding: 6px; background: none; font-size: 14px; color: var(--lv-muted); text-decoration: underline; text-underline-offset: 4px; }

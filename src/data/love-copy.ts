@@ -128,7 +128,7 @@ export const LOVE_GIFTS: Record<TenGod, { title: string; text: string }> = {
   印綬: { title: "知的な会話で、心をつかむ", text: "物知りで、相手の話を深く理解できる人。「もっと話していたい」と思わせる知的な魅力があります。学びの場や趣味の講座など、好奇心が満たされる場所に出会いのチャンスがあります。" },
 };
 
-/** The three levels the love page shows. "そこそこ" is left out to keep the result short; the caution row waits on LINE once it is set up. */
+/** The three levels the love page shows. "そこそこ" is left out to keep the result short; the caution row is kept for LINE. */
 export const LOVE_COMPAT: Record<Exclude<StellaLevel, "mid">, { label: string; note: string }> = {
   best: { label: "最高の相性", note: "自然と惹かれ合う組み合わせ。お互いの足りないところを補い合えます。" },
   good: { label: "相性がいい", note: "あなたを後ろから支えてくれる相手。そばにいると、自然体でいられます。" },
