@@ -41,6 +41,7 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
      Phrases: they break only after 、。！？ or at a ｜ hint in the copy, and balance their lines.
    - Type names break only between the modifier and the animal (TypeName). */
 .love p, .love li { word-break: normal; line-break: strict; overflow-wrap: break-word; text-wrap: pretty; }
+.love .phrase { display: inline-block; max-width: 100%; }
 .lv-prose p, .lv-reasons p, .lv-text, .lv-win p, .lv-lose p, .lv-gift-text, .lv-hint p, .lv-r-lead, .lv-compat-note { text-align: justify; text-justify: inter-character; }
 .love :is(h1, h2, h3, h4), .lv-lead, .lv-learn p, .lv-pair-card p, .lv-stanza p, .lv-footer p, .lv-checks li, .lv-checks-note, .lv-traits li, .lv-type p, .lv-type-card-catch, .lv-statement p, .lv-final-text, .lv-line-lead, .lv-line-list li, .lv-line-note, .lv-steps li, .lv-form-note, .lv-bar p { text-wrap: balance; }
 
@@ -95,7 +96,8 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-form-card { max-width: 480px; margin: 22px auto 0; padding: 22px 20px 16px; border-radius: 18px; background: #fff; color: var(--lv-ink); text-align: left; box-shadow: 0 18px 40px -18px #000a; scroll-margin-top: 24px;
   --ink: var(--lv-ink); --body: var(--lv-body); --muted: var(--lv-muted); --line: var(--lv-line); --line-strong: var(--lv-line-strong); }
 .lv-form-title { margin-bottom: 14px; font-size: 18px; line-height: 1.5; text-align: center; }
-.lv-form-card .date-fields label { font-weight: 700; color: var(--lv-body); }
+/* The selects already read 年・月・日, so the labels stay for screen readers only. */
+.lv-form-card .date-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .lv-form-card .date-fields input, .lv-form-card .date-fields select { height: 52px; border-color: var(--lv-line-strong); background: #fffdf8; color: var(--lv-ink); }
 .lv-form-card .date-fields input::placeholder { color: #9aa1ad; }
 .lv-form-card .date-fields input:focus, .lv-form-card .date-fields select:focus { border-color: #c99a3f; box-shadow: 0 0 0 3px #e3b45a40; }
@@ -303,6 +305,15 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 @media (max-width: 360px) {
   .lv-bar p { display: none; }
   .lv-bar .lv-line-button, .lv-bar .lv-cta { flex: 1; }
+}
+/* On a phone the reason text runs under the icon at full width, instead of in a narrow column beside it. */
+@media (max-width: 639px) {
+  .lv-reasons li { display: grid; grid-template-columns: 46px minmax(0, 1fr); column-gap: 14px; }
+  .lv-reasons li > div { display: contents; }
+  .lv-reason-icon { grid-row: 1 / 3; align-self: center; }
+  .lv-reason-no { align-self: end; }
+  .lv-reasons h3 { margin-top: 0; }
+  .lv-reasons p { grid-column: 1 / -1; margin-top: 12px; }
 }
 @media (min-width: 640px) {
   .lv-learn, .lv-winlose { grid-template-columns: 1fr 1fr; }

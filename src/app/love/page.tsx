@@ -22,12 +22,12 @@ export const metadata: Metadata = pageMetadata({
 /** The page sits on cream paper under a night-blue header, so form controls render light. */
 export const viewport: Viewport = { themeColor: "#10213b", colorScheme: "light" };
 
-const WORRIES = ["がんばっているのに、なぜか恋が長続きしない", "「いい人」止まりで、恋愛対象として見られにくい", "好きな人の前だと、本当の自分を出せない", "自分に合う相手が、もうわからなくなってきた", "そろそろ本気で、恋愛運を引き寄せたい"];
+const WORRIES = ["なぜか、同じような恋をくり返してしまう", "「いい人」止まりで、恋愛対象として見られにくい", "好きな人の前だと、本当の自分を出せない", "自分に合う相手が、もうわからなくなってきた", "そろそろ本気で、恋愛運を引き寄せたい"];
 const LEARN: [title: string, text: string, icon: LucideIcon][] = [
-  ["あなたのキャラと恋の傾向", "10タイプのうち、どれがあなたの本質か。あなたの恋の傾向まで、ズバリわかります。", Fingerprint],
-  ["魅力の引き出し方", "自分では気づきにくい「選ばれる理由」と、それを相手に伝える見せ方。", Gem],
+  ["あなたのキャラと恋の傾向", "10タイプから、あなたの本質を診断。恋の傾向まで、ズバリわかります。", Fingerprint],
+  ["魅力の引き出し方", "あなたが「選ばれる理由」と、それを相手に伝える見せ方。", Gem],
   ["恋がうまくいく法則とNG", "あなたの恋がうまくいく進め方と、ついやってしまうNGパターン。", Compass],
-  ["あなたのギフトと、恋のヒント", "生まれ持った強みや個性の生かし方と、今日からできること。相性のいいキャラも。", Gift],
+  ["ギフトと恋のヒント", "生まれ持った強みの生かし方と、今日からできること。相性のいいキャラもわかります。", Gift],
 ];
 const REASONS: [title: string, text: string, icon: LucideIcon][] = [
   ["「占いの帝王」がベース", "古くから「占いの帝王」と呼ばれる東洋の占術をベースに、数々の占いや運命学、統計を組み合わせて作りました。", Crown],
@@ -75,7 +75,7 @@ export default function LovePage() {
           <p className="lv-stanza-key"><Phrases>恋の正解は、人の数だけ。｜自分だけの正解を知った人から、恋愛運は動き出します。</Phrases></p>
         </div>
         <ul className="lv-checks lv-stagger" aria-label="こんな人におすすめ">{WORRIES.map((text, i) => <li key={text} style={order(i)}><Check size={18} strokeWidth={2.6} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
-        <p className="lv-checks-note lv-reveal"><Phrases>ひとつでも当てはまったら、あなただけの「恋の正解」を知るタイミングです。</Phrases></p>
+        <p className="lv-checks-note lv-reveal"><Phrases>ひとつでも当てはまったら、｜あなただけの「恋の正解」を｜知るタイミングです。</Phrases></p>
       </div>
     </section>
     <section className="lv-section is-white" aria-labelledby="lv-learn-title">

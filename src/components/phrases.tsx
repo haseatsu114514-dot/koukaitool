@@ -16,7 +16,8 @@ export function phraseSegments(text: string): string[] {
 }
 
 /** Short display text (headings, catches, labels, short list items) that wraps only between segments, never inside one unless a line cannot hold it.
+ * Each segment is its own inline block, because browsers otherwise also break after a closing bracket (「選ばれる理由」｜と、).
  * Used on the love page instead of BudouX, whose guesses split words such as うまく｜いく or 見た｜目. */
 export function Phrases({ children }: { children: string }) {
-  return <span className="bx">{phraseSegments(children).map((part, i) => <Fragment key={i}>{i > 0 && <wbr />}{part}</Fragment>)}</span>;
+  return <span className="bx">{phraseSegments(children).map((part, i) => <Fragment key={i}>{i > 0 && <wbr />}<span className="phrase">{part}</span></Fragment>)}</span>;
 }
