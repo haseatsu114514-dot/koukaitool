@@ -24,7 +24,7 @@ export const viewport: Viewport = { themeColor: "#10213b", colorScheme: "light" 
 
 const WORRIES = ["がんばっているのに、なぜか恋が長続きしない", "「いい人」止まりで、恋愛対象として見られにくい", "好きな人の前だと、本当の自分を出せない", "自分に合う相手が、もうわからなくなってきた", "そろそろ本気で、恋愛運を引き寄せたい"];
 const LEARN: [title: string, text: string, icon: LucideIcon][] = [
-  ["あなたのキャラと恋の傾向", "10のキャラのうち、どれがあなたの本質か。あなたの恋の傾向まで、ズバリわかります。", Fingerprint],
+  ["あなたのキャラと恋の傾向", "10タイプのうち、どれがあなたの本質か。あなたの恋の傾向まで、ズバリわかります。", Fingerprint],
   ["魅力の引き出し方", "自分では気づきにくい「選ばれる理由」と、それを相手に伝える見せ方。", Gem],
   ["恋がうまくいく法則とNG", "あなたの恋がうまくいく進め方と、ついやってしまうNGパターン。", Compass],
   ["あなたのギフトと、恋のヒント", "生まれ持った強みや個性の生かし方と、今日からできること。相性のいいキャラも。", Gift],
@@ -57,10 +57,10 @@ function Head({ id, en, title, lead }: { id: string; en: string; title: string; 
 export default function LovePage() {
   const hero = <>
     <Faces />
-    <p className="lv-kicker">生年月日でわかる 恋愛運診断</p>
+    <p className="lv-kicker">生年月日でわかる 10タイプ恋愛運診断</p>
     <h1 className="lv-title"><span className="lv-title-line">恋愛運を引き寄せる人は、</span><span className="lv-title-line">自分だけの<em>「恋の正解」</em>を</span><span className="lv-title-line">知っている。</span></h1>
     <p className="lv-lead"><Phrases>あなたの魅力の引き出し方と、｜恋がうまくいく法則が、｜生年月日だけでわかります。</Phrases></p>
-    <ul className="lv-meta"><li>質問なし・約10秒</li><li>診断結果は100通り</li><li>無料・登録なし</li></ul>
+    <ul className="lv-meta"><li>質問なし・約10秒</li><li>10タイプで本質がわかる</li><li>無料・登録なし</li></ul>
   </>;
   const intro = <>
     <section className="lv-section" aria-labelledby="lv-worry-title">
@@ -88,11 +88,11 @@ export default function LovePage() {
       <div className="lv-wrap-wide">
         <Head id="lv-chara-title" en="CHARACTER × GIFT" title="キャラとギフトで、あなたがわかる" />
         <div className="lv-pair lv-stagger">
-          <div className="lv-pair-card" style={order(0)}><p className="lv-pair-label"><b>キャラ</b>＝あなたの本質</p><p><Phrases>生まれた日で決まる、10のキャラ。性格の根っこと、恋の進め方がわかります。</Phrases></p></div>
+          <div className="lv-pair-card" style={order(0)}><p className="lv-pair-label"><b>キャラ</b>＝あなたの本質</p><p><Phrases>生まれた日で決まる、10タイプのキャラ。性格の根っこと、恋の進め方がわかります。</Phrases></p></div>
           <span className="lv-pair-x" aria-hidden="true" style={order(1)}>×</span>
           <div className="lv-pair-card" style={order(2)}><p className="lv-pair-label"><b>ギフト</b>＝生まれ持った強みと個性</p><p><Phrases>生まれた月でわかる、もうひとつの持ち味。あなたの恋にも生きてくる強みです。</Phrases></p><ul className="lv-item-icons" aria-label={`10種類のギフト：${TEN_GODS.map(god => GOD_COPY[god].item).join("、")}`}>{TEN_GODS.map(god => { const Icon = ITEM_ICONS[god]; return <li key={god} title={GOD_COPY[god].item}><Icon size={16} strokeWidth={1.8} aria-hidden="true" /></li>; })}</ul></div>
         </div>
-        <h3 className="lv-strip-title lv-reveal">10のキャラ<span className="lv-strip-hint" aria-hidden="true">横にスクロールできます</span></h3>
+        <h3 className="lv-strip-title lv-reveal">10タイプのキャラ<span className="lv-strip-hint" aria-hidden="true">横にスクロールできます</span></h3>
         <ul className="lv-types lv-stagger">{CHARACTER_TYPES.map((type, i) => <li key={type.slug} className="lv-type" style={{ ...elementStyle(type.stem), ...order(i % 5) }}><span className="lv-type-art"><Character type={type} /></span><h4><TypeName name={type.displayName} /></h4><p><Phrases>{LOVE_COPY[type.slug].catch}</Phrases></p></li>)}</ul>
       </div>
     </section>
@@ -123,7 +123,6 @@ export default function LovePage() {
         <span className="lv-brand"><LogoMark size={16} /><span>{SITE_NAME}</span></span>
         <nav aria-label="フッター"><Link href="/privacy/">プライバシー</Link></nav>
         <p className="lv-footer-note"><Phrases>キャラの読み解きと文章は、｜プロの占い師が監修しています。</Phrases></p>
-        <p className="micro"><Phrases>占いをもとにした、自分を知るためのコンテンツです。</Phrases></p>
         <p className="micro">© ステラファイル</p>
       </div>
     </footer>

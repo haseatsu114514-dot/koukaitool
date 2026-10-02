@@ -104,12 +104,11 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
         </div>
         <ol className="lv-steps" aria-label="受け取り方">{LOVE_LINE_STEPS.map(text => <li key={text}><Phrases>{text}</Phrases></li>)}</ol>
         <a className="lv-line-button" {...lineLink("panel")}>LINEで友だち追加</a>
-        <p className="lv-line-note"><Phrases>友だち追加も鑑定も無料です。いつでもブロックできます。｜入力した生年月日が、このサイトからLINEに送られることはありません。</Phrases></p>
+        <p className="lv-line-note"><Phrases>いつでもブロックできます。｜入力した生年月日が、このサイトからLINEに送られることはありません。</Phrases></p>
       </section>
 
       {/* No share box or outbound links here: after the result, the only way forward is the official LINE. */}
       <button type="button" className="lv-retry" onClick={onRetry}><RotateCcw size={14} aria-hidden="true" />生年月日を入れ直す</button>
-      <p className="micro lv-disclaimer">※ステラファイルは、占いをもとにしたコンテンツです。</p>
     </div>
     <div className="lv-bar-space" aria-hidden="true" />
     <div className={`lv-bar${barShown ? " is-shown" : ""}`} inert={!barShown}>

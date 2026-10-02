@@ -149,8 +149,10 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-pair-label b { margin-right: 6px; font-family: var(--serif); font-size: 20px; color: var(--lv-ink); }
 .lv-pair-card p:not(.lv-pair-label) { margin-top: 4px; font-size: 14px; line-height: 1.85; color: var(--lv-body); }
 .lv-pair-x { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--lv-navy); font-size: 15px; font-weight: 700; line-height: 1; color: var(--lv-gold); }
-.lv-item-icons { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
-.lv-item-icons li { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 1px solid #e3b45a80; color: var(--lv-gold-ink); }
+/* The ten gifts in one even row, whatever the card's width. */
+.lv-item-icons { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; margin: 14px 0 0; padding: 0; list-style: none; }
+.lv-item-icons li { display: grid; place-items: center; width: 100%; max-width: 32px; aspect-ratio: 1; justify-self: center; border-radius: 50%; border: 1px solid #e3b45a80; color: var(--lv-gold-ink); }
+.lv-item-icons svg { width: 58%; height: 58%; }
 
 /* The ten characters: a swipeable strip on phones, one row of five per line on wide screens. */
 .lv-strip-title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; max-width: 680px; margin: 30px auto 12px; font-family: var(--serif); font-size: 18px; color: var(--lv-ink); }
@@ -261,9 +263,8 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-line-button::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; animation: lv-ping 2.4s ease-out infinite; }
 .lv-line-note { max-width: 30em; margin: 12px auto 0; font-size: 12px; line-height: 1.8; color: var(--muted); }
 
-.lv-retry { display: flex; align-items: center; gap: 6px; margin: 32px auto 0; padding: 6px; background: none; font-size: 14px; color: var(--lv-muted); text-decoration: underline; text-underline-offset: 4px; }
+.lv-retry { display: flex; align-items: center; gap: 6px; margin: 32px auto 40px; padding: 6px; background: none; font-size: 14px; color: var(--lv-muted); text-decoration: underline; text-underline-offset: 4px; }
 .lv-retry:hover { color: var(--lv-ink); }
-.lv-disclaimer { margin: 18px 0 40px; text-align: center; }
 
 /* A bar with the LINE button that follows the reader through the result. */
 .lv-bar-space { height: 76px; }
