@@ -99,7 +99,7 @@ test("love page: intro → birth date → love result → official LINE", async 
   await expect(page.locator(".is-best")).toContainText("ほっとけないアルパカ"); await expect(page.locator(".is-foe")).toContainText("正々堂々ドーベルマン"); await expect(page.locator(".is-foe")).toContainText("ひと工夫で深まる相性");
   await expect(page.locator(".is-locked")).toHaveAttribute("href", "#line");
   // Just above the button, who will read for her: the supervising fortune teller's record in plain text.
-  await expect(page.locator(".lv-line .lv-reader")).toContainText("ホシヨミ"); await expect(page.locator(".lv-line .lv-reader")).toContainText("1,000件以上");
+  await expect(page.locator(".lv-line .lv-reader")).toContainText("ホシヨミ"); await expect(page.locator(".lv-line .lv-reader")).toContainText("1,000名超");
   await expect(page.locator(".lv-line .lv-reader-icon")).toHaveAttribute("src", /\/hoshiyomi\.webp$/);
   // The result card is signed by the creator of Stella File.
   await expect(page.locator(".lv-cert-sign")).toContainText("ステラファイル考案者");

@@ -15,7 +15,7 @@ import "./love.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "恋愛運を引き寄せる診断",
-  description: "恋を引き寄せる人は、自分だけの「恋の正解」を知っている。鑑定1,000件以上の占い師ホシヨミが考案した、生年月日でわかる恋愛運診断。あなたのキャラ（本質）とギフト（生まれ持った強み）から、魅力の引き出し方、恋がうまくいく法則とやりがちなNG、相性のいい相手がわかります。質問なし・約10秒・無料。",
+  description: "恋を引き寄せる人は、自分だけの「恋の正解」を知っている。相談者数1,000名超の占い師ホシヨミが考案した、生年月日でわかる恋愛運診断。あなたのキャラ（本質）とギフト（生まれ持った強み）から、魅力の引き出し方、恋がうまくいく法則とやりがちなNG、相性のいい相手がわかります。質問なし・約10秒・無料。",
   path: "/love/",
   image: "/og/love.jpg",
 });
@@ -30,8 +30,8 @@ const LEARN: [title: string, text: string, icon: LucideIcon][] = [
   ["ギフトと恋のヒント", "生まれ持った強みの生かし方と、今日からできること。相性のいいキャラもわかります。", Gift],
 ];
 const REASONS: [title: string, text: string, icon: LucideIcon][] = [
-  ["「占いの帝王」と呼ばれる｜東洋の占術がベース", "長い歴史の中で受け継がれ、体系化されてきた東洋の占術がベース。霊感や「なんとなく」ではなく、決まった理論から読み解きます。そこに数々の占いや運命学、統計を組み合わせて作りました。", Crown],
-  [`鑑定1,000件以上の占い師${LOVE_READER.name}が考案`, `ステラファイルを考えたのは、占い師${LOVE_READER.name}。テレビ出演や政財界の顧客をもつ占い師に師事し、東洋の占術を学んで10年。名古屋・栄の占い館では、月間売上1位にもなりました。キャラの読み解きから、ひとつひとつの文章まで手がけています。`, MoonStar],
+  ["「占いの帝王」と呼ばれる｜東洋の占術がベース", "長い歴史の中で受け継がれ、体系化されてきた東洋の占術がベース。霊感や「なんとなく」ではなく、原理原則に基づいて読み解きます。そこに数々の占いや運命学、統計を組み合わせて作りました。", Crown],
+  [`相談者数1,000名超の｜占い師${LOVE_READER.name}が考案`, `ステラファイルを考えたのは、占い師${LOVE_READER.name}。東洋の占術を学んで10年、政財界・芸能人・インフルエンサーの診断歴もあります。名古屋・栄の占い館では、月間売上1位にもなりました。キャラの読み解きから、ひとつひとつの文章まで手がけています。`, MoonStar],
   ["気分や答え方で、結果がぶれない", "質問に答える性格診断は、その日の気分や答え方で結果が変わってしまいます。ステラファイルは生年月日だけで読み解くから、何度診断しても同じ。素のあなたが、そのまま出ます。", Clock],
 ];
 
@@ -78,7 +78,7 @@ export default function LovePage() {
           <p className="lv-stanza-key"><Phrases>恋の正解は、人の数だけ。｜自分だけの正解を知った人から、恋愛運は動き出します。</Phrases></p>
         </div>
         <ul className="lv-checks lv-stagger" aria-label="こんな人におすすめ">{WORRIES.map((text, i) => <li key={text} style={order(i)}><Check size={18} strokeWidth={2.6} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
-        <p className="lv-checks-note lv-reveal"><Phrases>ひとつでも当てはまったら、｜合わない恋をがんばり続ける前に、｜あなただけの「恋の正解」を｜知ってください。</Phrases></p>
+        <p className="lv-checks-note lv-reveal"><Phrases by="hint">ひとつでも当てはまったら、｜合わない恋をがんばり続ける前に、｜あなただけの「恋の正解」を｜知ってください。</Phrases></p>
       </div>
     </section>
     <section className="lv-section is-white" aria-labelledby="lv-learn-title">

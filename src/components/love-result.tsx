@@ -121,7 +121,7 @@ export function LoveResult({ result }: { result: DiagnosisResult }) {
         <div className="lv-reader">
           <div className="lv-reader-head"><ReaderIcon size={64} /><p><span className="lv-reader-lead">鑑定するのは</span><b className="lv-reader-name">{`占い師 ${LOVE_READER.name}`}</b><span className="lv-reader-role">{LOVE_READER.role}</span></p></div>
           <ul className="lv-reader-stats">{LOVE_READER.stats.map(([value, label]) => <li key={value}><b>{value}</b><span><Phrases>{label}</Phrases></span></li>)}</ul>
-          <p className="lv-reader-note"><Phrases>{LOVE_READER.note}</Phrases></p>
+          <p className="lv-reader-note"><Phrases by="hint">{LOVE_READER.note}</Phrases></p>
         </div>
         <ol className="lv-steps" aria-label="受け取り方">{LOVE_LINE_STEPS.map(text => <li key={text}><Phrases>{text}</Phrases></li>)}</ol>
         <a className="lv-line-button" {...lineLink("panel")}>LINEで友だち追加</a>

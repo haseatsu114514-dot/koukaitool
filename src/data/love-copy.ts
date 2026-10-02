@@ -159,11 +159,12 @@ export const LOVE_TEASERS = {
 /** The fortune teller who devised Stella File and writes the LINE reading: ホシヨミ, with their icon (public/hoshiyomi.webp, 320px, from the approved artwork).
  * Called the creator (考案者) of Stella File, not a supervisor. Shown as a small badge in the hero, as a signature on the result card, in the LINE invitation,
  * in reason 2 and in the footer. The facts are as the fortune teller gave them: no calendar years, and the 占い館 itself is not named.
+ * Worded as on ホシヨミ's Threads profile (hoshiyomi.stella): 相談者数1,000名超, 政財界・芸能人・インフルエンサーの診断歴, 原理原則に基づく由緒正しき方法.
  * Update them here and in the reasons on the page if they change. */
 export const LOVE_READER = {
   name: "ホシヨミ",
   icon: "/hoshiyomi.webp",
   role: "ステラファイル考案者",
-  stats: [["10年", "東洋の占術"], ["1,000件以上", "個人鑑定"], ["月間1位", "占い館の売上"]] as [value: string, label: string][],
-  note: "テレビ出演や政財界の顧客をもつ占い師に師事。名古屋・栄の占い館で、月間売上1位になりました。",
+  stats: [["10年", "東洋の占術"], ["1,000名超", "相談者数"], ["月間1位", "占い館の売上"]] as [value: string, label: string][],
+  note: "政財界・芸能人・インフルエンサーの診断歴あり。｜原理原則に基づく由緒正しき方法で、｜あなたに良縁を引き寄せます。",
 };

@@ -16,13 +16,13 @@ const NO_PAIR = 10;
 /** Where a line may break in a run of Japanese text: between natural phrases (BudouX), always after 、。！？, and at a "｜" written into
  * the copy (the mark itself is not shown). Never inside the words above or a short quote, never before closing punctuation, a
  * one-character piece (や, も …) stays with the phrase before it, and a short 〜の phrase stays with what it describes. */
-export function phraseSegments(text: string): string[] {
+export function phraseSegments(text: string, by: "phrase" | "hint" = "phrase"): string[] {
   const out: string[] = [];
   for (const part of text.split("｜")) {
     if (!part) continue;
     const cuts = new Set<number>();
     let at = 0;
-    for (const phrase of parser.parse(part)) cuts.add(at += phrase.length);
+    if (by === "phrase") for (const phrase of parser.parse(part)) cuts.add(at += phrase.length);
     for (let i = 0; i < part.length; i++) if ("、。！？".includes(part[i])) cuts.add(i + 1);
     const keepWhole = (from: number, to: number) => { for (const cut of cuts) if (cut > from && cut < to) cuts.delete(cut); };
     for (const word of KEEP_WHOLE) for (let i = part.indexOf(word); i >= 0; i = part.indexOf(word, i + 1)) keepWhole(i, i + word.length);
@@ -49,7 +49,8 @@ export function phraseSegments(text: string): string[] {
 
 /** Japanese text on the love page: each phrase is its own inline block, so lines break only between phrases (never inside a word, and
  * never after a closing bracket on its own). With text-wrap: balance (headings, short items) the lines come out even; with
- * text-wrap: pretty (running text) the last line is never left with a word or two. */
-export function Phrases({ children }: { children: string }) {
-  return <span className="bx">{phraseSegments(children).map((part, i) => <Fragment key={i}>{i > 0 && <wbr />}<span className="phrase">{part}</span></Fragment>)}</span>;
+ * text-wrap: pretty (running text) the last line is never left with a word or two.
+ * by="hint" breaks only after 、。！？ and at ｜, for a short note whose lines should follow its meaning ("合わない恋を" stays whole). */
+export function Phrases({ children, by = "phrase" }: { children: string; by?: "phrase" | "hint" }) {
+  return <span className="bx">{phraseSegments(children, by).map((part, i) => <Fragment key={i}>{i > 0 && <wbr />}<span className="phrase">{part}</span></Fragment>)}</span>;
 }

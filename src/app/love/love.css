@@ -52,7 +52,8 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .love p, .love li { word-break: normal; line-break: strict; overflow-wrap: break-word; text-wrap: pretty; }
 .love .phrase { display: inline-block; max-width: 100%; }
 .lv-prose p, .lv-reasons p, .lv-text, .lv-win p, .lv-lose p, .lv-gift-text, .lv-hint p, .lv-mid-text { text-align: start; text-wrap: pretty; }
-.love :is(h1, h2, h3, h4), .lv-lead, .lv-learn p, .lv-stanza p, .lv-footer p, .lv-checks li, .lv-checks-note, .lv-traits li, .lv-type p, .lv-type-card-catch, .lv-statement p, .lv-final-text, .lv-line-lead, .lv-line-list li, .lv-line-note, .lv-steps li, .lv-form-note, .lv-bar p, .lv-r-lead, .lv-compat-note, .lv-reader-note, .lv-reader-stats span, .lv-gift-title { text-wrap: balance; }
+/* Wrapped in .love :is() so it outranks ".love p, .love li" above: a plain ".lv-lead" lost to it and was never balanced. */
+.love :is(h1, h2, h3, h4, .lv-lead, .lv-head p, .lv-learn p, .lv-stanza p, .lv-footer p, .lv-checks li, .lv-checks-note, .lv-traits li, .lv-type p, .lv-type-card-catch, .lv-statement p, .lv-final-text, .lv-line-lead, .lv-line-list li, .lv-line-note, .lv-steps li, .lv-form-note, .lv-bar p, .lv-r-lead, .lv-compat-note, .lv-reader-note, .lv-reader-stats span, .lv-gift-title) { text-wrap: balance; }
 
 .lv-wrap { width: min(100% - 40px, 680px); margin-inline: auto; }
 .lv-wrap-wide { width: min(100% - 40px, 1040px); margin-inline: auto; }
