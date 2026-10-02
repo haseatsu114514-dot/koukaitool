@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { BadgeCheck, Check, Clock, Compass, Crown, Fingerprint, Gem, Gift, type LucideIcon } from "lucide-react";
+import { Check, Clock, Compass, Crown, Feather, Fingerprint, Gem, Gift, type LucideIcon } from "lucide-react";
 import { CHARACTER_TYPES, elementStyle } from "@/data/types";
 import { LOVE_COPY } from "@/data/love-copy";
 import { GOD_COPY, TEN_GODS } from "@/lib/diagnosis/ten-gods";
@@ -31,7 +31,7 @@ const LEARN: [title: string, text: string, icon: LucideIcon][] = [
 ];
 const REASONS: [title: string, text: string, icon: LucideIcon][] = [
   ["「占いの帝王」がベース", "古くから「占いの帝王」と呼ばれる東洋の占術をベースに、数々の占いや運命学、統計を組み合わせて作りました。", Crown],
-  ["プロの占い師が監修", "キャラの読み解きから一つひとつの文章まで、プロの占い師が監修しています。", BadgeCheck],
+  ["プロの占い師が監修", "キャラの読み解きからひとつひとつの文章まで、プロの占い師が監修しています。", Feather],
   ["長い質問に答えなくていい", "よくある性格診断のように、何十問もの質問に答える必要はありません。生年月日を入れるだけ。気分や答え方で結果がぶれないから、素のあなたがそのまま出ます。", Clock],
 ];
 
@@ -59,16 +59,20 @@ export default function LovePage() {
     <Faces />
     <p className="lv-kicker">生年月日でわかる 恋愛運診断</p>
     <h1 className="lv-title"><span className="lv-title-line">恋愛運を引き寄せる人は、</span><span className="lv-title-line">自分だけの<em>「恋の正解」</em>を</span><span className="lv-title-line">知っている。</span></h1>
-    <p className="lv-lead"><Phrases>あなたの魅力の引き出し方と、恋がうまくいく法則。生年月日を入れるだけで、10秒でわかります。</Phrases></p>
-    <ul className="lv-meta"><li className="is-key"><BadgeCheck size={14} strokeWidth={2.4} aria-hidden="true" />プロ占い師監修</li><li>100通りの診断</li><li>質問なし・無料</li></ul>
+    <p className="lv-lead"><Phrases>あなたの魅力の引き出し方と、｜恋がうまくいく法則が、｜生年月日だけでわかります。</Phrases></p>
+    <ul className="lv-meta"><li>質問なし・約10秒</li><li>診断結果は100通り</li><li>無料・登録なし</li></ul>
   </>;
   const intro = <>
     <section className="lv-section" aria-labelledby="lv-worry-title">
       <div className="lv-wrap">
         <Head id="lv-worry-title" en="YOUR LOVE" title="その恋、ほかの誰かの正解を｜なぞっていませんか？" />
         <div className="lv-prose lv-reveal">
-          <p>がんばっているのに、報われない恋。恋愛の本やSNSのテクニックを試しても、しっくりこない。それは魅力が足りないからではなく、そのやり方が誰かにとっての正解で、あなたの正解ではなかっただけかもしれません。</p>
-          <p>追いかけて輝く人もいれば、待って選ばれる人もいる。尽くして愛される人もいれば、自分らしさを貫いて愛される人もいる。恋の正解は、人によって違います。自分だけの正解を知った人から、恋愛運は動き出します。</p>
+          <p>がんばっているのに、報われない恋。恋愛の本やSNSのテクニックを試しても、なぜかしっくりこない。それは、あなたに魅力が足りないからではありません。そのやり方が、ほかの誰かにとっての正解だっただけです。</p>
+        </div>
+        <div className="lv-stanza lv-reveal">
+          <p><Phrases>追いかけて輝く人もいれば、待って選ばれる人もいる。</Phrases></p>
+          <p><Phrases>尽くして愛される人もいれば、｜自分らしさを貫いて愛される人もいる。</Phrases></p>
+          <p className="lv-stanza-key"><Phrases>恋の正解は、人の数だけ。｜自分だけの正解を知った人から、恋愛運は動き出します。</Phrases></p>
         </div>
         <ul className="lv-checks lv-stagger" aria-label="こんな人におすすめ">{WORRIES.map((text, i) => <li key={text} style={order(i)}><Check size={18} strokeWidth={2.6} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
         <p className="lv-checks-note lv-reveal"><Phrases>ひとつでも当てはまったら、あなただけの「恋の正解」を知るタイミングです。</Phrases></p>
@@ -77,16 +81,16 @@ export default function LovePage() {
     <section className="lv-section is-white" aria-labelledby="lv-learn-title">
       <div className="lv-wrap">
         <Head id="lv-learn-title" en="WHAT YOU GET" title="この診断でわかること" />
-        <ol className="lv-learn lv-stagger">{LEARN.map(([title, text, Icon], i) => <li key={title} style={order(i)}><span className="lv-learn-icon"><Icon size={22} strokeWidth={1.7} aria-hidden="true" /></span><div><span className="lv-learn-no">{String(i + 1).padStart(2, "0")}</span><h3><Phrases>{title}</Phrases></h3><p>{text}</p></div></li>)}</ol>
+        <ol className="lv-learn lv-stagger">{LEARN.map(([title, text, Icon], i) => <li key={title} style={order(i)}><span className="lv-learn-icon"><Icon size={22} strokeWidth={1.7} aria-hidden="true" /></span><div><span className="lv-learn-no">{String(i + 1).padStart(2, "0")}</span><h3><Phrases>{title}</Phrases></h3><p><Phrases>{text}</Phrases></p></div></li>)}</ol>
       </div>
     </section>
     <section className="lv-section" aria-labelledby="lv-chara-title">
       <div className="lv-wrap-wide">
         <Head id="lv-chara-title" en="CHARACTER × GIFT" title="キャラとギフトで、あなたがわかる" />
         <div className="lv-pair lv-stagger">
-          <div className="lv-pair-card" style={order(0)}><p className="lv-pair-label"><b>キャラ</b>＝あなたの本質</p><p>生まれた日で決まる、10のキャラ。性格の根っこと、恋の進め方がわかります。</p></div>
+          <div className="lv-pair-card" style={order(0)}><p className="lv-pair-label"><b>キャラ</b>＝あなたの本質</p><p><Phrases>生まれた日で決まる、10のキャラ。性格の根っこと、恋の進め方がわかります。</Phrases></p></div>
           <span className="lv-pair-x" aria-hidden="true" style={order(1)}>×</span>
-          <div className="lv-pair-card" style={order(2)}><p className="lv-pair-label"><b>ギフト</b>＝生まれ持った強みと個性</p><p>生まれた月でわかる、もうひとつの持ち味。あなたの恋にも生きてくる強みです。</p><ul className="lv-item-icons" aria-label={`10種類のギフト：${TEN_GODS.map(god => GOD_COPY[god].item).join("、")}`}>{TEN_GODS.map(god => { const Icon = ITEM_ICONS[god]; return <li key={god} title={GOD_COPY[god].item}><Icon size={16} strokeWidth={1.8} aria-hidden="true" /></li>; })}</ul></div>
+          <div className="lv-pair-card" style={order(2)}><p className="lv-pair-label"><b>ギフト</b>＝生まれ持った強みと個性</p><p><Phrases>生まれた月でわかる、もうひとつの持ち味。あなたの恋にも生きてくる強みです。</Phrases></p><ul className="lv-item-icons" aria-label={`10種類のギフト：${TEN_GODS.map(god => GOD_COPY[god].item).join("、")}`}>{TEN_GODS.map(god => { const Icon = ITEM_ICONS[god]; return <li key={god} title={GOD_COPY[god].item}><Icon size={16} strokeWidth={1.8} aria-hidden="true" /></li>; })}</ul></div>
         </div>
         <h3 className="lv-strip-title lv-reveal">10のキャラ<span className="lv-strip-hint" aria-hidden="true">横にスクロールできます</span></h3>
         <ul className="lv-types lv-stagger">{CHARACTER_TYPES.map((type, i) => <li key={type.slug} className="lv-type" style={{ ...elementStyle(type.stem), ...order(i % 5) }}><span className="lv-type-art"><Character type={type} /></span><h4><TypeName name={type.displayName} /></h4><p><Phrases>{LOVE_COPY[type.slug].catch}</Phrases></p></li>)}</ul>
@@ -118,8 +122,9 @@ export default function LovePage() {
       <div className="lv-wrap">
         <span className="lv-brand"><LogoMark size={16} /><span>{SITE_NAME}</span></span>
         <nav aria-label="フッター"><Link href="/privacy/">プライバシー</Link></nav>
-        <p className="lv-footer-note"><BadgeCheck size={14} aria-hidden="true" />キャラの読み解きと文章は、プロの占い師が監修しています。</p>
-        <p className="micro">占いをもとにした、自分を知るためのコンテンツです。© ステラファイル</p>
+        <p className="lv-footer-note"><Phrases>キャラの読み解きと文章は、｜プロの占い師が監修しています。</Phrases></p>
+        <p className="micro"><Phrases>占いをもとにした、自分を知るためのコンテンツです。</Phrases></p>
+        <p className="micro">© ステラファイル</p>
       </div>
     </footer>
   </div>;

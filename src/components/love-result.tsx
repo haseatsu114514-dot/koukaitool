@@ -28,7 +28,7 @@ function Partners({ stems }: { stems: CharacterType["stem"][] }) {
 /** The love result: キャラ (the type), her tendencies in love, charm, what works and the usual misstep, ギフト (the item, read for love), one hint, compatibility, then the official LINE.
  * Running text is plain (print-style breaks); headings and short items break between phrases.
  * A bar with the LINE button follows the reader once the type card scrolls away, and steps aside while the full invitation is on screen.
- * Until a friend-add URL is configured, the invitation and buttons are still shown; pressing one says the official LINE is being prepared. */
+ * The invitation is always shown; the buttons open the friend add once its URL is configured. */
 export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRetry: () => void }) {
   const type = typeByStem(result.pillar.stem), love = LOVE_COPY[type.slug];
   const gift = LOVE_GIFTS[result.tenGod], GiftIcon = ITEM_ICONS[result.tenGod];
@@ -36,7 +36,7 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
   const card = useRef<HTMLDivElement>(null), panel = useRef<HTMLElement>(null);
   const number = String(CHARACTER_TYPES.indexOf(type) + 1).padStart(2, "0"), today = new Date();
   const diagnosedOn = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")}`;
-  const [cardGone, setCardGone] = useState(false), [panelIn, setPanelIn] = useState(false), [pending, setPending] = useState(false);
+  const [cardGone, setCardGone] = useState(false), [panelIn, setPanelIn] = useState(false);
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
     if (card.current) { const o = new IntersectionObserver(([entry]) => setCardGone(!entry.isIntersecting && entry.boundingClientRect.top < 0)); o.observe(card.current); observers.push(o); }
@@ -48,16 +48,15 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
     return () => observers.forEach(o => o.disconnect());
   }, [type.slug]);
   const barShown = cardGone && !panelIn;
-  const lineLink = (placement: "panel" | "bar") => url
-    ? { href: url, target: "_blank", rel: "noopener noreferrer", onClick: () => track({ name: "line_click", stella_type: type.slug, placement }) }
-    : { href: "#line", onClick: (event: React.MouseEvent) => { event.preventDefault(); track({ name: "line_click", stella_type: type.slug, placement }); setPending(true); panel.current?.scrollIntoView({ block: "center" }); } };
+  // The friend-add URL comes from the build environment; until it is set, the buttons only lead to the invitation.
+  const lineLink = (placement: "panel" | "bar") => ({ href: url || "#line", ...(url ? { target: "_blank", rel: "noopener noreferrer" } : {}), onClick: () => track({ name: "line_click", stella_type: type.slug, placement }) });
   return <article className="lv-result">
     <div className="lv-wrap">
-      {/* Set like a certificate: double gold rule, file number and date, and the supervisor's seal on the portrait. */}
+      {/* Set like a certificate: double gold rule, file number and date. */}
       <div ref={card} className="lv-type-card lv-dark" style={elementStyle(type.stem)}>
         <p className="lv-cert-head"><span>STELLA FILE No.{number}</span><span>診断日 {diagnosedOn}</span></p>
         <p className="lv-result-label" aria-hidden="true">YOUR CHARACTER</p>
-        <div className="lv-type-card-art"><Character type={type} priority /><span className="lv-seal" aria-label="プロ占い師監修">プロ占い師<b>監修</b></span></div>
+        <div className="lv-type-card-art"><Character type={type} priority /></div>
         <p className="lv-result-lead">あなたのキャラは</p>
         <h1><TypeName name={type.displayName} /></h1>
         <p className="lv-type-card-catch"><Phrases>{love.catch}</Phrases></p>
@@ -96,15 +95,16 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
       </Section>
 
       <section ref={panel} id="line" className="lv-line lv-dark lv-sky lv-reveal" aria-labelledby="lv-line-title">
-        <p className="lv-line-kickers"><span className="lv-line-kicker">公式LINE限定</span><span className="lv-free-kicker">友だち追加 無料</span></p>
-        <h2 id="lv-line-title" className="lv-line-title"><Phrases>あなたの恋愛運、続きはLINEで</Phrases></h2>
-        <p className="lv-line-lead"><Phrases>ここまでは、まだ入り口。公式LINEでは、あなたの今の状況や悩みをうかがって、あなた一人のための鑑定をお届けします。</Phrases></p>
-        <ul className="lv-line-list">{LOVE_LINE_BENEFITS.map(text => <li key={text}><Lock size={15} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
+        <p className="lv-line-kicker">公式LINE限定</p>
+        <h2 id="lv-line-title" className="lv-line-title"><span className="lv-chunk">あなただけの恋愛鑑定を、</span><span className="lv-chunk"><em>無料</em>でお届けします</span></h2>
+        <p className="lv-line-lead"><Phrases>ここまでは、まだ入り口。公式LINEで3分ほどの質問に答えると、今の状況や悩みに合わせて、あなた一人のための鑑定をお届けします。</Phrases></p>
+        <div className="lv-line-box">
+          <p className="lv-line-box-title">鑑定でわかること</p>
+          <ul className="lv-line-list">{LOVE_LINE_BENEFITS.map(text => <li key={text}><Check size={16} strokeWidth={2.6} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
+        </div>
         <ol className="lv-steps" aria-label="受け取り方">{LOVE_LINE_STEPS.map(text => <li key={text}><Phrases>{text}</Phrases></li>)}</ol>
-        <p className="lv-free-callout" aria-hidden="true">＼ 友だち追加は無料 ／</p>
-        <a className="lv-line-button" {...lineLink("panel")}><span className="lv-free-tag">無料</span>LINEで詳しく見る</a>
-        <p className="lv-line-pending" role="status">{pending ? "公式LINEは準備中です。まもなく、ここから友だち追加できるようになります。" : ""}</p>
-        <p className="lv-line-note"><Phrases>友だち追加は無料です。いつでもブロックできます。入力した生年月日が、このサイトからLINEに送られることはありません。</Phrases></p>
+        <a className="lv-line-button" {...lineLink("panel")}>LINEで友だち追加</a>
+        <p className="lv-line-note"><Phrases>友だち追加も鑑定も無料です。いつでもブロックできます。｜入力した生年月日が、このサイトからLINEに送られることはありません。</Phrases></p>
       </section>
 
       {/* No share box or outbound links here: after the result, the only way forward is the official LINE. */}
@@ -113,7 +113,7 @@ export function LoveResult({ result, onRetry }: { result: DiagnosisResult; onRet
     </div>
     <div className="lv-bar-space" aria-hidden="true" />
     <div className={`lv-bar${barShown ? " is-shown" : ""}`} inert={!barShown}>
-      <div className="lv-bar-inner"><p><Phrases>友だち追加は無料。｜恋愛運の続きは、公式LINEで</Phrases></p><a className="lv-line-button" {...lineLink("bar")}><span className="lv-free-tag">無料</span>LINEで詳しく見る</a></div>
+      <div className="lv-bar-inner"><p><Phrases>あなただけの鑑定を、｜無料でお届け</Phrases></p><a className="lv-line-button" {...lineLink("bar")}>LINEで友だち追加</a></div>
     </div>
   </article>;
 }

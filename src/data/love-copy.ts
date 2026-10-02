@@ -38,7 +38,7 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
     charm: "あなたの魅力は、一緒にいる人を心地よくさせる力と、思わず守りたくなる愛嬌。人の縁にも恵まれやすい、生まれつきの愛され体質です。その魅力は、相手に合わせているときより、あなたの「好き」がにじみ出たときにいちばん輝きます。",
     win: "人の縁を味方につけるとうまくいきます。友だちの紹介や、知り合いが集まる場に顔を出すほど、いい出会いが巡ってきます。気になる人には、こまめな連絡で少しずつ距離を縮めていきましょう。",
     lose: "嫌われたくなくて、相手に合わせすぎること。本音を言えないまま我慢して、ある日ふっと気持ちが冷めてしまいます。誰にでも優しくして、本命の相手に「特別じゃないのかも」と思わせてしまうのも要注意です。",
-    hint: "行きたいお店や見たい映画など、小さなわがままを一つだけ伝えてみてください。合わせ上手なあなたが本音を見せたとき、相手はもっとあなたを知りたくなります。",
+    hint: "行きたいお店や見たい映画など、小さなわがままをひとつだけ伝えてみてください。合わせ上手なあなたが本音を見せたとき、相手はもっとあなたを知りたくなります。",
   },
   phoenix: {
     catch: "好きがすぐ顔に出る、太陽みたいな恋",
@@ -47,7 +47,7 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
     charm: "あなたの魅力は、そこにいるだけで場が明るくなる華やかさと、好きな気持ちを隠さないまっすぐさ。「こんなに想われている」と相手を安心させる力があります。人前に出るほど魅力が伝わるタイプなので、出会いの場では遠慮せず主役でいてください。",
     win: "人が集まる場所に出ていくほど、チャンスが増えるタイプ。好きになったら、駆け引きをせずに明るく気持ちを伝えるとうまくいきます。あなたの「楽しい」を一緒に味わえる相手となら、恋は一気に進みます。",
     lose: "盛り上がりが落ち着いたとたんに、退屈を感じてしまうこと。思ったことをすぐ口にして、悪気なく相手を傷つけてしまうのもNGです。自分ばかり話して、相手の話を聞き流していないか気をつけて。",
-    hint: "デートの帰りに、相手の話でうれしかったことを一つ伝えてみてください。あなたの明るさに「ちゃんと聞いてくれる」安心が加わると、恋は長続きします。",
+    hint: "デートの帰りに、相手の話でうれしかったことをひとつ伝えてみてください。あなたの明るさに「ちゃんと聞いてくれる」安心が加わると、恋は長続きします。",
   },
   fox: {
     catch: "小さな変化に気づける、じっくり育てる恋",
@@ -136,7 +136,7 @@ export const LOVE_COMPAT: Record<Exclude<StellaLevel, "mid">, { label: string; n
 };
 
 /** What the official LINE adds. After the friend add, a form (name, birth date, optional birth time, theme, situation and worry,
- * the ideal, what she is doing toward it, the one thing she most wants to know) leads to a reading written for her alone.
+ * the ideal, what she is doing toward it, the one thing she most wants to know) leads to a free reading written for her alone.
  * Keep this in step with that form; it does not promise timing. */
-export const LOVE_LINE_BENEFITS = ["生年月日から読み解く、あなた一人のための鑑定", "今の状況と悩みに合わせた、恋の進め方", "理想の恋に近づくために、今できること", "すれ違いやすい相手と、うまく付き合うコツ"];
-export const LOVE_LINE_STEPS = ["LINEで｜友だち追加", "3分ほどの｜質問に回答", "あなただけの｜鑑定をお届け"];
+export const LOVE_LINE_BENEFITS = ["今の状況と悩みに合わせた、恋の進め方", "理想の恋に近づくために、今できること", "すれ違いやすい相手と、うまく付き合うコツ", "いちばん知りたいことへの、あなただけの答え"];
+export const LOVE_LINE_STEPS = ["LINEで｜友だち追加", "3分ほどの｜質問に回答", "鑑定を｜無料でお届け"];
