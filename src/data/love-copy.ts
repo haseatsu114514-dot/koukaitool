@@ -145,12 +145,21 @@ export const LOVE_COMPAT: Record<Exclude<StellaLevel, "mid">, { label: string; n
  * The site reads only the birth day and month, so everything here is type-level; the reading looks at the whole birth date and her situation.
  * The first two benefits are the hook: the form does not ask about them, and the site never shows them, so the reading must always cover them
  * (they are also teased in the result: LOVE_TEASERS). The last two come from the form. It does not promise timing. */
-export const LOVE_LINE_BENEFITS = ["本当に結ばれやすい相手の特徴", "あなたが気づいていない、恋のブレーキ", "今の状況と悩みに合わせた、恋の進め方", "いちばん知りたいことへの、あなただけの答え"];
+export const LOVE_LINE_BENEFITS = ["本当に結ばれやすい｜相手の特徴", "あなたが気づいていない、恋のブレーキ", "今の状況と悩みに合わせた、恋の進め方", "いちばん知りたいことへの、あなただけの答え"];
 export const LOVE_LINE_STEPS = ["LINEで｜友だち追加", "今の状況を｜3分で伝える", "鑑定を｜無料でお届け"];
 
 /** Where the result points to what only the reading can tell: after the usual misstep (the call in the middle of the result)
  * and at the end of the compatibility card. Each names one of the first two LINE benefits, at the moment she wants it most. */
 export const LOVE_TEASERS = {
   brake: { label: "公式LINEの無料鑑定で", title: "あなたが気づいていない、｜恋のブレーキ", text: "やりがちなNGは、同じキャラの人に共通する傾向です。あなた自身が無意識にかけている恋のブレーキは、生まれた年・月・日のすべてと、今の状況まで読み解いて、はじめて見えてきます。" },
-  partner: { label: "鑑定でわかる", title: "本当に結ばれやすい相手の特徴", note: "キャラ同士の相性の、その先。生まれた年・月・日のすべてから、あなたと本当に結ばれやすい相手の特徴を読み解きます。" },
+  partner: { label: "鑑定でわかる", title: "本当に結ばれやすい相手の特徴", note: "強く惹かれる相手と、幸せになりやすい相手は、同じとは限りません。生まれた年・月・日のすべてから、あなたと本当に結ばれやすい相手の特徴を読み解きます。" },
+};
+
+/** The fortune teller who supervised this page and writes the LINE reading, shown above the LINE button so the reader knows who will read for them.
+ * Plain text, never a seal or badge. The facts are as the fortune teller gave them (the 占い館 itself is not named); update them here and in
+ * the reasons on the page if they change. */
+export const LOVE_READER = {
+  title: "鑑定するのは、｜この診断を監修した占い師です",
+  stats: [["10年", "東洋の占術"], ["1,000件以上", "個人鑑定"], ["売上1位", "名古屋・栄の｜占い館"]] as [value: string, label: string][],
+  note: "テレビ出演や政財界の顧客をもつ｜占い師に師事。｜売上1位は、チェーン展開する占い館での｜2024年8月の実績です。",
 };

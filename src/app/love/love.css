@@ -264,6 +264,14 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-line-list li { display: flex; align-items: flex-start; gap: 10px; padding: 11px 0; border-top: 1px solid var(--lv-line); font-size: 14.5px; font-weight: 700; line-height: 1.7; color: var(--lv-ink); }
 .lv-line-list li:first-child { border-top: 0; }
 .lv-line-list svg { flex-shrink: 0; margin-top: 4px; color: var(--lv-gold-ink); }
+/* Who reads for her: three plain figures and one line, under the list of what the reading covers. */
+.lv-reader { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
+.lv-reader-title { font-family: var(--serif); font-size: 14.5px; font-weight: 700; line-height: 1.6; color: var(--ink); }
+.lv-reader-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
+.lv-reader-stats li { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.lv-reader-stats b { font-family: var(--serif); font-size: clamp(16px, 4.6vw, 20px); line-height: 1.4; letter-spacing: .02em; color: var(--lv-gold); white-space: nowrap; }
+.lv-reader-stats span { font-size: 11.5px; font-weight: 700; line-height: 1.5; color: var(--muted); text-wrap: balance; }
+.lv-reader-note { max-width: 30em; margin: 12px auto 0; font-size: 12px; line-height: 1.8; color: var(--muted); text-wrap: balance; }
 .lv-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; counter-reset: step; }
 .lv-steps li { counter-increment: step; padding: 10px 6px 9px; border-radius: 10px; border: 1px solid var(--line-strong); font-size: 12px; font-weight: 700; line-height: 1.55; color: var(--body); }
 .lv-steps li::before { content: counter(step); display: grid; place-items: center; width: 22px; height: 22px; margin: 0 auto 6px; border-radius: 50%; background: var(--lv-gold); font-size: 12px; color: var(--lv-ink); }
@@ -309,6 +317,9 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .love .book-reveal { --paper: #0b1729; --ink: #f1e9d8; --muted: #9aa8bc; left: 0; right: 0; width: auto; translate: none; }
 
 @media (max-width: 360px) {
+  /* The narrowest phones (320px): keep the three LINE steps and the reading list from breaking inside a word. */
+  .lv-steps li { padding-inline: 2px; font-size: 11px; letter-spacing: 0; }
+  .lv-line-list li { font-size: 13.5px; letter-spacing: 0; }
   .lv-bar p { display: none; }
   .lv-bar .lv-line-button, .lv-bar .lv-cta { flex: 1; }
 }

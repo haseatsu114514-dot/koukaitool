@@ -21,7 +21,7 @@ export const metadata: Metadata = pageMetadata({
 /** The page sits on cream paper under a night-blue header, so form controls render light. */
 export const viewport: Viewport = { themeColor: "#10213b", colorScheme: "light" };
 
-const WORRIES = ["なぜか、同じような恋をくり返してしまう", "「いい人」止まりで、恋愛対象として見られにくい", "好きな人の前だと、本当の自分を出せない", "自分に合う相手が、もうわからなくなってきた", "そろそろ本気で、恋愛運を引き寄せたい"];
+const WORRIES = ["なぜか、同じような恋をくり返してしまう", "「いい人」止まりで、恋愛対象として見られにくい", "好きな人の前だと、本当の自分を出せない", "惹かれるのは、なぜか幸せになれない相手ばかり", "そろそろ本気で、恋愛運を引き寄せたい"];
 const LEARN: [title: string, text: string, icon: LucideIcon][] = [
   ["あなたのキャラと恋の傾向", "10タイプから、あなたの本質を診断。恋をしたときの傾向まで、見えてきます。", Fingerprint],
   ["魅力の引き出し方", "あなたが「選ばれる理由」と、それを相手に伝える見せ方。", Gem],
@@ -29,8 +29,8 @@ const LEARN: [title: string, text: string, icon: LucideIcon][] = [
   ["ギフトと恋のヒント", "生まれ持った強みの生かし方と、今日からできること。相性のいいキャラもわかります。", Gift],
 ];
 const REASONS: [title: string, text: string, icon: LucideIcon][] = [
-  ["東洋の「占いの帝王」がベース", "古くから「占いの帝王」と呼ばれる東洋の占術をベースに、数々の占いや運命学、統計を組み合わせて作りました。", Crown],
-  ["プロの占い師が監修", "キャラの読み解きからひとつひとつの文章まで、プロの占い師が監修しています。", Feather],
+  ["東洋の「占いの帝王」がベース", "古くから「占いの帝王」と呼ばれ、長い歴史の中で体系化されてきた東洋の占術がベース。霊感や「なんとなく」ではなく、決まった理論から読み解きます。そこに数々の占いや運命学、統計を組み合わせて作りました。", Crown],
+  ["鑑定1,000件以上の｜占い師が監修", "テレビ出演や政財界の顧客をもつ占い師に師事し、東洋の占術を学んで10年。名古屋・栄の占い館では、月間売上1位（2024年8月）にもなりました。キャラの読み解きから、ひとつひとつの文章まで監修しています。", Feather],
   ["気分や答え方で、結果がぶれない", "質問に答える性格診断は、その日の気分や答え方で結果が変わってしまいます。ステラファイルは生年月日だけで読み解くから、何度診断しても同じ。素のあなたが、そのまま出ます。", Clock],
 ];
 
@@ -76,7 +76,7 @@ export default function LovePage() {
           <p className="lv-stanza-key"><Phrases>恋の正解は、人の数だけ。｜自分だけの正解を知った人から、恋愛運は動き出します。</Phrases></p>
         </div>
         <ul className="lv-checks lv-stagger" aria-label="こんな人におすすめ">{WORRIES.map((text, i) => <li key={text} style={order(i)}><Check size={18} strokeWidth={2.6} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
-        <p className="lv-checks-note lv-reveal"><Phrases>ひとつでも当てはまったら、｜あなただけの「恋の正解」を｜知るタイミングです。</Phrases></p>
+        <p className="lv-checks-note lv-reveal"><Phrases>ひとつでも当てはまったら、｜合わない恋をがんばり続ける前に、｜あなただけの「恋の正解」を｜知ってください。</Phrases></p>
       </div>
     </section>
     <section className="lv-section is-white" aria-labelledby="lv-learn-title">

@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, Heart, Lock, ThumbsDown, ThumbsUp } from "lucide-react";
 import { CHARACTER_TYPES, elementStyle, typeByStem, type CharacterType } from "@/data/types";
-import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS, LOVE_TEASERS } from "@/data/love-copy";
+import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS, LOVE_READER, LOVE_TEASERS } from "@/data/love-copy";
 import type { DiagnosisResult } from "@/lib/diagnosis";
 import { stellaCompatibility } from "@/lib/diagnosis/compatibility";
 import { loveLineUrlFor } from "@/lib/line";
@@ -113,6 +113,12 @@ export function LoveResult({ result }: { result: DiagnosisResult }) {
         <div className="lv-line-box">
           <p className="lv-line-box-title">鑑定でわかること</p>
           <ul className="lv-line-list">{LOVE_LINE_BENEFITS.map(text => <li key={text}><Check size={16} strokeWidth={2.6} aria-hidden="true" /><Phrases>{text}</Phrases></li>)}</ul>
+        </div>
+        {/* Who will read for her: the supervising fortune teller's record, in plain text. */}
+        <div className="lv-reader">
+          <p className="lv-reader-title"><Phrases>{LOVE_READER.title}</Phrases></p>
+          <ul className="lv-reader-stats">{LOVE_READER.stats.map(([value, label]) => <li key={value}><b>{value}</b><span><Phrases>{label}</Phrases></span></li>)}</ul>
+          <p className="lv-reader-note"><Phrases>{LOVE_READER.note}</Phrases></p>
         </div>
         <ol className="lv-steps" aria-label="受け取り方">{LOVE_LINE_STEPS.map(text => <li key={text}><Phrases>{text}</Phrases></li>)}</ol>
         <a className="lv-line-button" {...lineLink("panel")}>LINEで友だち追加</a>

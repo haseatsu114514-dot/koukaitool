@@ -17,8 +17,9 @@ describe("love page copy", () => {
     }
   });
   it("names in the result what only the LINE reading tells, and promises it in the invitation", () => {
-    expect(LOVE_LINE_BENEFITS).toContain(LOVE_TEASERS.partner.title);
-    expect(LOVE_LINE_BENEFITS).toContain(LOVE_TEASERS.brake.title.replace("｜", ""));
+    const plain = (text: string) => text.replaceAll("｜", "");
+    expect(LOVE_LINE_BENEFITS.map(plain)).toContain(plain(LOVE_TEASERS.partner.title));
+    expect(LOVE_LINE_BENEFITS.map(plain)).toContain(plain(LOVE_TEASERS.brake.title));
   });
   it("reads every item as a gift for love", () => {
     expect(Object.keys(LOVE_GIFTS).sort()).toEqual([...TEN_GODS].sort());
