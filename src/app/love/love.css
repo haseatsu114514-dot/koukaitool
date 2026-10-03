@@ -321,7 +321,8 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
   .lv-learn li:hover, .lv-reasons li:hover, .lv-type:hover { transform: translateY(-3px); border-color: #e3b45a99; box-shadow: 0 18px 34px -22px #10213b73; }
   .lv-type:hover .lv-type-art .character { animation: lv-hop .5s var(--ease); }
 }
-@keyframes lv-twinkle { from { opacity: .15; } to { opacity: .85; } }
+/* Starts bright, so the stars are there on the first frame, then dims and brightens again. */
+@keyframes lv-twinkle { from { opacity: .9; } to { opacity: .3; } }
 @keyframes lv-hop { 40% { translate: 0 -6px; } }
 @keyframes lv-peek { 45% { transform: translateX(-56px); } }
 @keyframes lv-nudge { 0%, 60%, 100% { transform: none; } 30% { transform: translateX(3px); } }
