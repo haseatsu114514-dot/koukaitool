@@ -153,7 +153,8 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-type { flex: 0 0 150px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 8px 16px; border-radius: 14px; border: 1px solid var(--lv-line); background: var(--lv-cream); text-align: center; scroll-snap-align: start; }
 .lv-type-art { display: grid; place-items: center; width: 76px; aspect-ratio: 1; overflow: hidden; border-radius: 50%; border: 2px solid var(--el); background: var(--tint); }
 .lv-type-art .character { width: 88%; height: 88%; }
-.lv-type h3 { margin: 0; font-family: var(--sans); font-size: 14px; font-weight: 700; line-height: 1.45; color: var(--lv-ink); }
+/* Reserve two name lines so every catch starts at the same height. */
+.lv-type h3 { width: 100%; min-height: 2lh; margin: 0; font-family: var(--sans); font-size: 14px; font-weight: 700; line-height: 1.45; color: var(--lv-ink); }
 .lv-types.is-peeking > li { animation: lv-peek 1.3s var(--ease) .35s; }
 .lv-types-hint { display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 12px; font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--lv-gold-ink); }
 .lv-types-track { position: relative; width: 56px; height: 3px; margin-right: 8px; overflow: hidden; border-radius: 3px; background: var(--lv-line); }
