@@ -143,17 +143,16 @@ export const LOVE_COMPAT: Record<Exclude<StellaLevel, "mid">, { label: string; n
 /** What the official LINE adds. After the friend add, a form (name, birth date, optional birth time, theme, situation and worry,
  * the ideal, what she is doing toward it, the one thing she most wants to know) leads to a free reading written for her alone.
  * The site reads only the birth day and month, so everything here is type-level; the reading looks at the whole birth date and her situation.
- * The first two benefits are the hook: the form does not ask about them, and the site never shows them, so the reading must always cover them
- * (they are also teased in the result: LOVE_TEASERS). The last two come from the form. It does not promise timing. */
-export const LOVE_LINE_BENEFITS = ["あなたと最高の相性のキャラ", "あなたが気づいていない、恋のブレーキ", "今の状況と悩みに合わせた、恋の進め方", "いちばん知りたいことへの、あなただけの答え"];
+ * The first benefit (恋のブレーキ) is the hook: the form does not ask about it and the site never shows it, so the reading must always cover it
+ * (it is also teased in the result: LOVE_TEASERS). The others come from the form and the compatibility shown on the site. It does not promise timing. */
+export const LOVE_LINE_BENEFITS = ["あなたが気づいていない、恋のブレーキ", "相性を味方につける、付き合い方のコツ", "今の状況と悩みに合わせた、恋の進め方", "いちばん知りたいことへの、あなただけの答え"];
 /** The form asks for the situation in her own words and the reading is written in full, so no step promises a few minutes. */
 export const LOVE_LINE_STEPS = ["LINEで｜友だち追加", "今の状況を｜詳しく伝える", "本格鑑定を｜無料でお届け"];
 
 /** Where the result points to what only the reading can tell: after the usual misstep (the call in the middle of the result)
- * and in the compatibility card, where 最高の相性 is locked (good and foe stay open). Each names one of the first two LINE benefits, at the moment she wants it most. */
+ * It names the first LINE benefit at the moment she wants it most. */
 export const LOVE_TEASERS = {
   brake: { label: "公式LINEの無料鑑定で", title: "あなたが気づいていない、｜恋のブレーキ", text: "やりがちなNGは、同じキャラの人に共通する傾向です。あなた自身が無意識にかけている恋のブレーキは、生まれた年・月・日のすべてと、今の状況まで読み解いて、はじめて見えてきます。" },
-  best: { label: "公式LINEでわかる", title: "あなたと最高の相性のキャラ", note: "自然と惹かれ合い、お互いの足りないところを補い合える相手。あなたと最高の相性のキャラは、公式LINEの無料鑑定でお伝えします。" },
 };
 
 /** The fortune teller who devised Stella File and writes the LINE reading: ホシヨミ, with their icon (public/hoshiyomi.webp, 320px, from the approved artwork).

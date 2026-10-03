@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Check, ChevronDown, Heart, Lock, ThumbsDown, ThumbsUp } from "lucide-react";
+import { Check, Heart, Lock, ThumbsDown, ThumbsUp } from "lucide-react";
 import { CHARACTER_TYPES, elementStyle, typeByStem, type CharacterType } from "@/data/types";
 import { LOVE_COMPAT, LOVE_COPY, LOVE_GIFTS, LOVE_LINE_BENEFITS, LOVE_LINE_STEPS, LOVE_READER, LOVE_TEASERS } from "@/data/love-copy";
 import type { DiagnosisResult } from "@/lib/diagnosis";
@@ -25,9 +25,9 @@ function Partners({ stems }: { stems: CharacterType["stem"][] }) {
   return <ul className="lv-compat-types">{stems.map(stem => { const partner = typeByStem(stem); return <li key={stem}><span className="lv-mini-art" style={elementStyle(stem)}><Character type={partner} size={38} /></span><TypeName name={partner.displayName} /></li>; })}</ul>;
 }
 
-/** The love result: キャラ (the type), her tendencies in love, charm, what works and the usual misstep, ギフト (the item, named as a talent and read for love), one hint, compatibility (最高の相性 locked, the other two shown, named positively), then the official LINE.
+/** The love result: キャラ (the type), her tendencies in love, charm, what works and the usual misstep, ギフト (the item, named as a talent and read for love), one hint, compatibility (all three levels shown, named positively), then the official LINE.
  * Free and LINE are split like this: everything on this page is what people of her キャラ share, and it is complete as it is. What only the reading can tell
- * (the first two LOVE_LINE_BENEFITS) is named where she wants it most: a call right after the usual misstep, and 最高の相性 locked at the top of the compatibility card.
+ * (恋のブレーキ, the first of LOVE_LINE_BENEFITS) is named right after the usual misstep, in a call with the LINE button.
  * Running text is plain (print-style breaks); headings and short items break between phrases.
  * A bar with the LINE button follows the reader once the type card scrolls away, and steps aside while the call in the middle or the full invitation is on screen.
  * The invitation is always shown; the buttons open the friend add once its URL is configured. The result ends at the invitation: no way back to the form. */
@@ -64,8 +64,6 @@ export function LoveResult({ result }: { result: DiagnosisResult }) {
         <h1><TypeName name={type.displayName} /></h1>
         <p className="lv-type-card-catch"><Phrases>{love.catch}</Phrases></p>
         <ul className="lv-keywords">{love.keywords.map(word => <li key={word}>{word}</li>)}</ul>
-        {/* Signed by the creator of Stella File, like a certificate. */}
-        <p className="lv-cert-sign"><ReaderIcon size={30} priority /><span><small>{LOVE_READER.role}</small>{`占い師 ${LOVE_READER.name}`}</span></p>
       </div>
 
       <Section id="lv-r-traits" title="ステラファイルが見抜く、あなたの恋の傾向">
@@ -101,8 +99,7 @@ export function LoveResult({ result }: { result: DiagnosisResult }) {
 
       <Section id="lv-r-compat" title="恋の相性">
         <div className="lv-compat">
-          {/* 最高の相性 is locked: how many characters, but not which; the row leads down to the invitation. */}
-          <a className="lv-compat-row is-best is-locked" href="#line"><span className="lv-compat-label"><Lock size={12} strokeWidth={2.4} aria-hidden="true" />{LOVE_COMPAT.best.label}</span><div><ul className="lv-compat-types" aria-label={`${groups.best.length}キャラ（公式LINEでわかります）`}>{groups.best.map(stem => <li key={stem}><span className="lv-mini-art is-hidden" aria-hidden="true">？</span><span className="lv-hidden-name">？？？</span></li>)}</ul><p className="lv-compat-note"><Phrases>{LOVE_TEASERS.best.note}</Phrases></p><span className="lv-locked-more">受け取り方を見る<ChevronDown size={14} aria-hidden="true" /></span></div></a>
+          <div className="lv-compat-row is-best"><span className="lv-compat-label">{LOVE_COMPAT.best.label}</span><div><Partners stems={groups.best} /><p className="lv-compat-note"><Phrases>{LOVE_COMPAT.best.note}</Phrases></p></div></div>
           <div className="lv-compat-row is-good"><span className="lv-compat-label">{LOVE_COMPAT.good.label}</span><div><Partners stems={groups.good} /><p className="lv-compat-note"><Phrases>{LOVE_COMPAT.good.note}</Phrases></p></div></div>
           <div className="lv-compat-row is-foe"><span className="lv-compat-label">{LOVE_COMPAT.foe.label}</span><div><Partners stems={groups.foe} /><p className="lv-compat-note"><Phrases>{LOVE_COMPAT.foe.note}</Phrases></p></div></div>
         </div>
