@@ -22,7 +22,7 @@ function Section({ id, title, lead, children }: { id: string; title: string; lea
 }
 
 function Partners({ stems }: { stems: CharacterType["stem"][] }) {
-  return <ul className="lv-compat-types">{stems.map(stem => { const partner = typeByStem(stem); return <li key={stem}><span className="lv-mini-art" style={elementStyle(stem)}><Character type={partner} /></span><TypeName name={partner.displayName} /></li>; })}</ul>;
+  return <ul className="lv-compat-types">{stems.map(stem => { const partner = typeByStem(stem); return <li key={stem}><span className="lv-mini-art" style={elementStyle(stem)}><Character type={partner} size={38} /></span><TypeName name={partner.displayName} /></li>; })}</ul>;
 }
 
 /** The love result: キャラ (the type), her tendencies in love, charm, what works and the usual misstep, ギフト (the item, named as a talent and read for love), one hint, compatibility (最高の相性 locked, the other two shown, named positively), then the official LINE.
@@ -59,7 +59,7 @@ export function LoveResult({ result }: { result: DiagnosisResult }) {
       <div ref={card} className="lv-type-card lv-dark" style={elementStyle(type.stem)}>
         <p className="lv-cert-head"><span>STELLA FILE No.{number}</span><span>診断日 {diagnosedOn}</span></p>
         <p className="lv-result-label" aria-hidden="true">YOUR CHARACTER</p>
-        <div className="lv-type-card-art"><Character type={type} priority /></div>
+        <div className="lv-type-card-art"><Character type={type} priority size={145} /></div>
         <p className="lv-result-lead">あなたのキャラは</p>
         <h1><TypeName name={type.displayName} /></h1>
         <p className="lv-type-card-catch"><Phrases>{love.catch}</Phrases></p>

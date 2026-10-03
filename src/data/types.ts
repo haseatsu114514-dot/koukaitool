@@ -36,6 +36,10 @@ export const CHARACTER_TYPES: CharacterType[] = [
 ];
 export const typeByStem = (stem: Stem) => CHARACTER_TYPES.find(type => type.stem === stem)!;
 export const typeBySlug = (slug: string) => CHARACTER_TYPES.find(type => type.slug === slug);
+/** Widths of the small lossy copies made by scripts/character-web-images.mjs, for characters shown small (srcset in Character). */
+export const CHARACTER_SIZES = [128, 256, 512] as const;
+export const characterSizedSrc = (type: CharacterType, width: (typeof CHARACTER_SIZES)[number]) => `/characters/${type.slug}-soft-${width}.webp`;
+
 export function characterAsset(type: CharacterType): CharacterAsset {
   return { slug: type.slug, status: "approved", src: `/characters/${type.slug}-soft.png`, displaySrc: `/characters/${type.slug}-soft.webp`, alt: `${type.displayName}のイラスト`, styleVersion: ART_STYLE.version, width: 1254, height: 1254, provenance: { kind: "generation", provider: "OpenAI", createdAt: "2026-10-01" } };
 }
