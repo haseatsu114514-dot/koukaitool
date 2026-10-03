@@ -48,7 +48,7 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
    - Longer running text (four lines and more) breaks by character like print, with strict kinsoku: whole phrases would leave
      ragged gaps there. It is left-aligned (justification spread the characters apart) and never ends on one or two characters.
    - Type names break only between the modifier and the animal (TypeName). */
-.love :is(h1, h2, h3, .lv-kicker, .lv-head-en, .lv-compat-label, .lv-cert-sign, .lv-line-kicker, .lv-steps li, .lv-lose h3, .lv-win h3) { font-feature-settings: "palt"; }
+.love :is(h1, h2, h3, .lv-kicker, .lv-head-en, .lv-compat-label, .lv-line-kicker, .lv-steps li, .lv-lose h3, .lv-win h3) { font-feature-settings: "palt"; }
 .love p, .love li { word-break: normal; line-break: strict; overflow-wrap: break-word; text-wrap: pretty; }
 .love .phrase { display: inline-block; max-width: 100%; }
 .lv-prose p, .lv-reasons p, .lv-text, .lv-win p, .lv-lose p, .lv-gift-text, .lv-hint p, .lv-mid-text { text-align: start; text-wrap: pretty; }
@@ -188,11 +188,6 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-type-card-catch { display: inline-block; max-width: 100%; margin-top: 12px; padding: 6px 18px; border-radius: 999px; border: 1px solid #e3b45a73; background: #e3b45a14; font-size: 14.5px; font-weight: 700; line-height: 1.7; color: #f1d9a6; }
 .lv-keywords { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
 .lv-keywords li { padding: 3px 12px; border-radius: 999px; background: #ffffff14; font-size: 13px; color: var(--body); }
-/* The creator's signature at the foot of the certificate. */
-.lv-cert-sign { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px 8px 0; padding-top: 14px; border-top: 1px dashed #e3b45a47; }
-.lv-cert-sign .lv-reader-icon { box-shadow: 0 0 0 1.5px #e3b45a80; }
-.lv-cert-sign span { display: grid; font-family: var(--serif); font-size: 14.5px; font-weight: 700; line-height: 1.45; letter-spacing: .08em; text-align: left; color: var(--ink); }
-.lv-cert-sign small { font-family: var(--sans); font-size: 10.5px; letter-spacing: .14em; color: var(--lv-gold); }
 
 .lv-r-sec { margin-top: 44px; }
 .lv-r-title { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; font-size: 21px; line-height: 1.5; color: var(--lv-ink); }
@@ -239,14 +234,6 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-compat-types li { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; line-height: 1.45; color: var(--lv-ink); }
 .lv-mini-art { display: grid; place-items: center; flex-shrink: 0; width: 42px; height: 42px; overflow: hidden; border-radius: 50%; border: 2px solid var(--el); background: var(--tint); }
 .lv-mini-art .character { width: 90%; height: 90%; }
-/* What only the reading can tell, at the end of the compatibility card: a row that points down to the invitation. */
-.lv-compat-row.is-locked { background: linear-gradient(180deg, #fffaf0, #fbf2df); color: inherit; text-decoration: none; }
-.is-locked .lv-compat-label { display: inline-flex; align-items: center; gap: 4px; border-color: #e3b45a99; background: #fff; color: var(--lv-gold-ink); }
-/* A hidden character in the locked 最高の相性 row. */
-.lv-mini-art.is-hidden { border: 2px dashed #e3b45a; background: #fff; font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--lv-gold-ink); }
-.lv-hidden-name { letter-spacing: .2em; color: var(--lv-gold-ink); }
-.is-locked.is-best .lv-compat-label { border-color: transparent; background: var(--lv-gold); color: var(--lv-ink); }
-.lv-locked-more { display: inline-flex; align-items: center; gap: 2px; margin-top: 8px; font-size: 12.5px; font-weight: 700; letter-spacing: .04em; color: var(--lv-gold-ink); }
 .lv-compat-note { margin-top: 6px; font-size: 13.5px; line-height: 1.8; color: var(--lv-muted); }
 
 /* The call in the middle of the result: one thing only the reading can tell, with the LINE button. Light, so it reads as part of the result, not an ad. */

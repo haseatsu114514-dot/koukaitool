@@ -95,15 +95,14 @@ test("love page: intro → birth date → love result → official LINE", async 
   await expect(page.getByRole("heading", { name: "あなたのギフト", exact: true })).toBeVisible();
   // The gift is named as a talent; its object is only the motif.
   await expect(page.getByRole("heading", { name: "積み重ねる才能", exact: true })).toBeVisible(); await expect(page.locator(".lv-gift-motif")).toHaveText("モチーフ：レンガ");
-  // All three compatibility levels are shown openly; a locked row after them points down to the invitation.
+  // All three compatibility levels are shown openly; nothing in them is locked.
   // Every LINE button (the call in the middle, the invitation, the bar) uses the love page's own friend-add URL.
-  await expect(page.locator(".is-best")).toHaveAttribute("href", "#line"); await expect(page.locator(".is-best")).not.toContainText("ほっとけないアルパカ"); await expect(page.locator(".is-good .lv-compat-types li").first()).toBeVisible(); await expect(page.locator(".is-foe")).toContainText("正々堂々ドーベルマン"); await expect(page.locator(".is-foe")).toContainText("ひと工夫で深まる相性");
-  await expect(page.locator(".is-locked")).toHaveAttribute("href", "#line");
+  await expect(page.locator(".is-best")).toContainText("ほっとけないアルパカ"); await expect(page.locator(".is-good .lv-compat-types li").first()).toBeVisible(); await expect(page.locator(".is-foe")).toContainText("正々堂々ドーベルマン"); await expect(page.locator(".is-foe")).toContainText("ひと工夫で深まる相性");
+  await expect(page.locator(".is-locked")).toHaveCount(0);
   // Just above the button, who will read for her: the supervising fortune teller's record in plain text.
   await expect(page.locator(".lv-line .lv-reader")).toContainText("ホシヨミ"); await expect(page.locator(".lv-line .lv-reader")).toContainText("3,000件以上");
   await expect(page.locator(".lv-line .lv-reader-icon")).toHaveAttribute("src", /\/hoshiyomi\.webp$/);
-  // The result card is signed by the creator of Stella File.
-  await expect(page.locator(".lv-cert-sign")).toContainText("ステラファイル考案者");
+  await expect(page.locator(".lv-cert-sign")).toHaveCount(0);
   await expect(page.locator(".lv-mid .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love"); await expect(page.locator(".lv-line .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love"); await expect(page.locator(".lv-bar .lv-line-button")).toHaveAttribute("href", "https://lin.ee/e2e-love");
   // Nothing is kept: no birth date in the URL, nothing in storage.
   expect(page.url()).not.toContain("2000"); expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);
