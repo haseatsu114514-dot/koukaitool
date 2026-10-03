@@ -9,7 +9,7 @@ declare global { interface Window { gtag?: (...args: unknown[]) => void } }
 export type FunnelEvent =
   | { name: "diagnosis_complete"; stella_type: string }
   | { name: "line_view"; stella_type: string }
-  | { name: "line_click"; stella_type: string; placement?: "panel" | "bar" }
+  | { name: "line_click"; stella_type: string; placement?: "mid" | "panel" | "bar" }
   | { name: "friend_check"; stella_type: string; friend_type: string }
   | { name: "share"; method: "image" | "native" | "copy"; content_type: "result" | "type"; item_id: string };
 

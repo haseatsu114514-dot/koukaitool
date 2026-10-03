@@ -8,6 +8,7 @@ import type { StellaLevel } from "@/lib/diagnosis/compatibility";
 export type LoveCopy = {
   /** One line under the type name. */
   catch: string;
+  /** Three short words for the result card. Each adds something the catch does not already say. */
   keywords: string[];
   /** Four tendencies in love, stated with confidence (broad enough to hold for the type, not one-off habits). */
   traits: string[];
@@ -24,7 +25,7 @@ export type LoveCopy = {
 export const LOVE_COPY: Record<string, LoveCopy> = {
   grizzly: {
     catch: "尊敬から始まる、一途でまっすぐな恋",
-    keywords: ["一途", "尊敬が恋のスイッチ", "甘え下手"],
+    keywords: ["しっかり者", "甘え下手", "ギャップが魅力"],
     traits: ["見た目より、生き方を尊敬できる人に惹かれる", "好きな人の前ほど、しっかり者でいようとする", "本当は甘えたいのに、弱みを見せるのが苦手", "一度好きになると、一途に相手を想い続ける"],
     charm: "あなたの魅力は、裏表のないまっすぐさと、ほめられたときにふと見せる照れた顔のギャップ。いつも頼られる側だからこそ、弱いところを少し見せた瞬間に、相手は「守りたい」と感じます。しっかり者の顔は半分だけにして、素直な一面をのぞかせてください。",
     win: "仕事や趣味など、一緒に何かに取り組む場で恋が育つタイプ。がんばる姿を見てもらい、尊敬し合える関係から始めるとうまくいきます。好きになったら、駆け引きより、まっすぐ気持ちを伝えるほうが届きます。",
@@ -33,7 +34,7 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
   },
   rabbit: {
     catch: "気づけば選ばれている、愛され上手の恋",
-    keywords: ["愛され上手", "合わせ上手", "縁に強い"],
+    keywords: ["人当たりがいい", "連絡マメ", "縁に強い"],
     traits: ["相手の好みに、自然と自分を合わせられる", "こまめな連絡や気づかいで、距離を縮めていく", "人の縁や紹介から、恋が始まりやすい", "合わせすぎて、本音を後回しにしがち"],
     charm: "あなたの魅力は、一緒にいる人を心地よくさせる力と、思わず守りたくなる愛嬌。人の縁にも恵まれやすい、生まれつきの愛され体質です。その魅力は、相手に合わせているときより、あなたの「好き」がにじみ出たときにいちばん輝きます。",
     win: "人の縁を味方につけるとうまくいきます。友だちの紹介や、知り合いが集まる場に顔を出すほど、いい出会いが巡ってきます。気になる人には、こまめな連絡で少しずつ距離を縮めていきましょう。",
@@ -51,7 +52,7 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
   },
   fox: {
     catch: "小さな変化に気づける、じっくり育てる恋",
-    keywords: ["観察上手", "じっくり派", "気配り"],
+    keywords: ["こだわり派", "聞き上手", "見極め上手"],
     traits: ["こだわりの趣味が合う人に、ぐっと惹かれる", "相手の何気ないひと言を、よく覚えている", "好きになるまで、じっくり相手を見極める", "細かいことに、人一倍気づいてしまう"],
     charm: "あなたの魅力は、言葉にしない気持ちまでくみ取れる観察力。「この人は、私のことをわかってくれる」と感じさせる力は、ほかのタイプにはなかなかありません。その気づきを相手を喜ばせるひと言に変えたとき、あなたは誰かの特別な人になります。",
     win: "時間をかけて信頼を積み重ねるとうまくいきます。相手をよく見て、好きなものや小さな変化に気づいてあげることで、自然と心をつかめます。こだわりの趣味を一緒に楽しめる相手とは、深い関係になれます。",
@@ -60,7 +61,7 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
   },
   panda: {
     catch: "包み込む安心感で、長く愛される恋",
-    keywords: ["包容力", "一途", "面倒見"],
+    keywords: ["一途", "面倒見がいい", "がまん強い"],
     traits: ["好きになる人のタイプが、ずっと変わらない", "恋人のことは、つい世話を焼いてしまう", "ドキドキより、安心できる関係を選ぶ", "不満をため込み、限界で一気に爆発しやすい"],
     charm: "あなたの魅力は、相手を丸ごと受け止める包容力と、気分で心変わりしない安定感。付き合うほど良さがわかる、長く愛されるタイプです。頼りがいのある顔だけでなく、たまに甘える姿を見せると、その魅力はさらに深まります。",
     win: "時間をかけて安心感を育てるとうまくいきます。派手なアプローチより、困ったときに頼れる存在でいることで、相手の心をしっかりつかめます。価値観の近い相手となら、長く穏やかな関係を築けます。",
@@ -69,7 +70,7 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
   },
   alpaca: {
     catch: "家族みたいに｜大切にする、あたたかい恋",
-    keywords: ["献身的", "世話好き", "家庭的"],
+    keywords: ["献身的", "世話好き", "先回り上手"],
     traits: ["好きな人のために、頼まれる前から動ける", "放っておけない人に、惹かれやすい", "相手のことを、自分のこと以上に気にかける", "尽くしすぎて、自分が疲れてしまいがち"],
     charm: "あなたの魅力は、相手を本気で思いやり、家族のように支えられるあたたかさ。そばにいるだけで「この人となら安心して暮らせる」と思わせる力があります。どこか独特でかわいらしい雰囲気も、あなたが愛される理由のひとつです。",
     win: "日々の小さな気づかいで、少しずつ関係を育てるとうまくいきます。手料理や体調を気づかうひと言など、あなたらしい思いやりが相手の心に残ります。お互いに支え合える、対等な相手を選ぶとうまくいきます。",
@@ -78,7 +79,7 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
   },
   doberman: {
     catch: "駆け引きなしの、正直でまっすぐな恋",
-    keywords: ["正直", "一途", "駆け引きなし"],
+    keywords: ["一途", "誠実", "白黒つけたい"],
     traits: ["恋の駆け引きは、とことん苦手", "好きならはっきり伝えたいし、はっきり言ってほしい", "一度決めた相手を、とことん大事にする", "ケンカになると、お互い引けずに長引きやすい"],
     charm: "あなたの魅力は、嘘のない言葉と、一度決めた相手を裏切らない誠実さ。駆け引きをしないぶん、相手は「この人の言葉は信じられる」と安心できます。好みが分かれやすいからこそ、あなたに惹かれた人は、とことんあなたを好きでいてくれます。",
     win: "正直に気持ちを伝えて、はっきりした関係をつくるとうまくいきます。万人に好かれようとせず、素のあなたを好きになってくれる人を選ぶほど、恋はうまくいきます。",
@@ -87,7 +88,7 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
   },
   hedgehog: {
     catch: "特別扱いに弱い、繊細な高嶺の花の恋",
-    keywords: ["高嶺の花", "繊細", "特別扱いに弱い"],
+    keywords: ["上品", "照れ屋", "強がり"],
     traits: ["最初は、「近寄りがたい」と思われやすい", "好きな人の前ほど、そっけなくなってしまう", "特別扱いされると、心を開きやすい", "傷つくのが怖くて、平気なふりをしがち"],
     charm: "あなたの魅力は、近寄りがたいほどの上品さと、心を許した相手にだけ見せる繊細さのギャップ。こだわりを持って自分を磨いているぶん、自然と憧れの目で見られています。ほんの少しガードをゆるめるだけで、その魅力はぐっと伝わりやすくなります。",
     win: "あなたを大切に扱ってくれる相手を選ぶのが、いちばんの近道。追いかけるより、丁寧にアプローチしてくれる人に少しずつ心を開いていくほうが、うまくいくタイプです。信頼できた相手とは、深く長い関係を築けます。",
@@ -96,7 +97,7 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
   },
   orca: {
     catch: "好きになったら一直線、情熱いっぱいの恋",
-    keywords: ["情熱的", "一直線", "自由が好き"],
+    keywords: ["自由が好き", "直感型", "懐が深い"],
     traits: ["好きになると、まっすぐ突き進む", "束縛されると、気持ちが離れやすい", "新しいことを、一緒に楽しめる人に惹かれる", "直感で恋に落ちやすい"],
     charm: "あなたの魅力は、好きになったら迷わず飛び込める情熱と、どんな人も受け入れる懐の深さ。一緒にいると新しい世界を見せてくれるので、相手は毎日が楽しくなります。隠しきれない存在感で、出会いのチャンスも自然と多いタイプです。",
     win: "行動力で出会いを広げるとうまくいきます。旅行や新しい趣味など、あなたがワクワクする場所に飛び込むほど、相性のいい相手に出会えます。好きになったら、情熱的なアプローチがよく効きます。",
@@ -105,7 +106,7 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
   },
   capybara: {
     catch: "そばにいるだけで｜癒しあう、穏やかな恋",
-    keywords: ["癒し系", "寄り添い", "ため込みがち"],
+    keywords: ["自然体", "さみしがり", "ため込みがち"],
     traits: ["一緒にいて落ち着ける人を、いちばん大切にする", "好きな人の悩みを、自分のことのように受け止める", "さみしくても、なかなか口に出せない", "平気そうに見えて、心の中にため込みやすい"],
     charm: "あなたの魅力は、そばにいるだけで相手をほっとさせる、やわらかな空気。「この人の前では素の自分でいられる」と思わせる力があります。好きなことに夢中になる姿も、一緒に楽しめる人には大きな魅力です。",
     win: "穏やかな時間を積み重ねて、心の距離を縮めるとうまくいきます。共通の趣味や「好き」を語り合える相手とは、自然と深い関係になれます。焦らず、あなたのペースを大切にしてくれる人を選んでください。",
@@ -141,6 +142,29 @@ export const LOVE_COMPAT: Record<Exclude<StellaLevel, "mid">, { label: string; n
 
 /** What the official LINE adds. After the friend add, a form (name, birth date, optional birth time, theme, situation and worry,
  * the ideal, what she is doing toward it, the one thing she most wants to know) leads to a free reading written for her alone.
- * Keep this in step with that form; it does not promise timing. */
-export const LOVE_LINE_BENEFITS = ["今の状況と悩みに合わせた、恋の進め方", "理想の恋に近づくために、今できること", "相性を味方につける、付き合い方のコツ", "いちばん知りたいことへの、あなただけの答え"];
-export const LOVE_LINE_STEPS = ["LINEで｜友だち追加", "3分ほどの｜質問に回答", "鑑定を｜無料でお届け"];
+ * The site reads only the birth day and month, so everything here is type-level; the reading looks at the whole birth date and her situation.
+ * The first two benefits are the hook: the form does not ask about them, and the site never shows them, so the reading must always cover them
+ * (they are also teased in the result: LOVE_TEASERS). The last two come from the form. It does not promise timing. */
+export const LOVE_LINE_BENEFITS = ["本当に結ばれやすい｜相手の特徴", "あなたが気づいていない、恋のブレーキ", "今の状況と悩みに合わせた、恋の進め方", "いちばん知りたいことへの、あなただけの答え"];
+/** The form asks for the situation in her own words and the reading is written in full, so no step promises a few minutes. */
+export const LOVE_LINE_STEPS = ["LINEで｜友だち追加", "今の状況を｜詳しく伝える", "本格鑑定を｜無料でお届け"];
+
+/** Where the result points to what only the reading can tell: after the usual misstep (the call in the middle of the result)
+ * and at the end of the compatibility card. Each names one of the first two LINE benefits, at the moment she wants it most. */
+export const LOVE_TEASERS = {
+  brake: { label: "公式LINEの無料鑑定で", title: "あなたが気づいていない、｜恋のブレーキ", text: "やりがちなNGは、同じキャラの人に共通する傾向です。あなた自身が無意識にかけている恋のブレーキは、生まれた年・月・日のすべてと、今の状況まで読み解いて、はじめて見えてきます。" },
+  partner: { label: "鑑定でわかる", title: "本当に結ばれやすい相手の特徴", note: "強く惹かれる相手と、幸せになりやすい相手は、同じとは限りません。生まれた年・月・日のすべてから、あなたと本当に結ばれやすい相手の特徴を読み解きます。" },
+};
+
+/** The fortune teller who devised Stella File and writes the LINE reading: ホシヨミ, with their icon (public/hoshiyomi.webp, 320px, from the approved artwork).
+ * Called the creator (考案者) of Stella File, never a supervisor (監修). Shown as a signature on the result card, in the LINE invitation,
+ * in reason 2 and in the footer (not in the hero). The facts are as the fortune teller gave them: no calendar years, and the 占い館 itself is not named.
+ * Worded as on ホシヨミ's Threads profile (hoshiyomi.stella): 相談者数1,000名超, 政財界・芸能人・インフルエンサーの診断歴, 原理原則に基づく由緒正しき方法.
+ * Update them here and in the reasons on the page if they change. */
+export const LOVE_READER = {
+  name: "ホシヨミ",
+  icon: "/hoshiyomi.webp",
+  role: "ステラファイル考案者",
+  stats: [["10年", "東洋の占術"], ["1,000名超", "相談者数"], ["月間1位", "占い館の売上"]] as [value: string, label: string][],
+  note: "政財界・芸能人・インフルエンサーの診断歴あり。｜原理原則に基づく由緒正しき方法で、｜あなたに良縁を引き寄せます。",
+};

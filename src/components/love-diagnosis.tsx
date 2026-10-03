@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { DiagnosisResult } from "@/lib/diagnosis";
 import { typeByStem } from "@/data/types";
 import { track } from "@/lib/analytics";
@@ -23,12 +23,12 @@ function useReveal(view: unknown) {
 }
 
 /** The love page's two states on one URL: the introduction with the birth date form, then the result.
- * Nothing is saved: the birth date and the result live only in this component, so a reload starts over. */
+ * Nothing is saved: the birth date and the result live only in this component, so a reload starts over.
+ * There is no way back to the form from the result: the result leads only to the official LINE. */
 export function LoveDiagnosis({ hero, intro }: { hero: React.ReactNode; intro: React.ReactNode }) {
   const [result, setResult] = useState<DiagnosisResult | null>(null);
   const [reveal, setReveal] = useState(false);
   const [formGone, setFormGone] = useState(false), [finalIn, setFinalIn] = useState(false);
-  const retried = useRef(false);
   // A small bar leads back to the form once it scrolls away, and steps aside at the closing call, which has its own button.
   useEffect(() => {
     const form = document.getElementById("diagnose"), final = document.getElementById("lv-final");
@@ -38,11 +38,7 @@ export function LoveDiagnosis({ hero, intro }: { hero: React.ReactNode; intro: R
     formObserver.observe(form); finalObserver.observe(final);
     return () => { formObserver.disconnect(); finalObserver.disconnect(); setFormGone(false); };
   }, [result]);
-  useEffect(() => {
-    if (result) window.scrollTo({ top: 0, behavior: "instant" });
-    // Back from the result: return to the form, ready for another date.
-    else if (retried.current) { document.getElementById("diagnose")?.scrollIntoView({ behavior: "instant", block: "center" }); document.getElementById("love-year")?.focus({ preventScroll: true }); }
-  }, [result]);
+  useEffect(() => { if (result) window.scrollTo({ top: 0, behavior: "instant" }); }, [result]);
   useReveal(result);
   function show(next: DiagnosisResult) {
     track({ name: "diagnosis_complete", stella_type: typeByStem(next.pillar.stem).slug });
@@ -51,22 +47,22 @@ export function LoveDiagnosis({ hero, intro }: { hero: React.ReactNode; intro: R
   }
   if (result) return <>
     {reveal && <BookReveal type={typeByStem(result.pillar.stem)} onDone={() => setReveal(false)} />}
-    <LoveResult result={result} onRetry={() => { retried.current = true; setResult(null); }} />
+    <LoveResult result={result} />
   </>;
   return <>
     <section className="lv-hero lv-dark lv-sky">
       <div className="lv-wrap">
         {hero}
         <div id="diagnose" className="lv-form-card">
-          <h2 className="lv-form-title">生年月日を入れて、診断スタート</h2>
+          <h2 className="lv-form-title"><Phrases>生年月日を入れて、診断スタート</Phrases></h2>
           <BirthForm idPrefix="love-" submitLabel="恋愛運を診断する" onDiagnose={show} autoFill yearSelect />
-          <p className="micro lv-form-note">生年月日は、どこにも送信・保存されません。</p>
+          <p className="micro lv-form-note"><Phrases>生年月日は、どこにも送信・保存されません。</Phrases></p>
         </div>
       </div>
     </section>
     {intro}
     <div className={`lv-bar${formGone && !finalIn ? " is-shown" : ""}`} inert={!formGone || finalIn}>
-      <div className="lv-bar-inner"><p><Phrases>生年月日を入れるだけ。約10秒・無料</Phrases></p><a className="lv-cta" href="#diagnose">無料で診断する</a></div>
+      <div className="lv-bar-inner"><p><span>生年月日を入れるだけ。</span><span>約10秒・無料</span></p><a className="lv-cta" href="#diagnose">無料で診断する</a></div>
     </div>
   </>;
 }

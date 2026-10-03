@@ -19,7 +19,7 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
   --lv-blush: #f8efe9;
   --lv-ink: #1b2538;
   --lv-body: #333e4f;
-  --lv-muted: #5e6777;
+  --lv-muted: #525c6c;
   --lv-gold: #e3b45a;
   --lv-gold-ink: #8a6216;
   --lv-rose: #b4566a;
@@ -28,8 +28,13 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
   /* Shared tokens read by the birth form and the book-opening intro, pointed at the light page. */
   --paper: #fff; --surface: #fff; --surface-2: #f4eee2; --ink: var(--lv-ink); --body: var(--lv-body); --muted: var(--lv-muted); --line: var(--lv-line); --line-strong: var(--lv-line-strong); --accent: var(--lv-gold); --accent-hover: #edc478; --on-accent: var(--lv-ink);
   overflow-x: clip;
-  /* Zen Kaku Gothic New is light at 400; running text is set at 500 so it stays easy to read on a phone. */
+  /* Running text in the phone's own Japanese gothic (Hiragino on iPhone, Noto Sans CJK on Android), which reads more clearly at
+     body sizes than a web font; mincho (Shippori Mincho B1) is kept for the large headings. 500 keeps Windows' Yu Gothic from looking thin. */
+  --sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic", YuGothic, Meiryo, sans-serif;
+  font-family: var(--sans);
   font-weight: 500;
+  /* Full-width punctuation in reading text; the tighter proportional spacing (palt) only in headings and labels. */
+  font-feature-settings: normal;
 }
 /* Night-blue bands (header, hero, cards, closing call). */
 .lv-dark { --ink: #f4ecdc; --body: #d3dae4; --muted: #a5b1c3; --line: #2b4266; --line-strong: #3b5880; color: var(--ink); background: var(--lv-navy); }
@@ -37,15 +42,18 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .love .lv-dark :focus-visible, .love .lv-dark:focus-visible { outline-color: var(--lv-gold); }
 
 /* Line breaks.
-   - Running text (paragraphs, descriptions) is plain text and breaks like printed Japanese: by character,
-     with strict kinsoku, justified, never leaving one or two characters alone on the last line.
-   - Short lines (headings, catches, labels, list items of one or two lines, centred leads) go through
-     Phrases: they break only after 、。！？ or at a ｜ hint in the copy, and balance their lines.
+   - Headings, catches, labels, short list items and notes of up to about three lines go through Phrases: each phrase is an inline
+     block, so a line breaks only between phrases (never inside a word such as 相手 or ベース), after 、。！？, or at a ｜ hint in the
+     copy, and the lines are balanced (no long first line over a short second one).
+   - Longer running text (four lines and more) breaks by character like print, with strict kinsoku: whole phrases would leave
+     ragged gaps there. It is left-aligned (justification spread the characters apart) and never ends on one or two characters.
    - Type names break only between the modifier and the animal (TypeName). */
+.love :is(h1, h2, h3, .lv-kicker, .lv-head-en, .lv-compat-label, .lv-cert-sign, .lv-line-kicker, .lv-steps li, .lv-lose h3, .lv-win h3) { font-feature-settings: "palt"; }
 .love p, .love li { word-break: normal; line-break: strict; overflow-wrap: break-word; text-wrap: pretty; }
 .love .phrase { display: inline-block; max-width: 100%; }
-.lv-prose p, .lv-reasons p, .lv-text, .lv-win p, .lv-lose p, .lv-gift-text, .lv-hint p, .lv-r-lead, .lv-compat-note { text-align: justify; text-justify: inter-character; }
-.love :is(h1, h2, h3, h4), .lv-lead, .lv-learn p, .lv-pair-card p, .lv-stanza p, .lv-footer p, .lv-checks li, .lv-checks-note, .lv-traits li, .lv-type p, .lv-type-card-catch, .lv-statement p, .lv-final-text, .lv-line-lead, .lv-line-list li, .lv-line-note, .lv-steps li, .lv-form-note, .lv-bar p { text-wrap: balance; }
+.lv-prose p, .lv-reasons p, .lv-text, .lv-win p, .lv-lose p, .lv-gift-text, .lv-hint p, .lv-mid-text { text-align: start; text-wrap: pretty; }
+/* Wrapped in .love :is() so it outranks ".love p, .love li" above: a plain ".lv-lead" lost to it and was never balanced. */
+.love :is(h1, h2, h3, h4, .lv-lead, .lv-head p, .lv-learn p, .lv-stanza p, .lv-footer p, .lv-checks li, .lv-checks-note, .lv-traits li, .lv-type p, .lv-type-card-catch, .lv-statement p, .lv-final-text, .lv-line-lead, .lv-line-list li, .lv-line-note, .lv-steps li, .lv-form-note, .lv-bar p, .lv-r-lead, .lv-compat-note, .lv-reader-note, .lv-reader-stats span, .lv-gift-title) { text-wrap: balance; }
 
 .lv-wrap { width: min(100% - 40px, 680px); margin-inline: auto; }
 .lv-wrap-wide { width: min(100% - 40px, 1040px); margin-inline: auto; }
@@ -71,7 +79,7 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-sky::before { opacity: .45; background-image: radial-gradient(1px 1px at 20px 30px, #fff 50%, transparent), radial-gradient(1px 1px at 140px 80px, #cfe7ff 50%, transparent), radial-gradient(1px 1px at 90px 190px, #fff 50%, transparent), radial-gradient(1px 1px at 260px 250px, #fff 50%, transparent); background-size: 300px 300px; }
 .lv-sky::after { background-image: radial-gradient(1.6px 1.6px at 60px 120px, #fff 50%, transparent), radial-gradient(1.2px 1.2px at 210px 40px, #ffe9b8 50%, transparent), radial-gradient(1.6px 1.6px at 290px 190px, #fff 50%, transparent), radial-gradient(1.2px 1.2px at 30px 260px, #cfe7ff 50%, transparent); background-size: 330px 310px; animation: lv-twinkle 4.8s ease-in-out infinite alternate; }
 
-.lv-hero { padding: 24px 0 44px; text-align: center; }
+.lv-hero { padding: 18px 0 44px; text-align: center; }
 /* Opening sequence: the characters pop in one by one, then kicker, headline, lead, chips and the form follow. */
 .lv-hero .lv-wrap > * { animation: rise .7s var(--ease) both; }
 .lv-hero .lv-wrap > .lv-faces { animation: none; }
@@ -91,11 +99,11 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-title-line { display: inline-block; }
 .lv-title em { font-style: normal; color: var(--lv-gold); }
 .lv-lead { max-width: 24em; margin: 14px auto 0; font-size: 15px; line-height: 1.9; color: var(--body); }
-.lv-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 16px 0 0; padding: 0; list-style: none; }
+.lv-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
 .lv-meta li { padding: 3px 11px; border-radius: 999px; border: 1px solid #e3b45a73; background: #e3b45a14; font-size: 12px; font-weight: 700; color: #f1d9a6; }
 
 /* Birth date card: white on the night band */
-.lv-form-card { max-width: 480px; margin: 22px auto 0; padding: 22px 20px 16px; border-radius: 18px; background: #fff; color: var(--lv-ink); text-align: left; box-shadow: 0 18px 40px -18px #000a; scroll-margin-top: 24px;
+.lv-form-card { max-width: 480px; margin: 18px auto 0; padding: 22px 20px 16px; border-radius: 18px; background: #fff; color: var(--lv-ink); text-align: left; box-shadow: 0 18px 40px -18px #000a; scroll-margin-top: 24px;
   --ink: var(--lv-ink); --body: var(--lv-body); --muted: var(--lv-muted); --line: var(--lv-line); --line-strong: var(--lv-line-strong); }
 .lv-form-title { margin-bottom: 14px; font-size: 18px; line-height: 1.5; text-align: center; }
 /* The selects already read 年・月・日, so the labels stay for screen readers only. */
@@ -135,33 +143,18 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-learn-icon, .lv-reason-icon { display: grid; place-items: center; flex-shrink: 0; width: 46px; height: 46px; border-radius: 50%; background: var(--lv-navy); color: var(--lv-gold); box-shadow: 0 0 0 3px #fff, 0 0 0 4px #e3b45a80; }
 .lv-learn-no { display: block; font-family: var(--serif); font-size: 13px; font-weight: 700; line-height: 1.3; letter-spacing: .12em; color: var(--lv-gold-ink); }
 .lv-learn h3 { margin-top: 2px; font-family: var(--serif); font-size: 17px; line-height: 1.5; color: var(--lv-ink); }
-.lv-learn p { margin-top: 2px; font-size: 13.5px; line-height: 1.8; color: var(--lv-body); }
+.lv-learn p { margin-top: 2px; font-size: 14px; line-height: 1.8; color: var(--lv-body); }
 
 .lv-reasons { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
 .lv-reasons li { display: flex; align-items: flex-start; gap: 16px; padding: 22px 20px 20px; border-radius: 16px; border: 1px solid var(--lv-line); background: #fff; }
 .lv-reason-no { font-size: 12px; font-weight: 700; letter-spacing: .14em; color: var(--lv-gold-ink); }
 .lv-reasons h3 { margin-top: 4px; font-family: var(--serif); font-size: 19px; line-height: 1.5; color: var(--lv-ink); }
-.lv-reasons p { margin-top: 6px; font-size: 14.5px; line-height: 1.9; color: var(--lv-body); }
+.lv-reasons p { margin-top: 6px; font-size: 15px; line-height: 1.9; color: var(--lv-body); }
 .lv-statement { margin-top: 28px; text-align: center; }
 .lv-statement-lead { font-family: var(--serif); font-size: clamp(18px, 4.6vw, 22px); font-weight: 700; line-height: 1.7; color: var(--lv-ink); }
 .lv-statement p:not(.lv-statement-lead) { max-width: 34em; margin: 10px auto 0; font-size: 15px; line-height: 1.95; color: var(--lv-body); }
 
-/* キャラ × アイテム */
-.lv-pair { display: grid; justify-items: center; gap: 6px; max-width: 680px; margin-inline: auto; }
-.lv-pair-card { width: 100%; padding: 18px 20px; border-radius: 16px; border: 1px solid var(--lv-line); background: #fff; }
-.lv-pair-label { font-size: 14px; font-weight: 700; color: var(--lv-gold-ink); }
-.lv-pair-label b { margin-right: 6px; font-family: var(--serif); font-size: 20px; color: var(--lv-ink); }
-.lv-pair-card p:not(.lv-pair-label) { margin-top: 4px; font-size: 14px; line-height: 1.85; color: var(--lv-body); }
-.lv-pair-x { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--lv-navy); font-size: 15px; font-weight: 700; line-height: 1; color: var(--lv-gold); }
-/* The ten gifts in one even row, whatever the card's width. */
-.lv-item-icons { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; margin: 14px 0 0; padding: 0; list-style: none; }
-.lv-item-icons li { display: grid; place-items: center; width: 100%; max-width: 32px; aspect-ratio: 1; justify-self: center; border-radius: 50%; border: 1px solid #e3b45a80; color: var(--lv-gold-ink); }
-.lv-item-icons svg { width: 58%; height: 58%; }
-/* The same row for the ten characters, each on its group colour (in five-element order). */
-.lv-chara-icons li { overflow: hidden; border: 1.5px solid var(--el); background: var(--tint); }
-.lv-chara-icons .character { width: 92%; height: 92%; object-fit: contain; }
-
-/* The ten characters (their own section, after キャラ×ギフト): a swipeable strip on phones, two rows of five on wide screens.
+/* The ten characters (their own section, after "what you get"): a swipeable strip on phones, two rows of five on wide screens.
    On a phone two cards and a good part of the third are in view, so the row plainly continues; TypeStrip adds a one-time slide
    and the progress line with "スワイプ" underneath. The cards are just wide enough for the longest catch phrase (11 characters, no tracking). */
 .lv-types { display: flex; gap: 10px; margin: 0 -20px; padding: 2px 20px 6px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 20px; scrollbar-width: none; list-style: none; }
@@ -169,7 +162,7 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-type { flex: 0 0 150px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 8px 16px; border-radius: 14px; border: 1px solid var(--lv-line); background: var(--lv-cream); text-align: center; scroll-snap-align: start; }
 .lv-type-art { display: grid; place-items: center; width: 76px; aspect-ratio: 1; overflow: hidden; border-radius: 50%; border: 2px solid var(--el); background: var(--tint); }
 .lv-type-art .character { width: 88%; height: 88%; }
-.lv-type h3 { margin: 0; font-family: var(--serif); font-size: 14px; line-height: 1.45; color: var(--lv-ink); }
+.lv-type h3 { margin: 0; font-family: var(--sans); font-size: 14px; font-weight: 700; line-height: 1.45; color: var(--lv-ink); }
 .lv-types.is-peeking > li { animation: lv-peek 1.3s var(--ease) .35s; }
 .lv-types-hint { display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 12px; font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--lv-gold-ink); }
 .lv-types-track { position: relative; width: 56px; height: 3px; margin-right: 8px; overflow: hidden; border-radius: 3px; background: var(--lv-line); }
@@ -203,12 +196,17 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-type-card h1 { margin-top: 2px; font-size: clamp(25px, 7vw, 34px); line-height: 1.4; }
 .lv-type-card-catch { display: inline-block; max-width: 100%; margin-top: 12px; padding: 6px 18px; border-radius: 999px; border: 1px solid #e3b45a73; background: #e3b45a14; font-size: 14.5px; font-weight: 700; line-height: 1.7; color: #f1d9a6; }
 .lv-keywords { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
-.lv-keywords li { padding: 3px 12px; border-radius: 999px; background: #ffffff14; font-size: 12.5px; color: var(--body); }
+.lv-keywords li { padding: 3px 12px; border-radius: 999px; background: #ffffff14; font-size: 13px; color: var(--body); }
+/* The creator's signature at the foot of the certificate. */
+.lv-cert-sign { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px 8px 0; padding-top: 14px; border-top: 1px dashed #e3b45a47; }
+.lv-cert-sign .lv-reader-icon { box-shadow: 0 0 0 1.5px #e3b45a80; }
+.lv-cert-sign span { display: grid; font-family: var(--serif); font-size: 14.5px; font-weight: 700; line-height: 1.45; letter-spacing: .08em; text-align: left; color: var(--ink); }
+.lv-cert-sign small { font-family: var(--sans); font-size: 10.5px; letter-spacing: .14em; color: var(--lv-gold); }
 
 .lv-r-sec { margin-top: 44px; }
 .lv-r-title { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; font-size: 21px; line-height: 1.5; color: var(--lv-ink); }
 .lv-r-title::before { content: ""; flex-shrink: 0; width: 10px; height: 10px; rotate: 45deg; background: var(--lv-gold); }
-.lv-r-lead { margin: -4px 0 14px; font-size: 13.5px; line-height: 1.8; color: var(--lv-muted); }
+.lv-r-lead { margin: -4px 0 14px; font-size: 14px; line-height: 1.85; color: var(--lv-body); }
 .lv-text { font-size: 15.5px; line-height: 2; color: var(--lv-body); }
 
 .lv-traits { margin: 0; padding: 4px 18px; border-radius: 16px; border: 1px solid var(--lv-line); background: #fff; list-style: none; }
@@ -223,7 +221,7 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-win h3, .lv-lose h3 { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 16px; }
 .lv-win h3 { color: var(--lv-gold-ink); }
 .lv-lose h3 { color: var(--lv-rose); }
-.lv-win p, .lv-lose p { font-size: 14.5px; line-height: 1.9; color: var(--lv-body); }
+.lv-win p, .lv-lose p { font-size: 15px; line-height: 1.9; color: var(--lv-body); }
 
 .lv-gift { padding: 20px; border-radius: 16px; border: 1px solid var(--lv-line); background: #fff; }
 .lv-gift-head { display: flex; align-items: center; gap: 14px; }
@@ -233,13 +231,13 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .love .lucide-dumbbell { rotate: 45deg; }
 .lv-gift-name { font-family: var(--serif); font-size: 22px; line-height: 1.35; color: var(--lv-ink); }
 .lv-gift-title { margin-top: 2px; font-size: 14.5px; font-weight: 700; line-height: 1.6; color: var(--lv-gold-ink); }
-.lv-gift-text { margin-top: 12px; font-size: 14.5px; line-height: 1.9; color: var(--lv-body); }
+.lv-gift-text { margin-top: 12px; font-size: 15px; line-height: 1.9; color: var(--lv-body); }
 
 .lv-hint { display: flex; align-items: flex-start; gap: 14px; padding: 22px 20px; border-radius: 16px; }
 .lv-hint svg { flex-shrink: 0; margin-top: 5px; color: #e9a2ae; }
 .lv-hint p { font-size: 15.5px; line-height: 2; color: var(--ink); }
 
-.lv-compat { border-radius: 16px; border: 1px solid var(--lv-line); background: #fff; }
+.lv-compat { overflow: hidden; border-radius: 16px; border: 1px solid var(--lv-line); background: #fff; }
 .lv-compat-row { display: grid; gap: 10px; padding: 16px 18px; border-top: 1px solid var(--lv-line); }
 .lv-compat-row:first-child { border-top: 0; }
 .lv-compat-label { justify-self: start; padding: 1px 10px; border-radius: 999px; border: 1px solid transparent; font-size: 12px; font-weight: 700; line-height: 1.8; white-space: nowrap; }
@@ -250,21 +248,49 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-compat-types li { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; line-height: 1.45; color: var(--lv-ink); }
 .lv-mini-art { display: grid; place-items: center; flex-shrink: 0; width: 42px; height: 42px; overflow: hidden; border-radius: 50%; border: 2px solid var(--el); background: var(--tint); }
 .lv-mini-art .character { width: 90%; height: 90%; }
-.lv-compat-note { margin-top: 6px; font-size: 13px; line-height: 1.8; color: var(--lv-muted); }
+/* What only the reading can tell, at the end of the compatibility card: a row that points down to the invitation. */
+.lv-compat-row.is-locked { border-top: 1px dashed var(--lv-line-strong); background: linear-gradient(180deg, #fffaf0, #fbf2df); color: inherit; text-decoration: none; }
+.is-locked .lv-compat-label { display: inline-flex; align-items: center; gap: 4px; border-color: #e3b45a99; background: #fff; color: var(--lv-gold-ink); }
+.lv-locked-title { font-family: var(--serif); font-size: 16px; font-weight: 700; line-height: 1.6; color: var(--lv-ink); }
+.lv-locked-more { display: inline-flex; align-items: center; gap: 2px; margin-top: 8px; font-size: 12.5px; font-weight: 700; letter-spacing: .04em; color: var(--lv-gold-ink); }
+.lv-compat-note { margin-top: 6px; font-size: 13.5px; line-height: 1.8; color: var(--lv-muted); }
 
-/* Official LINE. LINE green is theirs: used only on the button and the small label. */
-.lv-line { margin-top: 52px; padding: 30px 20px 24px; border-radius: 22px; text-align: center; scroll-margin-top: 24px; }
+/* The call in the middle of the result: one thing only the reading can tell, with the LINE button. Light, so it reads as part of the result, not an ad. */
+.lv-mid { margin-top: 40px; padding: 24px 20px 22px; border-radius: 18px; border: 1px solid #e3b45a8c; background: linear-gradient(180deg, #fff, #fbf3e2); text-align: center; }
+.lv-mid-label { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--lv-gold-ink); }
+.lv-mid-title { margin-top: 8px; font-size: clamp(19px, 5.2vw, 23px); line-height: 1.55; color: var(--lv-ink); }
+.lv-mid-text { max-width: 30em; margin: 10px auto 0; font-size: 15px; line-height: 1.9; color: var(--lv-body); }
+.lv-mid .lv-line-button { margin-top: 18px; min-height: 56px; }
+
+/* Official LINE. LINE green is theirs: used only on the buttons and the small label. */
+.lv-line { margin: 52px 0 12px; padding: 30px 20px 24px; border-radius: 22px; text-align: center; scroll-margin-top: 24px; }
 .lv-line-kicker { display: inline-block; padding: 2px 14px; border-radius: 999px; background: #06c755; font-size: 12px; font-weight: 700; letter-spacing: .08em; color: #fff; }
-.lv-line-title { margin-top: 12px; font-size: clamp(21px, 5.8vw, 28px); line-height: 1.55; }
+/* Her キャラ, so the invitation reads as hers. */
+.lv-line-for { margin-top: 12px; font-size: 14px; font-weight: 700; letter-spacing: .06em; color: var(--lv-gold); }
+.lv-line-title { margin-top: 4px; font-size: clamp(21px, 5.8vw, 28px); line-height: 1.55; }
 .lv-chunk { display: inline-block; }
 .lv-line-title em { font-style: normal; color: var(--lv-gold); }
-.lv-line-lead { max-width: 30em; margin: 10px auto 0; font-size: 14.5px; line-height: 1.85; color: var(--body); }
+.lv-line-lead { max-width: 30em; margin: 10px auto 0; font-size: 15px; line-height: 1.85; color: var(--body); }
 .lv-line-box { margin-top: 20px; padding: 16px 16px 6px; border-radius: 14px; background: #fff; text-align: left; }
-.lv-line-box-title { font-family: var(--serif); font-size: 15px; font-weight: 700; text-align: center; color: var(--lv-gold-ink); }
+.lv-line-box-title { font-size: 15px; font-weight: 700; letter-spacing: .06em; text-align: center; color: var(--lv-gold-ink); }
 .lv-line-list { margin: 6px 0 0; padding: 0; list-style: none; }
 .lv-line-list li { display: flex; align-items: flex-start; gap: 10px; padding: 11px 0; border-top: 1px solid var(--lv-line); font-size: 14.5px; font-weight: 700; line-height: 1.7; color: var(--lv-ink); }
 .lv-line-list li:first-child { border-top: 0; }
 .lv-line-list svg { flex-shrink: 0; margin-top: 4px; color: var(--lv-gold-ink); }
+/* Who reads for her: three plain figures and one line, under the list of what the reading covers. */
+.lv-reader { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
+/* ホシヨミ: the icon beside the name, centred as one group. */
+.lv-reader-head { display: flex; align-items: center; justify-content: center; gap: 14px; text-align: left; }
+.lv-reader-head p { display: grid; }
+.lv-reader-icon { flex-shrink: 0; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px #e3b45a99; }
+.lv-reader-lead { font-size: 11.5px; font-weight: 700; letter-spacing: .1em; color: var(--muted); }
+.lv-reader-name { font-family: var(--serif); font-size: 19px; line-height: 1.5; letter-spacing: .06em; color: var(--ink); }
+.lv-reader-role { font-size: 12px; font-weight: 700; color: var(--lv-gold); }
+.lv-reader-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
+.lv-reader-stats li { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.lv-reader-stats b { font-family: var(--serif); font-size: clamp(16px, 4.6vw, 20px); line-height: 1.4; letter-spacing: .02em; color: var(--lv-gold); white-space: nowrap; }
+.lv-reader-stats span { font-size: 11.5px; font-weight: 700; line-height: 1.5; color: var(--muted); text-wrap: balance; }
+.lv-reader-note { max-width: 30em; margin: 12px auto 0; font-size: 12.5px; line-height: 1.8; color: var(--muted); }
 .lv-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; counter-reset: step; }
 .lv-steps li { counter-increment: step; padding: 10px 6px 9px; border-radius: 10px; border: 1px solid var(--line-strong); font-size: 12px; font-weight: 700; line-height: 1.55; color: var(--body); }
 .lv-steps li::before { content: counter(step); display: grid; place-items: center; width: 22px; height: 22px; margin: 0 auto 6px; border-radius: 50%; background: var(--lv-gold); font-size: 12px; color: var(--lv-ink); }
@@ -273,17 +299,17 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-line-button:active { transform: translateY(1px); }
 /* A soft ring that keeps drawing the eye to the one action that matters. */
 .lv-line-button::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; animation: lv-ping 2.4s ease-out infinite; }
-.lv-line-note { max-width: 30em; margin: 12px auto 0; font-size: 12px; line-height: 1.8; color: var(--muted); }
+.lv-line-note { max-width: 30em; margin: 12px auto 0; font-size: 12.5px; line-height: 1.8; color: var(--muted); }
 
-.lv-retry { display: flex; align-items: center; gap: 6px; margin: 32px auto 40px; padding: 6px; background: none; font-size: 14px; color: var(--lv-muted); text-decoration: underline; text-underline-offset: 4px; }
-.lv-retry:hover { color: var(--lv-ink); }
 
 /* A bar with the LINE button that follows the reader through the result. */
 .lv-bar-space { height: 76px; }
-.lv-bar { position: fixed; z-index: 80; left: 0; right: 0; bottom: 0; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--lv-line); background: #fffffff5; box-shadow: 0 -8px 24px -16px #10213b80; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); translate: 0 110%; visibility: hidden; transition: translate .25s var(--ease), visibility .25s; }
+.lv-bar { position: fixed; z-index: 80; left: 0; right: 0; bottom: 0; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid #e3b45a66; background: #fbf8f1f2; box-shadow: 0 -10px 28px -22px #10213b8c; -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2); translate: 0 110%; visibility: hidden; transition: translate .25s var(--ease), visibility .25s; }
 .lv-bar.is-shown { translate: 0 0; visibility: visible; }
 .lv-bar-inner { display: flex; align-items: center; gap: 12px; width: min(100%, 640px); margin-inline: auto; }
 .lv-bar p { flex: 1; min-width: 0; font-size: 13px; font-weight: 700; line-height: 1.5; color: var(--lv-ink); }
+/* Two set lines: the point, then the terms. */
+.lv-bar p span { display: block; }
 .lv-bar .lv-line-button, .lv-bar .lv-cta { flex-shrink: 0; width: auto; min-height: 48px; margin: 0; padding: 8px 22px; font-size: 15px; }
 
 /* ---------- Motion & finish ----------
@@ -295,10 +321,10 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-stagger > * { transition: opacity .7s var(--ease), translate .7s var(--ease); transition-delay: calc(var(--i, 0) * 80ms); }
 .lv-stagger.is-waiting > * { opacity: 0; translate: 0 16px; }
 /* Cards: soft depth, and on pointer devices a small lift (transform, so it never fights the reveal's translate). */
-.lv-checks, .lv-learn li, .lv-reasons li, .lv-pair-card, .lv-type, .lv-traits, .lv-win, .lv-gift, .lv-compat { box-shadow: 0 12px 30px -24px #10213b59; }
-.lv-learn li, .lv-reasons li, .lv-pair-card, .lv-type { transition: opacity .7s var(--ease), translate .7s var(--ease), transform .25s var(--ease), box-shadow .25s, border-color .25s; transition-delay: calc(var(--i, 0) * 80ms), calc(var(--i, 0) * 80ms), 0s, 0s, 0s; }
+.lv-checks, .lv-learn li, .lv-reasons li, .lv-type, .lv-traits, .lv-win, .lv-gift, .lv-compat, .lv-mid { box-shadow: 0 12px 30px -24px #10213b59; }
+.lv-learn li, .lv-reasons li, .lv-type { transition: opacity .7s var(--ease), translate .7s var(--ease), transform .25s var(--ease), box-shadow .25s, border-color .25s; transition-delay: calc(var(--i, 0) * 80ms), calc(var(--i, 0) * 80ms), 0s, 0s, 0s; }
 @media (hover: hover) {
-  .lv-learn li:hover, .lv-reasons li:hover, .lv-pair-card:hover, .lv-type:hover { transform: translateY(-3px); border-color: #e3b45a99; box-shadow: 0 18px 34px -22px #10213b73; }
+  .lv-learn li:hover, .lv-reasons li:hover, .lv-type:hover { transform: translateY(-3px); border-color: #e3b45a99; box-shadow: 0 18px 34px -22px #10213b73; }
   .lv-type:hover .lv-type-art .character { animation: lv-hop .5s var(--ease); }
 }
 @keyframes lv-twinkle { from { opacity: .15; } to { opacity: .85; } }
@@ -312,6 +338,9 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .love .book-reveal { --paper: #0b1729; --ink: #f1e9d8; --muted: #9aa8bc; left: 0; right: 0; width: auto; translate: none; }
 
 @media (max-width: 360px) {
+  /* The narrowest phones (320px): keep the three LINE steps and the reading list from breaking inside a word. */
+  .lv-steps li { padding-inline: 2px; font-size: 11px; letter-spacing: 0; }
+  .lv-line-list li { font-size: 13.5px; letter-spacing: 0; }
   .lv-bar p { display: none; }
   .lv-bar .lv-line-button, .lv-bar .lv-cta { flex: 1; }
 }
@@ -328,8 +357,6 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
   .lv-learn, .lv-winlose { grid-template-columns: 1fr 1fr; }
   .lv-compat-row { grid-template-columns: 11em minmax(0, 1fr); align-items: start; gap: 14px; }
   .lv-compat-label { margin-top: 9px; }
-  .lv-pair { grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
-  .lv-pair-card { height: 100%; }
   .lv-hero { padding: 48px 0 72px; }
   .lv-section { padding: 88px 0; }
   .lv-head { margin-bottom: 40px; }
