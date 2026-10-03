@@ -14,7 +14,7 @@ import "./love.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "恋愛運を引き寄せる診断",
-  description: "恋を引き寄せる人は、自分だけの「恋の正解」を知っている。相談者数1,000名超の占い師ホシヨミが考案した、生年月日でわかる恋愛運診断。あなたのキャラ（本質）とギフト（生まれ持った強み）から、魅力の引き出し方、恋がうまくいく法則とやりがちなNG、相性のいい相手がわかります。質問なし・約10秒・無料。",
+  description: "恋を引き寄せる人は、自分だけの「恋の正解」を知っている。鑑定数3,000件以上の占い師ホシヨミが考案した、生年月日でわかる恋愛運診断。あなたのキャラ（本質）とギフト（生まれ持った強み）から、魅力の引き出し方、恋がうまくいく法則とやりがちなNG、相性のいい相手がわかります。質問なし・約10秒・無料。",
   path: "/love/",
   image: "/og/love.jpg",
 });
@@ -30,16 +30,16 @@ const LEARN: [title: string, text: string, icon: LucideIcon][] = [
 ];
 const REASONS: [title: string, text: string, icon: LucideIcon][] = [
   ["「占いの帝王」と呼ばれる｜東洋の占術がベース", "長い歴史の中で受け継がれ、体系化されてきた東洋の占術がベース。霊感や「なんとなく」ではなく、原理原則に基づいて読み解きます。そこに数々の占いや運命学、統計を組み合わせて作りました。", Crown],
-  [`相談者数1,000名超の｜占い師${LOVE_READER.name}が考案`, `ステラファイルを考えたのは、占い師${LOVE_READER.name}。東洋の占術を学んで10年、政財界・芸能人・インフルエンサーの診断歴もあります。名古屋・栄の占い館では、月間売上1位にもなりました。キャラの読み解きから、ひとつひとつの文章まで手がけています。`, MoonStar],
+  [`鑑定数3,000件以上の｜占い師${LOVE_READER.name}が考案`, `ステラファイルを考えたのは、占い師${LOVE_READER.name}。東洋の占術を学んで10年、政財界・芸能人・インフルエンサーの診断歴もあります。名古屋・栄の占い館では、月間売上1位にもなりました。キャラの読み解きから、ひとつひとつの文章まで手がけています。`, MoonStar],
   ["気分や答え方で、結果がぶれない", "質問に答える性格診断は、その日の気分や答え方で結果が変わってしまいます。ステラファイルは生年月日だけで読み解くから、何度診断しても同じ。素のあなたが、そのまま出ます。", Clock],
 ];
 
 /** Position in a staggered group: each item rises a moment after the one before (see .lv-stagger). */
 const order = (i: number) => ({ "--i": i }) as React.CSSProperties;
 
-/** The ten characters in a row. In the hero they pop in one by one; `still` skips that (the closing call). */
+/** The ten characters in a row (the hero and the closing call; `still` only adds the closing call's spacing). */
 function Faces({ still = false }: { still?: boolean }) {
-  return <div className={`lv-faces${still ? " is-still" : ""}`} aria-hidden="true">{CHARACTER_TYPES.map((type, i) => <span key={type.slug} className="lv-face" style={{ ...elementStyle(type.stem), ...order(i) }}><Character type={type} priority={!still} /></span>)}</div>;
+  return <div className={`lv-faces${still ? " is-still" : ""}`} aria-hidden="true">{CHARACTER_TYPES.map(type => <span key={type.slug} className="lv-face" style={elementStyle(type.stem)}><Character type={type} priority={!still} /></span>)}</div>;
 }
 
 /** Section heading: a small gold English label, the mincho title, an optional lead. */

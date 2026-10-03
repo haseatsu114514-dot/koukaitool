@@ -145,26 +145,26 @@ export const LOVE_COMPAT: Record<Exclude<StellaLevel, "mid">, { label: string; n
  * The site reads only the birth day and month, so everything here is type-level; the reading looks at the whole birth date and her situation.
  * The first two benefits are the hook: the form does not ask about them, and the site never shows them, so the reading must always cover them
  * (they are also teased in the result: LOVE_TEASERS). The last two come from the form. It does not promise timing. */
-export const LOVE_LINE_BENEFITS = ["本当に結ばれやすい｜相手の特徴", "あなたが気づいていない、恋のブレーキ", "今の状況と悩みに合わせた、恋の進め方", "いちばん知りたいことへの、あなただけの答え"];
+export const LOVE_LINE_BENEFITS = ["あなたと最高の相性のキャラ", "あなたが気づいていない、恋のブレーキ", "今の状況と悩みに合わせた、恋の進め方", "いちばん知りたいことへの、あなただけの答え"];
 /** The form asks for the situation in her own words and the reading is written in full, so no step promises a few minutes. */
 export const LOVE_LINE_STEPS = ["LINEで｜友だち追加", "今の状況を｜詳しく伝える", "本格鑑定を｜無料でお届け"];
 
 /** Where the result points to what only the reading can tell: after the usual misstep (the call in the middle of the result)
- * and at the end of the compatibility card. Each names one of the first two LINE benefits, at the moment she wants it most. */
+ * and in the compatibility card, where 最高の相性 is locked (good and foe stay open). Each names one of the first two LINE benefits, at the moment she wants it most. */
 export const LOVE_TEASERS = {
   brake: { label: "公式LINEの無料鑑定で", title: "あなたが気づいていない、｜恋のブレーキ", text: "やりがちなNGは、同じキャラの人に共通する傾向です。あなた自身が無意識にかけている恋のブレーキは、生まれた年・月・日のすべてと、今の状況まで読み解いて、はじめて見えてきます。" },
-  partner: { label: "鑑定でわかる", title: "本当に結ばれやすい相手の特徴", note: "強く惹かれる相手と、幸せになりやすい相手は、同じとは限りません。生まれた年・月・日のすべてから、あなたと本当に結ばれやすい相手の特徴を読み解きます。" },
+  best: { label: "公式LINEでわかる", title: "あなたと最高の相性のキャラ", note: "自然と惹かれ合い、お互いの足りないところを補い合える相手。あなたと最高の相性のキャラは、公式LINEの無料鑑定でお伝えします。" },
 };
 
 /** The fortune teller who devised Stella File and writes the LINE reading: ホシヨミ, with their icon (public/hoshiyomi.webp, 320px, from the approved artwork).
  * Called the creator (考案者) of Stella File, never a supervisor (監修). Shown as a signature on the result card, in the LINE invitation,
  * in reason 2 and in the footer (not in the hero). The facts are as the fortune teller gave them: no calendar years, and the 占い館 itself is not named.
- * Worded as on ホシヨミ's Threads profile (hoshiyomi.stella): 相談者数1,000名超, 政財界・芸能人・インフルエンサーの診断歴, 原理原則に基づく由緒正しき方法.
+ * Worded as on ホシヨミ's Threads profile (hoshiyomi.stella), except the count, which ホシヨミ gives as 鑑定数3,000件以上: 政財界・芸能人・インフルエンサーの診断歴, 原理原則に基づく由緒正しき方法.
  * Update them here and in the reasons on the page if they change. */
 export const LOVE_READER = {
   name: "ホシヨミ",
   icon: "/hoshiyomi.webp",
   role: "ステラファイル考案者",
-  stats: [["10年", "東洋の占術"], ["1,000名超", "相談者数"], ["月間1位", "占い館の売上"]] as [value: string, label: string][],
+  stats: [["10年", "東洋の占術"], ["3,000件以上", "鑑定数"], ["月間1位", "占い館の売上"]] as [value: string, label: string][],
   note: "政財界・芸能人・インフルエンサーの診断歴あり。｜原理原則に基づく由緒正しき方法で、｜あなたに良縁を引き寄せます。",
 };

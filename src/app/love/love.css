@@ -80,17 +80,8 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-sky::after { background-image: radial-gradient(1.6px 1.6px at 60px 120px, #fff 50%, transparent), radial-gradient(1.2px 1.2px at 210px 40px, #ffe9b8 50%, transparent), radial-gradient(1.6px 1.6px at 290px 190px, #fff 50%, transparent), radial-gradient(1.2px 1.2px at 30px 260px, #cfe7ff 50%, transparent); background-size: 330px 310px; animation: lv-twinkle 4.8s ease-in-out infinite alternate; }
 
 .lv-hero { padding: 18px 0 44px; text-align: center; }
-/* Opening sequence: the characters pop in one by one, then kicker, headline, lead, chips and the form follow. */
-.lv-hero .lv-wrap > * { animation: rise .7s var(--ease) both; }
-.lv-hero .lv-wrap > .lv-faces { animation: none; }
-.lv-hero .lv-wrap > :nth-child(2) { animation-delay: .35s; }
-.lv-hero .lv-wrap > :nth-child(3) { animation-delay: .45s; }
-.lv-hero .lv-wrap > :nth-child(4) { animation-delay: .6s; }
-.lv-hero .lv-wrap > :nth-child(5) { animation-delay: .7s; }
-.lv-hero .lv-wrap > :nth-child(6) { animation-delay: .8s; }
-.lv-faces .lv-face { animation: lv-pop .55s var(--ease) both; animation-delay: calc(var(--i, 0) * 45ms); }
+/* No opening animation: the characters, headline and birth date form are all there on the first frame. */
 .lv-faces.is-still { margin-bottom: 18px; }
-.lv-faces.is-still .lv-face { animation: none; }
 .lv-faces { display: flex; justify-content: center; margin-bottom: 14px; padding-left: 8px; }
 .lv-face { display: grid; place-items: center; width: 38px; height: 38px; margin-left: -8px; overflow: hidden; border-radius: 50%; border: 2px solid var(--el); background: var(--tint); box-shadow: 0 0 0 2px var(--lv-navy); }
 .lv-face .character { width: 90%; height: 90%; }
@@ -182,7 +173,7 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 
 /* ---------- Result ---------- */
 .lv-result { padding: 24px 0 8px; }
-.lv-type-card { position: relative; padding: 22px 22px 28px; border-radius: 22px; text-align: center; box-shadow: 0 24px 50px -28px #10213bcc; animation: rise .6s var(--ease) both; }
+.lv-type-card { position: relative; padding: 22px 22px 28px; border-radius: 22px; text-align: center; box-shadow: 0 24px 50px -28px #10213bcc; }
 /* Certificate frame: two gold rules inside the card. */
 .lv-type-card::before, .lv-type-card::after { content: ""; position: absolute; pointer-events: none; }
 .lv-type-card::before { inset: 9px; border: 1px solid #e3b45a99; border-radius: 15px; }
@@ -249,9 +240,12 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-mini-art { display: grid; place-items: center; flex-shrink: 0; width: 42px; height: 42px; overflow: hidden; border-radius: 50%; border: 2px solid var(--el); background: var(--tint); }
 .lv-mini-art .character { width: 90%; height: 90%; }
 /* What only the reading can tell, at the end of the compatibility card: a row that points down to the invitation. */
-.lv-compat-row.is-locked { border-top: 1px dashed var(--lv-line-strong); background: linear-gradient(180deg, #fffaf0, #fbf2df); color: inherit; text-decoration: none; }
+.lv-compat-row.is-locked { background: linear-gradient(180deg, #fffaf0, #fbf2df); color: inherit; text-decoration: none; }
 .is-locked .lv-compat-label { display: inline-flex; align-items: center; gap: 4px; border-color: #e3b45a99; background: #fff; color: var(--lv-gold-ink); }
-.lv-locked-title { font-family: var(--serif); font-size: 16px; font-weight: 700; line-height: 1.6; color: var(--lv-ink); }
+/* A hidden character in the locked 最高の相性 row. */
+.lv-mini-art.is-hidden { border: 2px dashed #e3b45a; background: #fff; font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--lv-gold-ink); }
+.lv-hidden-name { letter-spacing: .2em; color: var(--lv-gold-ink); }
+.is-locked.is-best .lv-compat-label { border-color: transparent; background: var(--lv-gold); color: var(--lv-ink); }
 .lv-locked-more { display: inline-flex; align-items: center; gap: 2px; margin-top: 8px; font-size: 12.5px; font-weight: 700; letter-spacing: .04em; color: var(--lv-gold-ink); }
 .lv-compat-note { margin-top: 6px; font-size: 13.5px; line-height: 1.8; color: var(--lv-muted); }
 
@@ -328,7 +322,6 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
   .lv-type:hover .lv-type-art .character { animation: lv-hop .5s var(--ease); }
 }
 @keyframes lv-twinkle { from { opacity: .15; } to { opacity: .85; } }
-@keyframes lv-pop { from { opacity: 0; scale: .4; } 70% { scale: 1.08; } to { opacity: 1; scale: 1; } }
 @keyframes lv-hop { 40% { translate: 0 -6px; } }
 @keyframes lv-peek { 45% { transform: translateX(-56px); } }
 @keyframes lv-nudge { 0%, 60%, 100% { transform: none; } 30% { transform: translateX(3px); } }

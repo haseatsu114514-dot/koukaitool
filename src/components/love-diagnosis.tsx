@@ -5,7 +5,6 @@ import { typeByStem } from "@/data/types";
 import { track } from "@/lib/analytics";
 import { BirthForm } from "./birth-form";
 import { Phrases } from "./phrases";
-import { BookReveal } from "./book-reveal";
 import { LoveResult } from "./love-result";
 
 /** Blocks marked .lv-reveal / .lv-stagger rise in once as they scroll into view. Only blocks still below the first screen are held back,
@@ -24,10 +23,9 @@ function useReveal(view: unknown) {
 
 /** The love page's two states on one URL: the introduction with the birth date form, then the result.
  * Nothing is saved: the birth date and the result live only in this component, so a reload starts over.
- * There is no way back to the form from the result: the result leads only to the official LINE. */
+ * The result appears at once (no book-opening intro). There is no way back to the form from the result: it leads only to the official LINE. */
 export function LoveDiagnosis({ hero, intro }: { hero: React.ReactNode; intro: React.ReactNode }) {
   const [result, setResult] = useState<DiagnosisResult | null>(null);
-  const [reveal, setReveal] = useState(false);
   const [formGone, setFormGone] = useState(false), [finalIn, setFinalIn] = useState(false);
   // A small bar leads back to the form once it scrolls away, and steps aside at the closing call, which has its own button.
   useEffect(() => {
@@ -42,11 +40,9 @@ export function LoveDiagnosis({ hero, intro }: { hero: React.ReactNode; intro: R
   useReveal(result);
   function show(next: DiagnosisResult) {
     track({ name: "diagnosis_complete", stella_type: typeByStem(next.pillar.stem).slug });
-    setReveal(!matchMedia("(prefers-reduced-motion: reduce)").matches);
     setResult(next);
   }
   if (result) return <>
-    {reveal && <BookReveal type={typeByStem(result.pillar.stem)} onDone={() => setReveal(false)} />}
     <LoveResult result={result} />
   </>;
   return <>
