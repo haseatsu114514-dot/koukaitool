@@ -8,7 +8,6 @@ import { Phrases } from "@/components/phrases";
 import { Character } from "@/components/character";
 import { LogoMark } from "@/components/logo";
 import { LoveDiagnosis } from "@/components/love-diagnosis";
-import { ReaderIcon } from "@/components/love-reader-icon";
 import { TypeStrip } from "@/components/love-type-strip";
 import { TypeName } from "@/components/type-name";
 import "./love.css";
@@ -54,13 +53,13 @@ function Head({ id, en, title, lead }: { id: string; en: string; title: string; 
  * and no "enter another date" (it would only lead away from LINE).
  * Sections alternate cream and white: worries → what you get → the ten characters → why it works → the closing call.
  * On this page the type is called キャラ (her essence) and the item is her ギフト (strengths and individuality).
- * ホシヨミ, who devised Stella File, appears as a small badge in the hero (with their icon), in reason 2 and in the footer.
+ * ホシヨミ, who devised Stella File, appears in reason 2 and in the footer (and on the result card and in the LINE invitation); the hero stays on the diagnosis.
  * Line breaks: headings, short items and notes of up to about three lines go through Phrases (they break only between phrases and are balanced);
  * longer running text breaks by character like print, left-aligned, with no lonely last word (see love.css). */
 export default function LovePage() {
   const hero = <>
     <Faces />
-    <p className="lv-kicker"><span className="lv-badge"><ReaderIcon size={24} priority />{`占い師${LOVE_READER.name}考案`}</span><span>10タイプ恋愛運診断</span></p>
+    <p className="lv-kicker">生年月日でわかる 10タイプ恋愛運診断</p>
     <h1 className="lv-title"><span className="lv-title-line">恋を引き寄せる人は、</span><span className="lv-title-line">自分だけの<em>「恋の正解」</em>を</span><span className="lv-title-line">知っている。</span></h1>
     <p className="lv-lead"><Phrases>魅力の引き出し方と、恋がうまくいく法則が、生年月日だけでわかります。</Phrases></p>
     <ul className="lv-meta"><li>質問なし・約10秒</li><li>10タイプで本質がわかる</li><li>無料・登録なし</li></ul>

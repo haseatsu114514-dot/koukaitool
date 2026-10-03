@@ -157,8 +157,8 @@ export const LOVE_TEASERS = {
 };
 
 /** The fortune teller who devised Stella File and writes the LINE reading: ホシヨミ, with their icon (public/hoshiyomi.webp, 320px, from the approved artwork).
- * Called the creator (考案者) of Stella File, not a supervisor. Shown as a small badge in the hero, as a signature on the result card, in the LINE invitation,
- * in reason 2 and in the footer. The facts are as the fortune teller gave them: no calendar years, and the 占い館 itself is not named.
+ * Called the creator (考案者) of Stella File, never a supervisor (監修). Shown as a signature on the result card, in the LINE invitation,
+ * in reason 2 and in the footer (not in the hero). The facts are as the fortune teller gave them: no calendar years, and the 占い館 itself is not named.
  * Worded as on ホシヨミ's Threads profile (hoshiyomi.stella): 相談者数1,000名超, 政財界・芸能人・インフルエンサーの診断歴, 原理原則に基づく由緒正しき方法.
  * Update them here and in the reasons on the page if they change. */
 export const LOVE_READER = {

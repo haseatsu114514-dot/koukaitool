@@ -48,7 +48,7 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
    - Longer running text (four lines and more) breaks by character like print, with strict kinsoku: whole phrases would leave
      ragged gaps there. It is left-aligned (justification spread the characters apart) and never ends on one or two characters.
    - Type names break only between the modifier and the animal (TypeName). */
-.love :is(h1, h2, h3, .lv-kicker, .lv-badge, .lv-head-en, .lv-compat-label, .lv-cert-sign, .lv-line-kicker, .lv-steps li, .lv-lose h3, .lv-win h3) { font-feature-settings: "palt"; }
+.love :is(h1, h2, h3, .lv-kicker, .lv-head-en, .lv-compat-label, .lv-cert-sign, .lv-line-kicker, .lv-steps li, .lv-lose h3, .lv-win h3) { font-feature-settings: "palt"; }
 .love p, .love li { word-break: normal; line-break: strict; overflow-wrap: break-word; text-wrap: pretty; }
 .love .phrase { display: inline-block; max-width: 100%; }
 .lv-prose p, .lv-reasons p, .lv-text, .lv-win p, .lv-lose p, .lv-gift-text, .lv-hint p, .lv-mid-text { text-align: start; text-wrap: pretty; }
@@ -94,10 +94,7 @@ body:has(.love) { max-width: none; padding-bottom: 0; box-shadow: none; backgrou
 .lv-faces { display: flex; justify-content: center; margin-bottom: 14px; padding-left: 8px; }
 .lv-face { display: grid; place-items: center; width: 38px; height: 38px; margin-left: -8px; overflow: hidden; border-radius: 50%; border: 2px solid var(--el); background: var(--tint); box-shadow: 0 0 0 2px var(--lv-navy); }
 .lv-face .character { width: 90%; height: 90%; }
-.lv-kicker { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 10px; font-size: 13px; font-weight: 700; letter-spacing: .12em; color: var(--lv-gold); }
-/* ホシヨミ, who devised Stella File: their icon and name as a small badge above the headline. */
-.lv-badge { display: inline-flex; align-items: center; gap: 6px; padding: 2px 12px 2px 2px; border-radius: 999px; border: 1px solid #e3b45a73; background: #e3b45a14; font-size: 12px; letter-spacing: .06em; color: #f1d9a6; }
-.lv-badge .lv-reader-icon { width: 24px; height: 24px; box-shadow: none; }
+.lv-kicker { font-size: 13px; font-weight: 700; letter-spacing: .12em; color: var(--lv-gold); }
 .lv-title { margin-top: 10px; font-size: clamp(25px, 6.6vw, 42px); line-height: 1.5; letter-spacing: .03em; }
 .lv-title-line { display: inline-block; }
 .lv-title em { font-style: normal; color: var(--lv-gold); }
