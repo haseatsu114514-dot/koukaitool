@@ -86,7 +86,8 @@ test("love page: intro → birth date → love result → official LINE", async 
   await expect(page.getByRole("combobox", { name: "年", exact: true }).locator("option").nth(1)).toHaveText(`${new Date(Date.now() + 9 * 3600_000).getUTCFullYear()}年`);
   await page.getByRole("combobox", { name: "年", exact: true }).selectOption("2000"); await page.getByRole("combobox", { name: "月", exact: true }).selectOption("1"); await page.getByRole("combobox", { name: "日", exact: true }).selectOption("7");
   await page.getByRole("button", { name: "恋愛運を診断する" }).click();
-  await expect(page.locator(".book-reveal")).toBeVisible(); await expect(page.locator(".book-reveal")).toBeHidden({ timeout: 8000 });
+  // The result is there at once: no book-opening intro.
+  await expect(page.locator(".book-reveal")).toHaveCount(0);
   // The result opens on the same page: キャラ, four tendencies, what works and the usual misstep, and the ギフト.
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("ほめ待ちグリズリー");
   await expect(page.locator(".lv-traits li")).toHaveCount(4);
@@ -96,10 +97,10 @@ test("love page: intro → birth date → love result → official LINE", async 
   await expect(page.getByRole("heading", { name: "積み重ねる才能", exact: true })).toBeVisible(); await expect(page.locator(".lv-gift-motif")).toHaveText("モチーフ：レンガ");
   // All three compatibility levels are shown openly; a locked row after them points down to the invitation.
   // Every LINE button (the call in the middle, the invitation, the bar) uses the love page's own friend-add URL.
-  await expect(page.locator(".is-best")).toContainText("ほっとけないアルパカ"); await expect(page.locator(".is-foe")).toContainText("正々堂々ドーベルマン"); await expect(page.locator(".is-foe")).toContainText("ひと工夫で深まる相性");
+  await expect(page.locator(".is-best")).toHaveAttribute("href", "#line"); await expect(page.locator(".is-best")).not.toContainText("ほっとけないアルパカ"); await expect(page.locator(".is-good .lv-compat-types li").first()).toBeVisible(); await expect(page.locator(".is-foe")).toContainText("正々堂々ドーベルマン"); await expect(page.locator(".is-foe")).toContainText("ひと工夫で深まる相性");
   await expect(page.locator(".is-locked")).toHaveAttribute("href", "#line");
   // Just above the button, who will read for her: the supervising fortune teller's record in plain text.
-  await expect(page.locator(".lv-line .lv-reader")).toContainText("ホシヨミ"); await expect(page.locator(".lv-line .lv-reader")).toContainText("1,000名超");
+  await expect(page.locator(".lv-line .lv-reader")).toContainText("ホシヨミ"); await expect(page.locator(".lv-line .lv-reader")).toContainText("3,000件以上");
   await expect(page.locator(".lv-line .lv-reader-icon")).toHaveAttribute("src", /\/hoshiyomi\.webp$/);
   // The result card is signed by the creator of Stella File.
   await expect(page.locator(".lv-cert-sign")).toContainText("ステラファイル考案者");

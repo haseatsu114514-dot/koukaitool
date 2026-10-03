@@ -25,9 +25,9 @@ function Partners({ stems }: { stems: CharacterType["stem"][] }) {
   return <ul className="lv-compat-types">{stems.map(stem => { const partner = typeByStem(stem); return <li key={stem}><span className="lv-mini-art" style={elementStyle(stem)}><Character type={partner} /></span><TypeName name={partner.displayName} /></li>; })}</ul>;
 }
 
-/** The love result: キャラ (the type), her tendencies in love, charm, what works and the usual misstep, ギフト (the item, named as a talent and read for love), one hint, compatibility (all three levels shown, named positively), then the official LINE.
+/** The love result: キャラ (the type), her tendencies in love, charm, what works and the usual misstep, ギフト (the item, named as a talent and read for love), one hint, compatibility (最高の相性 locked, the other two shown, named positively), then the official LINE.
  * Free and LINE are split like this: everything on this page is what people of her キャラ share, and it is complete as it is. What only the reading can tell
- * (the first two LOVE_LINE_BENEFITS) is named where she wants it most: a call right after the usual misstep, and a locked row at the end of the compatibility card.
+ * (the first two LOVE_LINE_BENEFITS) is named where she wants it most: a call right after the usual misstep, and 最高の相性 locked at the top of the compatibility card.
  * Running text is plain (print-style breaks); headings and short items break between phrases.
  * A bar with the LINE button follows the reader once the type card scrolls away, and steps aside while the call in the middle or the full invitation is on screen.
  * The invitation is always shown; the buttons open the friend add once its URL is configured. The result ends at the invitation: no way back to the form. */
@@ -101,10 +101,10 @@ export function LoveResult({ result }: { result: DiagnosisResult }) {
 
       <Section id="lv-r-compat" title="恋の相性">
         <div className="lv-compat">
-          <div className="lv-compat-row is-best"><span className="lv-compat-label">{LOVE_COMPAT.best.label}</span><div><Partners stems={groups.best} /><p className="lv-compat-note"><Phrases>{LOVE_COMPAT.best.note}</Phrases></p></div></div>
+          {/* 最高の相性 is locked: how many characters, but not which; the row leads down to the invitation. */}
+          <a className="lv-compat-row is-best is-locked" href="#line"><span className="lv-compat-label"><Lock size={12} strokeWidth={2.4} aria-hidden="true" />{LOVE_COMPAT.best.label}</span><div><ul className="lv-compat-types" aria-label={`${groups.best.length}キャラ（公式LINEでわかります）`}>{groups.best.map(stem => <li key={stem}><span className="lv-mini-art is-hidden" aria-hidden="true">？</span><span className="lv-hidden-name">？？？</span></li>)}</ul><p className="lv-compat-note"><Phrases>{LOVE_TEASERS.best.note}</Phrases></p><span className="lv-locked-more">受け取り方を見る<ChevronDown size={14} aria-hidden="true" /></span></div></a>
           <div className="lv-compat-row is-good"><span className="lv-compat-label">{LOVE_COMPAT.good.label}</span><div><Partners stems={groups.good} /><p className="lv-compat-note"><Phrases>{LOVE_COMPAT.good.note}</Phrases></p></div></div>
           <div className="lv-compat-row is-foe"><span className="lv-compat-label">{LOVE_COMPAT.foe.label}</span><div><Partners stems={groups.foe} /><p className="lv-compat-note"><Phrases>{LOVE_COMPAT.foe.note}</Phrases></p></div></div>
-          <a className="lv-compat-row is-locked" href="#line"><span className="lv-compat-label"><Lock size={12} strokeWidth={2.4} aria-hidden="true" />{LOVE_TEASERS.partner.label}</span><div><p className="lv-locked-title"><Phrases>{LOVE_TEASERS.partner.title}</Phrases></p><p className="lv-compat-note"><Phrases>{LOVE_TEASERS.partner.note}</Phrases></p><span className="lv-locked-more">受け取り方を見る<ChevronDown size={14} aria-hidden="true" /></span></div></a>
         </div>
       </Section>
 
