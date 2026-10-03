@@ -8,6 +8,8 @@ import type { StellaLevel } from "@/lib/diagnosis/compatibility";
 export type LoveCopy = {
   /** One line under the type name. */
   catch: string;
+  /** Shorter copy for the narrow carousel cards when the result catch needs three lines. */
+  carouselCatch?: string;
   /** Three short words for the result card. Each adds something the catch does not already say. */
   keywords: string[];
   /** Four tendencies in love, stated with confidence (broad enough to hold for the type, not one-off habits). */
@@ -25,6 +27,7 @@ export type LoveCopy = {
 export const LOVE_COPY: Record<string, LoveCopy> = {
   grizzly: {
     catch: "がんばりを見てくれる人に、一途になる恋",
+    carouselCatch: "認めてくれる人に、一途になる恋",
     keywords: ["しっかり者", "甘え下手", "ギャップが魅力"],
     traits: ["がんばっている自分を、ちゃんと見てくれる人に惹かれる", "好きな人の前ほど、しっかり者でいようとする", "本当は甘えたいのに、弱みを見せるのが苦手", "一度好きになると、一途に相手を想い続ける"],
     charm: "あなたの魅力は、裏表のないまっすぐさと、ほめられたときにふと見せる照れた顔のギャップ。いつも頼られる側だからこそ、弱いところを少し見せた瞬間に、相手は「守りたい」と感じます。しっかり者の顔は半分だけにして、素直な一面をのぞかせてください。",
@@ -70,6 +73,7 @@ export const LOVE_COPY: Record<string, LoveCopy> = {
   },
   alpaca: {
     catch: "家族みたいに｜大切にする、あたたかい恋",
+    carouselCatch: "家族のように大切に、あたたかい恋",
     keywords: ["献身的", "世話好き", "先回り上手"],
     traits: ["好きな人のために、頼まれる前から動ける", "放っておけない人に、惹かれやすい", "相手のことを、自分のこと以上に気にかける", "尽くしすぎて、自分が疲れてしまいがち"],
     charm: "あなたの魅力は、相手を本気で思いやり、家族のように支えられるあたたかさ。そばにいるだけで「この人となら安心して暮らせる」と思わせる力があります。どこか独特でかわいらしい雰囲気も、あなたが愛される理由のひとつです。",

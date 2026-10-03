@@ -89,7 +89,7 @@ export default function LovePage() {
     <section className="lv-section" aria-labelledby="lv-types-title">
       <div className="lv-wrap-wide">
         <Head id="lv-types-title" en="10 CHARACTERS" title="あなたは、どのキャラ？" lead="恋の進め方も、愛され方も、｜キャラによってまったく違います。" />
-        <TypeStrip>{CHARACTER_TYPES.map((type, i) => <li key={type.slug} className="lv-type" style={{ ...elementStyle(type.stem), ...order(i % 5) }}><span className="lv-type-art"><Character type={type} size={68} /></span><h3><TypeName name={type.displayName} /></h3><p><Phrases>{LOVE_COPY[type.slug].catch}</Phrases></p></li>)}</TypeStrip>
+        <TypeStrip>{CHARACTER_TYPES.map((type, i) => <li key={type.slug} className="lv-type" style={{ ...elementStyle(type.stem), ...order(i % 5) }}><span className="lv-type-art"><Character type={type} size={68} /></span><h3><TypeName name={type.displayName} /></h3><p><Phrases>{LOVE_COPY[type.slug].carouselCatch ?? LOVE_COPY[type.slug].catch}</Phrases></p></li>)}</TypeStrip>
       </div>
     </section>
     <section className="lv-section is-white" aria-labelledby="lv-why-title">
